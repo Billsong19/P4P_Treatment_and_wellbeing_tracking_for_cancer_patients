@@ -1,46 +1,58 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Button } from "react-native";
+import { Text, View, Pressable, ScrollView } from "react-native";
+import styles from '../styles';
 
 export const LibraryScreen = ({navigation}) => {
     return(
-        <View>
+        <ScrollView>
             Information Library
-            <Button
-                title="Stomach Cancer"
+            <Pressable
+                style={styles.libraryButton}
                 onPress={() =>
                 navigation.navigate('Condition', { condition: 'Stomach Cancer'})
             }
-            />
-            <Button
-                title="Colon Cancer"
+            >
+                <Text>Stomach Cancer</Text>
+            </Pressable>
+            <Pressable
+                style={styles.libraryButton}
                 onPress={() =>
                 navigation.navigate('Condition', { condition: 'Colon Cancer'})
             }
-            />
-            <Button
-                title="Breast Cancer"
+            >
+                <Text>Colon Cancer</Text>
+            </Pressable>
+            <Pressable
+                style={styles.libraryButton}
                 onPress={() =>
                 navigation.navigate('Condition', { condition: 'Breast Cancer'})
             }
-            />
-            <Button
-                title="Prostate Cancer"
+            >
+                <Text>Breast Cancer</Text>
+            </Pressable>
+            <Pressable
+                style={styles.libraryButton}
                 onPress={() =>
                 navigation.navigate('Condition', { condition: 'Prostate Cancer'})
             }
-            />
-            <Button
-                title="Lung Cancer"
+            >
+                <Text>Prostate Cancer</Text>
+            </Pressable>
+            <Pressable
+                style={styles.libraryButton}
                 onPress={() =>
                 navigation.navigate('Condition', { condition: 'Lung Cancer'})
             }
-            />
-            <Button
-                title="Back to Home"
+            >
+                <Text>Lung Cancer</Text>
+            </Pressable>
+            <Pressable
                 onPress={() =>
                 navigation.navigate('Home')
             }
-            />
-        </View>
+            >
+                <Text>Back to Home</Text>
+            </Pressable>
+        </ScrollView>
     );
 }

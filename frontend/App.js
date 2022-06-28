@@ -25,7 +25,7 @@ export default function App() {
           component={WellbeingJournalScreen}
         />
         <Stack.Screen
-          name="Reminder"
+          name="Reminders"
           component={RemindersScreen}
         />
         <Stack.Screen

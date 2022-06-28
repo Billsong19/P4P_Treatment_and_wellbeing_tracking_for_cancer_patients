@@ -1,52 +1,68 @@
 import * as React from 'react';
-import { StyleSheet, Text, View, Button } from "react-native";
+import { Text, View, Pressable, Image } from "react-native";
+import styles from '../styles';
 
 export const ConditionScreen = ({ navigation, route }) => {
     return(
         <View>
-            {route.params.condition}
-            <Button
-                title="Overview and Diagnosis"
+            <Text>{route.params.condition}</Text>
+            <Image source={require('../public/stomach.jpg')}/>
+            <Pressable
+                style={styles.conditionButtonBlue}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 0})
             }
-            />
-            <Button
-                title="Chance of Recovery"
+            >
+                <Text>Overview and Diagnosis</Text>
+            </Pressable>
+            <Pressable
+                style={styles.conditionButtonTeal}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 1})
             }
-            />
-            <Button
-                title="Course of Disease"
+            >
+                <Text>Chance of Recovery</Text>
+            </Pressable>
+            <Pressable
+                style={styles.conditionButtonGreen}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 2})
             }
-            />
-            <Button
-                title="Early Stages"
+            >
+                <Text>Course of Disease</Text>
+            </Pressable>
+            <Pressable
+                style={styles.conditionButtonGreen}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 3})
             }
-            />
-            <Button
-                title="Development and Complications"
+            >
+                <Text>Early Stages</Text>
+            </Pressable>
+            <Pressable
+                style={styles.conditionButtonGreen}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 4})
             }
-            />
-            <Button
-                title="Treatment"
+            >
+                <Text>Development and Complications</Text>
+            </Pressable>
+            <Pressable
+                style={styles.conditionButtonYellow}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 5})
             }
-            />
-            <Button
-                title="Risks and Long-Term Implications"
+            >
+                <Text>Treatment</Text>
+            </Pressable>
+            <Pressable
+                style={styles.conditionButtonOrange}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 6})
             }
-            />
+            >
+                <Text>Risks and Long-term Implications</Text>
+            </Pressable>
         </View>
     );
 }
