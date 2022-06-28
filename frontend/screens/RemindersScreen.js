@@ -1,12 +1,5 @@
 import * as React from "react";
-import {
-    FlatList,
-    Text,
-    View,
-    Button,
-    StatusBar,
-    StyleSheet,
-} from "react-native";
+import { FlatList, Text, View, StatusBar, StyleSheet } from "react-native";
 
 const DATA = [
     {
@@ -34,7 +27,9 @@ const Item = ({ title, complete }) => (
 );
 
 export const RemindersScreen = ({ navigation }) => {
-    const renderItem = ({ item }) => <Item title={item.title} />;
+    const renderItem = ({ item }) => (
+        <Item title={item.title} complete={item.complete} />
+    );
 
     return (
         <View>
@@ -57,7 +52,7 @@ const styles = StyleSheet.create({
         marginTop: StatusBar.currentHeight || 0,
     },
     item: {
-        backgroundColor: "#f9c2ff",
+        backgroundColor: "lightblue",
         padding: 20,
         marginVertical: 8,
         marginHorizontal: 16,
