@@ -5,11 +5,11 @@ import styles from '../styles';
 export const HomeScreen = ({navigation}) => {
     return(
         <View>
-            <View style={styles.homeJournalView}>
+            <View style={[styles.wideTile, styles.blueBorder]}>
                 <Text>Welcome back %user%</Text>
                 <Text>%current-treatment-period%</Text>
                 <Pressable
-                    style={styles.journalButton}
+                    style={[styles.wideButton, styles.blueBackground]}
                     onPress={() =>
                     navigation.navigate('Wellbeing Journal')
                 }
@@ -17,7 +17,7 @@ export const HomeScreen = ({navigation}) => {
                     <Text>How are you feeling today?</Text>
                 </Pressable>
             </View>
-            <View style={styles.homeReminderView}>
+            <View style={[styles.wideTile, styles.tealBorder]}>
                 <Text>Upcoming Reminders</Text>
                 <Button
                 title="Upcoming Reminders"
@@ -26,11 +26,11 @@ export const HomeScreen = ({navigation}) => {
             }
             />
             </View>
-            <View style={styles.homeLibraryView}>
+            <View style={[styles.wideTile, styles.greenBorder]}>
                 <Text>Information Library</Text>
                 <div style={{display: 'flex'}}>
                     <Pressable
-                        style={styles.libraryAllButton}
+                        style={[styles.halfButton, styles.greenBackground]}
                         onPress={() =>
                         navigation.navigate('Info Library')
                     }
@@ -51,11 +51,11 @@ export const HomeScreen = ({navigation}) => {
                     </TouchableOpacity>
                 </div>
             </View>
-            <View style={styles.homeSupportView}>
+            <View style={[styles.wideTile, styles.yellowBorder]}>
                 <Text>Patient Support</Text>
                 <div style={{display: 'flex'}}>
                 <Pressable
-                    style={styles.supportButton}
+                    style={[styles.halfButton, styles.yellowBackground]}
                     onPress={() =>
                     alert('Never give up :)')
                 }
@@ -63,7 +63,7 @@ export const HomeScreen = ({navigation}) => {
                     <Text>Contact Treatment Staff</Text>
                 </Pressable>
                 <Pressable
-                    style={styles.supportButton}
+                    style={[styles.halfButton, styles.yellowBackground]}
                     onPress={() =>
                     alert('I believe in you')
                 }

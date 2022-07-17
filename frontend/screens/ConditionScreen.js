@@ -8,7 +8,7 @@ export const ConditionScreen = ({ navigation, route }) => {
             <Text>{route.params.condition}</Text>
             <Image source={require('../public/stomach.jpg')}/>
             <Pressable
-                style={styles.conditionButtonBlue}
+                style={[styles.conditionButton, styles.blueBorder]}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 0})
             }
@@ -16,7 +16,7 @@ export const ConditionScreen = ({ navigation, route }) => {
                 <Text>Overview and Diagnosis</Text>
             </Pressable>
             <Pressable
-                style={styles.conditionButtonTeal}
+                style={[styles.conditionButton, styles.tealBorder]}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 1})
             }
@@ -24,7 +24,7 @@ export const ConditionScreen = ({ navigation, route }) => {
                 <Text>Chance of Recovery</Text>
             </Pressable>
             <Pressable
-                style={styles.conditionButtonGreen}
+                style={[styles.conditionButton, styles.greenBorder]}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 2})
             }
@@ -32,7 +32,7 @@ export const ConditionScreen = ({ navigation, route }) => {
                 <Text>Course of Disease</Text>
             </Pressable>
             <Pressable
-                style={styles.conditionButtonGreen}
+                style={[styles.conditionButton, styles.greenBorder]}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 3})
             }
@@ -40,7 +40,7 @@ export const ConditionScreen = ({ navigation, route }) => {
                 <Text>Early Stages</Text>
             </Pressable>
             <Pressable
-                style={styles.conditionButtonGreen}
+                style={[styles.conditionButton, styles.greenBorder]}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 4})
             }
@@ -48,7 +48,7 @@ export const ConditionScreen = ({ navigation, route }) => {
                 <Text>Development and Complications</Text>
             </Pressable>
             <Pressable
-                style={styles.conditionButtonYellow}
+                style={[styles.conditionButton, styles.yellowBorder]}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 5})
             }
@@ -56,7 +56,7 @@ export const ConditionScreen = ({ navigation, route }) => {
                 <Text>Treatment</Text>
             </Pressable>
             <Pressable
-                style={styles.conditionButtonOrange}
+                style={[styles.conditionButton, styles.orangeBorder]}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 6})
             }
