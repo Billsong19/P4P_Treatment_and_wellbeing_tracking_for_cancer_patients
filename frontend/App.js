@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { NavigationContainer, StackActions } from '@react-navigation/native';
+import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
+import { DefaultTheme, NavigationContainer, StackActions } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from "./screens/HomeScreen";
 import { WellbeingJournalScreen } from "./screens/WellbeingJournalScreen";
@@ -12,9 +12,18 @@ import { DetailsScreen } from "./screens/DetailsScreen";
 
 const Stack = createNativeStackNavigator();
 
+const navTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: 'transparent',
+  },
+};
+
 export default function App() {
   return (
-    <NavigationContainer>
+    <ImageBackground source={require('./public/bmbg.png')} style={{width: '100vw', height: '100vh', position: 'absolute'}}>
+      <NavigationContainer theme={navTheme}>
       <Stack.Navigator>
         <Stack.Screen
           name="Home"
@@ -42,6 +51,7 @@ export default function App() {
         />
       </Stack.Navigator>
     </NavigationContainer>
+    </ImageBackground>
   );
 }
 

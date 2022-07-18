@@ -12,11 +12,13 @@ const styles = StyleSheet.create({
         margin: '3%',
         padding: '2%',
         borderRadius: 4,
+        backgroundColor: 'rgba(255,255,255,0.8)',
     },
     wideButton: {
         backgroundColor: bmBlue,
         color: bmBlue,
-        padding: '5px',
+        padding: '15px',
+        borderRadius: 4,
     },
     halfButton: {
         backgroundColor: bmYellow,
@@ -25,6 +27,7 @@ const styles = StyleSheet.create({
         padding: '5px',
         width: '45%',
         marginRight: '5%',
+        borderRadius: 4,
     },
     blueBackground: {
         backgroundColor: bmBlue,
@@ -49,7 +52,8 @@ const styles = StyleSheet.create({
     conditionButton: {
         margin: '3%',
         padding: '2%',
-        borderRadius: 4
+        borderRadius: 4,
+        backgroundColor: 'rgba(255,255,255,0.8)',
     },
     blueBorder: {
         border: `2px solid ${bmBlue}`,
@@ -126,6 +130,13 @@ const styles = StyleSheet.create({
         marginVertical: '10px',
         lineHeight: '2.5ex',
         height: '7.5ex',
+        backgroundColor: '#FFF'
+    },
+    smallButton: {
+        width: '30px',
+        height: '30px',
+        margin: 'auto',
+        borderRadius: 4
     }
 })
 

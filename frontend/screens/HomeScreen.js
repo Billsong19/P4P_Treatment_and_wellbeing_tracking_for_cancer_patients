@@ -7,35 +7,37 @@ export const HomeScreen = ({navigation}) => {
         <View>
             <View style={[styles.wideTile, styles.blueBorder]}>
                 <Text>Welcome back %user%</Text>
-                <Text>%current-treatment-period%</Text>
+                <Text style={{fontSize: '20px', marginVertical: '10px'}}>%current-treatment-period%</Text>
                 <Pressable
                     style={[styles.wideButton, styles.blueBackground]}
                     onPress={() =>
                     navigation.navigate('Wellbeing Journal')
                 }
                 >
-                    <Text>How are you feeling today?</Text>
+                    <Text style={{fontSize: '20px', marginHorizontal: 'auto'}}>How are you feeling today?</Text>
                 </Pressable>
             </View>
             <View style={[styles.wideTile, styles.tealBorder]}>
-                <Text>Upcoming Reminders</Text>
-                <Button
-                title="Upcoming Reminders"
-                onPress={() =>
-                navigation.navigate('Reminders')
-            }
-            />
+                <Text style={{fontSize: '16px', marginVertical: '10px'}}>Upcoming Reminders</Text>
+                <Pressable
+                    style={[styles.wideButton, styles.tealBackground]}
+                    onPress={() =>
+                    navigation.navigate('Reminders')
+                }
+                >
+                    <Text style={{fontSize: '20px', marginHorizontal: 'auto'}}>Reminders</Text>
+                </Pressable>
             </View>
             <View style={[styles.wideTile, styles.greenBorder]}>
-                <Text>Information Library</Text>
+                <Text style={{fontSize: '16px', marginVertical: '10px'}}>Information Library</Text>
                 <div style={{display: 'flex'}}>
                     <Pressable
-                        style={[styles.halfButton, styles.greenBackground]}
+                        style={[styles.halfButton, styles.greenBackground, {margin: '20px', width: '30%'}]}
                         onPress={() =>
                         navigation.navigate('Info Library')
                     }
                     >
-                        <Text>View All</Text>
+                        <Text style={{fontSize: '16px', marginHorizontal: 'auto', marginVertical: '20px'}}>View All</Text>
                     </Pressable>
                     <TouchableOpacity
                         onPress={() =>
@@ -43,16 +45,14 @@ export const HomeScreen = ({navigation}) => {
                             }
                         >
                         <div>
-                            <Image
-                            source={require('../public/stomach.jpg')}
-                            />
+                            <Image source={require('../public/stomach.jpg')} style={{width: '200%', height: '500%'}}/>
                             <Text>Stomach Cancer</Text>
                         </div>     
                     </TouchableOpacity>
                 </div>
             </View>
             <View style={[styles.wideTile, styles.yellowBorder]}>
-                <Text>Patient Support</Text>
+                <Text style={{fontSize: '16px', marginVertical: '10px'}}>Patient Support</Text>
                 <div style={{display: 'flex'}}>
                 <Pressable
                     style={[styles.halfButton, styles.yellowBackground]}
@@ -60,7 +60,7 @@ export const HomeScreen = ({navigation}) => {
                     alert('Never give up :)')
                 }
                 >
-                    <Text>Contact Treatment Staff</Text>
+                    <Text style={{fontSize: '20px', marginHorizontal: 'auto', textAlign: 'center'}}>Contact Treatment Staff</Text>
                 </Pressable>
                 <Pressable
                     style={[styles.halfButton, styles.yellowBackground]}
@@ -68,7 +68,7 @@ export const HomeScreen = ({navigation}) => {
                     alert('I believe in you')
                 }
                 >
-                    <Text>Patient assistance organisations</Text>
+                    <Text style={{fontSize: '20px', marginHorizontal: 'auto', textAlign: 'center'}}>Patient assistance organisations</Text>
                 </Pressable>
                 </div>
             </View>

@@ -1,16 +1,21 @@
 import * as React from 'react';
 import {  Animated, Pressable, Text, TextInput, View } from "react-native";
-import DropDownPicker from 'react-native-dropdown-picker';
+import { Dropdown } from 'react-native-element-dropdown'
 import styles, { bmBlue } from '../styles';
 
 export const WellbeingJournalScreen = ({navigation}) => {
     const [phys, setPhys] = React.useState(-1);
     const [ment, setMental] = React.useState(-1);
+    const [open, setOpen] = React.useState(false);
+    const [inputSymptom, setInputSymptom] = React.useState("");
+    const [inputSeverity, setSeverity] = React.useState(null)
+    const severities = [{label: 'mild', value: 'mild'}, {label: 'moderate', value: 'moderate'}, {label: 'severe', value: 'severe'}]
+    const [symptoms, setSymptoms] = React.useState([])
 
     return(
         <View style={[styles.wideTile, styles.blueBorder]}>
-            <h3>Wellbeing Journal</h3>
-            <h4>How are you physically feeling today?</h4>
+            <Text style={{fontSize: '20px', marginVertical: '10px'}}>Wellbeing Journal</Text>
+            <Text style={{fontSize: '16px', marginBottom: '10px'}}>How are you physically feeling today?</Text>
             <div style={{display: 'flex'}}>
                 <Pressable
                     style={phys==1 ? [styles.likertButton, styles.likert1s] : [styles.likertButton, styles.likert1]}
@@ -64,10 +69,47 @@ export const WellbeingJournalScreen = ({navigation}) => {
             <Pressable
                 style={[styles.wideTile, styles.blueBorder]}
             >
-                <Text style={{color: bmBlue}}>Same as yesterday: mild nausea, slight headache</Text>
+                <Text style={{color: bmBlue}}>Same as yesterday: mild nausea, mild headache</Text>
             </Pressable>
-            <TextInput placeholder='symptom' />
-            <h4>How are you mentally feeling today?</h4>
+            <div style={{display: 'flex'}}>
+                <TextInput
+                    placeholder='symptom'
+                    style={{marginBottom: '10px', width: '50%', position: 'relative', top: '2px'}}
+                    onChangeText={setInputSymptom}/>
+                <Dropdown
+                style = {{marginEnd: '10px'}}
+                value={inputSeverity}
+                labelField="label"
+                valueField="value"
+                placeholder="Select a severity"
+                data={severities}
+                onFocus={() => setOpen(true)}
+                onChange={item => {
+                    setSeverity(item.value);
+                    setOpen(false);
+                }}
+                />
+                <Pressable
+                    style={[styles.smallButton, styles.tealBackground, {marginRight: '18px'}]}
+                    onPress={() => {
+                        if (inputSymptom && inputSeverity) {
+                            setSymptoms([...symptoms, [inputSeverity, inputSymptom]])
+                            setInputSymptom("")
+                            setSeverity("")
+                        }
+                    }}>
+                    <Text style={{fontSize: '20px', marginHorizontal: 'auto'}}>+</Text>
+                </Pressable>
+            </div>
+            {symptoms.map((symptom) => {
+                <div style={{display: 'flex'}}>
+                    <Pressable style={[styles.smallButton, styles.orangeBackground, {marginRight: '18px'}]}>
+                        <Text style={{fontSize: '20px', marginHorizontal: 'auto'}}>-</Text>
+                    </Pressable>
+                </div>
+            })
+            }
+            <Text style={{fontSize: '16px', marginBottom: '10px'}}>How are you mentally feeling today?</Text>
             <div style={{display: 'flex'}}>
                 <Pressable
                     style={ment==1 ? [styles.likertButton, styles.likert1s] : [styles.likertButton, styles.likert1]}
@@ -127,7 +169,7 @@ export const WellbeingJournalScreen = ({navigation}) => {
                 style={[styles.wideButton, styles.blueBackground]}
                 onPress={() => navigation.navigate('Home')}
                 >
-                    <Text>Confirm</Text>
+                    <Text style={{fontSize: '16px', marginHorizontal: 'auto'}}>Confirm</Text>
                 </Pressable>
         </View>
     );
