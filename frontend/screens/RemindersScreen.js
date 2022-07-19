@@ -10,7 +10,6 @@ import {
     TouchableOpacity,
 } from "react-native";
 import plusImage from "../public/plus.svg";
-import styles2 from "../styles";
 
 const DATA = [
     {
