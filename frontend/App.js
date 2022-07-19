@@ -15,6 +15,7 @@ import { ConditionScreen } from "./screens/ConditionScreen";
 import { DetailsScreen } from "./screens/DetailsScreen";
 import { HCPContactScreen } from "./screens/HCPContactScreen.js";
 import { MoreHelpScreen } from "./screens/MoreHelpScreen.js";
+import { AddReminderScreen } from "./screens/AddReminderScreen.js";
 
 const Stack = createNativeStackNavigator();
 
@@ -57,6 +58,10 @@ export default function App() {
                         component={HCPContactScreen}
                     />
                     <Stack.Screen name="More Help" component={MoreHelpScreen} />
+                    <Stack.Screen
+                        name="Add Reminder"
+                        component={AddReminderScreen}
+                    />
                 </Stack.Navigator>
             </NavigationContainer>
         </ImageBackground>

@@ -1,5 +1,16 @@
 import * as React from "react";
-import { FlatList, Text, View, StatusBar, StyleSheet } from "react-native";
+import {
+    FlatList,
+    Text,
+    View,
+    StatusBar,
+    StyleSheet,
+    Button,
+    Image,
+    TouchableOpacity,
+} from "react-native";
+import plusImage from "../public/plus.svg";
+import styles2 from "../styles";
 
 const DATA = [
     {
@@ -26,22 +37,41 @@ const Item = ({ title, complete }) => (
     </View>
 );
 
-export const RemindersScreen = ({ navigation }) => {
+export const RemindersScreen = ({ navigation, data }) => {
     const renderItem = ({ item }) => (
         <Item title={item.title} complete={item.complete} />
     );
 
     return (
-        <View>
-            <FlatList
-                data={DATA}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-            />
-            {/* <Button
-                title="Back to Home"
-                onPress={() => navigation.navigate("Home")}
-            /> */}
+        <View style={{ flex: 1 }}>
+            <View>
+                <FlatList
+                    data={DATA}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                />
+            </View>
+            <View
+                style={{
+                    position: "absolute",
+                    bottom: 0,
+                    alignSelf: "flex-end",
+                    marginBottom: 10,
+                    marginRight: 10,
+                }}
+            >
+                <TouchableOpacity
+                    onPress={() => {
+                        console.log("hi");
+                        navigation.navigate("Add Reminder");
+                    }}
+                >
+                    <Image
+                        style={{ width: 50, height: 50 }}
+                        source={plusImage}
+                    />
+                </TouchableOpacity>
+            </View>
         </View>
     );
 };
