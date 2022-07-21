@@ -2,7 +2,10 @@ import * as React from 'react';
 import { Text, View, Button } from "react-native";
 import styles, { bmBlue, bmTeal, bmGreen, bmYellow, bmOrange } from '../styles';
 
+const MAX_PAGES = 6;
+
 export const DetailsScreen = ({ navigation , route}) => {
+    const [pageNo, setPageNo] = React.useState(route.params.section)
     let contents = [];
     contents = [...contents, ['Overview', 'Stomach cancer, also known as gastric cancer, is a cancer that develops from the lining of the stomach. Most of the time, stomach cancer develops in stages over years.'],
      ['Diagnosis', 'Early symptoms may include heartburn, upper abdominal pain, nausea, and loss of appetite. Diagnosis usually involves one or more of the proceedures: Gastroscopic exam is the diagnostic method of choice. This involves insertion of a fibre optic camera into the stomach to visualise it. Upper GI series invloves swallowing liquids which show up during an X-ray. CT scans.'], 
@@ -10,7 +13,7 @@ export const DetailsScreen = ({ navigation , route}) => {
 
     let page = "";
     let pageColor = bmBlue;
-    switch(route.params.section) {
+    switch(pageNo) {
         case 0:
             page = "Overview and Diagnosis";
             pageColor = bmBlue;
@@ -58,17 +61,20 @@ export const DetailsScreen = ({ navigation , route}) => {
                     </div>
                 })}
             </div>
-            <Text>{route.params.section}</Text>
+            <Text>{pageNo}</Text>
             <Button
                 title="Previous"
-                onPress={() =>
-                navigation.navigate('Details', { condition: `${route.params.condition}`, section: `${--route.params.section}`})
+                disabled={pageNo <= 0}
+                onPress={() => 
+                    setPageNo(pageNo-1)
+                // navigation.navigate('Details', { condition: `${route.params.condition}`, section: `${--route.params.section}`})
             }
             />
             <Button
                 title="Next"
-                onPress={() =>
-                navigation.navigate('Details', { condition: `${route.params.condition}`, section: `${++route.params.section}`})
+                disabled={pageNo >= MAX_PAGES}
+                onPress={() => 
+                    setPageNo(pageNo+1)
             }
             />
         </View>

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {  Animated, Pressable, Text, TextInput, View } from "react-native";
+import { Pressable, Text, TextInput, View } from "react-native";
 import { Dropdown } from 'react-native-element-dropdown'
 import styles, { bmBlue } from '../styles';
 
@@ -98,13 +98,12 @@ export const WellbeingJournalScreen = ({navigation}) => {
                             setSymptoms([...symptoms, [inputSeverity, inputSymptom]])
                             setInputSymptom("")
                             setSeverity("")
-                            console.log(symptoms)
                         }
                     }}>
                     <Text style={{fontSize: '20px', marginHorizontal: 'auto'}}>+</Text>
                 </Pressable>
             </div>
-            {symptoms.length < 1 ? <Text>None!</Text> : symptoms.map((symptom, index) => {
+            {symptoms.length < 1 ? <Text>None</Text> : symptoms.map((symptom, index) => {
                 return <div style={{display: 'flex', marginVertical: '5px'}} key={index}>
                     <Text>{symptom[0]} {symptom[1]}</Text>
                     <Pressable
