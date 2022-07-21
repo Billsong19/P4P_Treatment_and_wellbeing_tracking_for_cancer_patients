@@ -110,10 +110,10 @@ export const WellbeingJournalScreen = ({navigation}) => {
                     <Pressable
                         style={[styles.smallButton, styles.orangeBackground, {marginRight: '18px'}]}
                         onPress={() => {
-                            var symptoms2 = [...symptoms] // who doesn't love needing to manually force re-renders?
-                            var arrIndex = symptoms.indexOf(symptom);
-                            if (arrIndex !== -1) symptoms2.splice(arrIndex, 1);
-                            setSymptoms(symptoms2)
+                            var tempSymptoms = [...symptoms] // who doesn't love needing to manually force re-renders?
+                            var arrIndex = tempSymptoms.indexOf(symptom);
+                            if (arrIndex !== -1) tempSymptoms.splice(arrIndex, 1);
+                            setSymptoms(tempSymptoms)
                         }}
                         >
                         <Text style={{fontSize: '20px', marginHorizontal: 'auto'}}>-</Text>
