@@ -73,7 +73,9 @@ export const WellbeingJournalScreen = ({navigation}) => {
             </Pressable>
             <div style={{display: 'flex'}}>
                 <TextInput
+                    id="symptomInput"
                     placeholder='symptom'
+                    value={inputSymptom}
                     style={{marginBottom: '10px', width: '50%', position: 'relative', top: '2px'}}
                     onChangeText={setInputSymptom}/>
                 <Dropdown
@@ -96,20 +98,30 @@ export const WellbeingJournalScreen = ({navigation}) => {
                             setSymptoms([...symptoms, [inputSeverity, inputSymptom]])
                             setInputSymptom("")
                             setSeverity("")
+                            console.log(symptoms)
                         }
                     }}>
                     <Text style={{fontSize: '20px', marginHorizontal: 'auto'}}>+</Text>
                 </Pressable>
             </div>
-            {symptoms.map((symptom) => {
-                <div style={{display: 'flex'}}>
-                    <Pressable style={[styles.smallButton, styles.orangeBackground, {marginRight: '18px'}]}>
+            {symptoms.length < 1 ? <Text>None!</Text> : symptoms.map((symptom, index) => {
+                return <div style={{display: 'flex', marginVertical: '5px'}} key={index}>
+                    <Text>{symptom[0]} {symptom[1]}</Text>
+                    <Pressable
+                        style={[styles.smallButton, styles.orangeBackground, {marginRight: '18px'}]}
+                        onPress={() => {
+                            var symptoms2 = [...symptoms] // who doesn't love needing to manually force re-renders?
+                            var arrIndex = symptoms.indexOf(symptom);
+                            if (arrIndex !== -1) symptoms2.splice(arrIndex, 1);
+                            setSymptoms(symptoms2)
+                        }}
+                        >
                         <Text style={{fontSize: '20px', marginHorizontal: 'auto'}}>-</Text>
                     </Pressable>
                 </div>
             })
             }
-            <Text style={{fontSize: '16px', marginBottom: '10px'}}>How are you mentally feeling today?</Text>
+            <Text style={{fontSize: '16px', marginBottom: '10px', marginTop: '20px'}}>How are you mentally feeling today?</Text>
             <div style={{display: 'flex'}}>
                 <Pressable
                     style={ment==1 ? [styles.likertButton, styles.likert1s] : [styles.likertButton, styles.likert1]}

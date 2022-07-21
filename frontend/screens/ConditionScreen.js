@@ -6,7 +6,7 @@ export const ConditionScreen = ({ navigation, route }) => {
     return(
         <View>
             <Text>{route.params.condition}</Text>
-            <Image source={require('../public/stomach.jpg')}/>
+            <Image source={require('../public/stomach.jpg')} style={{width: '80vw', height: '20vh', margin: 'auto'}}/>
             <Pressable
                 style={[styles.conditionButton, styles.blueBorder]}
                 onPress={() =>
