@@ -38,7 +38,14 @@ export const ProfileScreen = ({ navigation }) => {
                     return (
                         <View style={{ paddingBottom: 10 }}>
                             <Text>{item.title}</Text>
-                            <Text>{item.phone}</Text>
+                            <Text
+                                style={{ color: "blue" }}
+                                onPress={() => {
+                                    Linking.openURL(`tel:${item.phone}`);
+                                }}
+                            >
+                                {item.phone}
+                            </Text>
                             <Text>{item.name}</Text>
                         </View>
                     );
