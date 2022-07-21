@@ -55,6 +55,14 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         backgroundColor: 'rgba(255,255,255,0.8)',
     },
+    conditionSubButton: {
+        margin: '2%',
+        padding: '1%',
+        borderRadius: 4,
+        backgroundColor: 'rgba(255,255,255,0.8)',
+        width: '80%',
+        alignSelf: 'flex-end',
+    },
     blueBorder: {
         border: `2px solid ${bmBlue}`,
     },
@@ -69,24 +77,6 @@ const styles = StyleSheet.create({
     },
     orangeBorder: {
         border: `2px solid ${bmOrange}`,
-    },
-    conditionButtonGreen: {
-        margin: '3%',
-        padding: '2%',
-        border: `2px solid ${bmGreen}`,
-        borderRadius: 4
-    },
-    conditionButtonYellow: {
-        margin: '3%',
-        padding: '2%',
-        border: `2px solid ${bmYellow}`,
-        borderRadius: 4
-    },
-    conditionButtonOrange: {
-        margin: '3%',
-        padding: '2%',
-        border: `2px solid ${bmOrange}`,
-        borderRadius: 4
     },
     likertButton: {
         height: '30px',

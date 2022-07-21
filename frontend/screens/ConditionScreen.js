@@ -4,8 +4,8 @@ import styles from '../styles';
 
 export const ConditionScreen = ({ navigation, route }) => {
     return(
-        <View>
-            <Text>{route.params.condition}</Text>
+        <View style={{height: '100%', backgroundColor: 'rgba(255,255,255,0.5)', paddingBottom: '40px'}}>
+            <Text style={{fontSize: '20px', margin: '20px'}}>{route.params.condition}</Text>
             <Image source={require('../public/stomach.jpg')} style={{width: '80vw', height: '20vh', margin: 'auto'}}/>
             <Pressable
                 style={[styles.conditionButton, styles.blueBorder]}
@@ -32,7 +32,7 @@ export const ConditionScreen = ({ navigation, route }) => {
                 <Text>Course of Disease</Text>
             </Pressable>
             <Pressable
-                style={[styles.conditionButton, styles.greenBorder]}
+                style={[styles.conditionSubButton, styles.greenBorder]}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 3})
             }
@@ -40,7 +40,7 @@ export const ConditionScreen = ({ navigation, route }) => {
                 <Text>Early Stages</Text>
             </Pressable>
             <Pressable
-                style={[styles.conditionButton, styles.greenBorder]}
+                style={[styles.conditionSubButton, styles.greenBorder]}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 4})
             }
