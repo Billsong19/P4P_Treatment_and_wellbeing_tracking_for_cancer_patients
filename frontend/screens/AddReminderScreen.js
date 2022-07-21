@@ -6,34 +6,34 @@ export const AddReminderScreen = ({ navigation }) => {
     return (
         <View>
             <TextInput
-                style={styles.largeTextEntry}
+                style={[styles.wideTile, styles.blueBorder]}
                 placeholder="Title"
-                multiline="true"
+                multiline="false"
             />
             <TextInput
-                style={styles.largeTextEntry}
+                style={[styles.wideTile, styles.blueBorder]}
                 placeholder="Description"
                 multiline="true"
             />
             <TextInput
-                style={styles.largeTextEntry}
+                style={[styles.wideTile, styles.blueBorder]}
                 placeholder="Frequency"
-                multiline="true"
+                multiline="false"
             />
             <TextInput
-                style={styles.largeTextEntry}
+                style={[styles.wideTile, styles.blueBorder]}
                 placeholder="Start Date"
-                multiline="true"
+                multiline="false"
             />
             <TextInput
-                style={styles.largeTextEntry}
+                style={[styles.wideTile, styles.blueBorder]}
                 placeholder="Time"
-                multiline="true"
+                multiline="false"
             />
             <TextInput
-                style={styles.largeTextEntry}
+                style={[styles.wideTile, styles.blueBorder]}
                 placeholder="End Date"
-                multiline="true"
+                multiline="false"
             />
             <Button
                 title="Add Reminder"
