@@ -1,11 +1,26 @@
 import * as React from 'react';
-import { Text, View, Pressable, ScrollView } from "react-native";
+import { TouchableOpacity, Image, Text, View, Pressable, ScrollView } from "react-native";
 import styles from '../styles';
 
 export const LibraryScreen = ({navigation}) => {
     return(
         <ScrollView>
             Information Library
+            <TouchableOpacity
+                        onPress={() =>
+                            navigation.navigate("Condition", {
+                                condition: "Stomach Cancer",
+                            })
+                        }
+                    >
+                        <div>
+                            <Image
+                                source={require("../public/stomach.jpg")}
+                                style={{ width: "200%", height: "500%" }}
+                            />
+                            <Text>Stomach Cancer</Text>
+                        </div>
+                    </TouchableOpacity>
             <Pressable
                 style={styles.libraryButton}
                 onPress={() =>

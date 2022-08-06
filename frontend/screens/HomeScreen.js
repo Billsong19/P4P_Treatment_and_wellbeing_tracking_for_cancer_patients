@@ -1,7 +1,5 @@
 import * as React from "react";
 import {
-    TouchableOpacity,
-    Image,
     Text,
     View,
     Button,
@@ -10,9 +8,11 @@ import {
 import styles from "../styles";
 
 export const HomeScreen = ({ navigation }) => {
+    const reminders = ["Muscle training - by end of day", "Clinic visit - Tomorrow 15:10", "Surgery prep appointment - 4/6 14:30"]
+
     return (
         <View>
-            <View style={[styles.wideTile, styles.blueBorder]}>
+            <View style={[styles.wideTile, styles.blueDivider]}>
                 <Text>Welcome back %user%</Text>
                 <Text style={{ fontSize: "20px", marginVertical: "10px" }}>
                     %current-treatment-period%
@@ -28,68 +28,41 @@ export const HomeScreen = ({ navigation }) => {
                     </Text>
                 </Pressable>
             </View>
-            <View style={[styles.wideTile, styles.tealBorder]}>
-                <Text style={{ fontSize: "16px", marginVertical: "10px" }}>
-                    Upcoming Reminders
-                </Text>
-                <Pressable
-                    style={[styles.wideButton, styles.tealBackground]}
-                    onPress={() => navigation.navigate("Reminders")}
-                >
-                    <Text
-                        style={{ fontSize: "20px", marginHorizontal: "auto" }}
-                    >
-                        Reminders
+            <View style={[styles.wideTile, styles.tealDivider]}>
+                <div style={{ display: "flex", flexDirection: "row"}}>
+                    <Text style={{ fontSize: "20px", marginVertical: "10px", flex: 1 }}>
+                        Upcoming Reminders
                     </Text>
-                </Pressable>
-            </View>
-            <View style={[styles.wideTile, styles.greenBorder]}>
-                <Text style={{ fontSize: "16px", marginVertical: "10px" }}>
-                    Information Library
-                </Text>
-                <div style={{ display: "flex" }}>
                     <Pressable
-                        style={[
-                            styles.halfButton,
-                            styles.greenBackground,
-                            { margin: "20px", width: "30%" },
-                        ]}
-                        onPress={() => navigation.navigate("Info Library")}
+                        onPress={() => navigation.navigate("Reminders")}
                     >
                         <Text
-                            style={{
-                                fontSize: "16px",
-                                marginHorizontal: "auto",
-                                marginVertical: "20px",
-                            }}
+                            style={{ fontSize: "14px", margin: "10px", alignSelf: "flex-end", flex: 1, color: "grey"}}
                         >
-                            View All
+                            See all {'>'}
                         </Text>
                     </Pressable>
-                    <TouchableOpacity
-                        onPress={() =>
-                            navigation.navigate("Condition", {
-                                condition: "Stomach Cancer",
-                            })
-                        }
-                    >
-                        <div>
-                            <Image
-                                source={require("../public/stomach.jpg")}
-                                style={{ width: "200%", height: "500%" }}
-                            />
-                            <Text>Stomach Cancer</Text>
-                        </div>
-                    </TouchableOpacity>
                 </div>
+                {reminders.map((reminder, index) => {
+                    return <Pressable
+                            key={index}
+                            style={[styles.homeReminderButton, styles.tealBorder, {display: 'flex', flexDirection: "row"}]}
+                            onPress={() =>
+                            navigation.navigate('Reminders') //, { reminderId: `${route.params.condition}`}
+                        }
+                        >
+                            <View style={[styles.dot, styles.blueBackground]}/>
+                            <Text style={{ fontSize: "16px"}}>{reminder}</Text>
+                        </Pressable>
+                })}
             </View>
-            <View style={[styles.wideTile, styles.yellowBorder]}>
+            <View style={[styles.wideTile]}>
                 <Text style={{ fontSize: "16px", marginVertical: "10px" }}>
                     Patient Support
                 </Text>
                 <div style={{ display: "flex" }}>
                     <Pressable
-                        style={[styles.halfButton, styles.yellowBackground]}
+                        style={[styles.halfButton, styles.greenBackground]}
                         onPress={() =>
                             navigation.navigate("Contact Healthcare Provider")
                         }
@@ -105,7 +78,7 @@ export const HomeScreen = ({ navigation }) => {
                         </Text>
                     </Pressable>
                     <Pressable
-                        style={[styles.halfButton, styles.yellowBackground]}
+                        style={[styles.halfButton, styles.greenBackground]}
                         onPress={() => navigation.navigate("More Help")}
                     >
                         <Text

@@ -9,9 +9,9 @@ export const bmOrange = '#FFA978'
 
 const styles = StyleSheet.create({
     wideTile: {
-        margin: '3%',
+        margin: '2%',
+        marginTop: '0',
         padding: '2%',
-        borderRadius: 4,
         backgroundColor: 'rgba(255,255,255,0.8)',
     },
     wideButton: {
@@ -63,6 +63,11 @@ const styles = StyleSheet.create({
         width: '80%',
         alignSelf: 'flex-end',
     },
+    homeReminderButton: {
+        marginHorizontal: '1%',
+        marginVertical: '1%',
+        padding: '1%',
+    },
     blueBorder: {
         border: `2px solid ${bmBlue}`,
     },
@@ -77,6 +82,26 @@ const styles = StyleSheet.create({
     },
     orangeBorder: {
         border: `2px solid ${bmOrange}`,
+    },
+    blueDivider: {
+        borderBottomWidth: `4px`,
+        borderBottomColor: `${bmBlue}`,
+    },
+    tealDivider: {
+        borderBottomWidth: `4px`,
+        borderBottomColor: `${bmTeal}`,
+    },
+    greenDivider: {
+        borderBottomWidth: `4px`,
+        borderBottomColor: `${bmGreen}`,
+    },
+    yellowDivider: {
+        borderBottomWidth: `4px`,
+        borderBottomColor: `${bmYellow}`,
+    },
+    orangeDivier: {
+        borderBottomWidth: `4px`,
+        borderBottomColor: `${bmOrange}`,
     },
     likertButton: {
         height: '30px',
@@ -120,14 +145,21 @@ const styles = StyleSheet.create({
         marginVertical: '10px',
         lineHeight: '2.5ex',
         height: '7.5ex',
-        backgroundColor: '#FFF'
+        backgroundColor: '#FFF',
     },
     smallButton: {
         width: '30px',
         height: '30px',
         margin: 'auto',
-        borderRadius: 4
-    }
+        borderRadius: 4,
+    },
+    dot: {
+        height: '12px',
+        width: '12px',
+        borderRadius: '50%',
+        margin: '5px',
+        display: 'inline-block',
+    },
 })
 
 export default styles;
