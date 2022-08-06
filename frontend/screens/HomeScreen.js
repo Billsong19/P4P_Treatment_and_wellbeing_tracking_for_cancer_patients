@@ -30,7 +30,7 @@ export const HomeScreen = ({ navigation }) => {
             </View>
             <View style={[styles.wideTile, styles.tealDivider]}>
                 <div style={{ display: "flex", flexDirection: "row"}}>
-                    <Text style={{ fontSize: "20px", marginVertical: "10px", flex: 1 }}>
+                    <Text style={[styles.mainHeader, {marginVertical: "10px", flex: 1 }]}>
                         Upcoming Reminders
                     </Text>
                     <Pressable
@@ -57,7 +57,7 @@ export const HomeScreen = ({ navigation }) => {
                 })}
             </View>
             <View style={[styles.wideTile]}>
-                <Text style={{ fontSize: "16px", marginVertical: "10px" }}>
+                <Text style={[styles.mainHeader, { marginVertical: "10px" }]}>
                     Patient Support
                 </Text>
                 <div style={{ display: "flex" }}>

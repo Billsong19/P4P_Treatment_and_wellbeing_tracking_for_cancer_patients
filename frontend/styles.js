@@ -29,6 +29,14 @@ const styles = StyleSheet.create({
         marginRight: '5%',
         borderRadius: 4,
     },
+    mainHeader: {
+        fontWeight: '600',
+        fontSize: '20px',
+    },
+    subHeader: {
+        fontWeight: '500',
+        fontSize: '18px',
+    },
     blueBackground: {
         backgroundColor: bmBlue,
     },
