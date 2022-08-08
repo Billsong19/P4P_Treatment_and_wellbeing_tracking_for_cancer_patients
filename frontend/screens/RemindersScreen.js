@@ -7,87 +7,74 @@ import {
     StatusBar,
     StyleSheet,
     Button,
+    Modal,
     Image,
     TouchableOpacity,
+    TextInput,
+    Pressable,
 } from "react-native";
 import plusImage from "../public/plus.svg";
 import styles from "../styles.js";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const DATA = [
-    {
-        id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-        title: "Take a walk",
-        complete: true,
-        date: "daily",
-        time: "",
-        details: "Aim for above 15 mins duration",
-    },
-    {
-        id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-        title: "Take medicine",
-        complete: true,
-        date: "daily",
-        time: "10:00",
-        details: "two 50mg tablets",
-    },
-    {
-        id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f64",
-        title: "Take medicine",
-        complete: false,
-        date: "daily",
-        time: "15:00",
-        details: "two 50mg tablets",
-    },
-    {
-        id: "58694a0f-3da1-471f-bd96-145571e29d72",
-        title: "Clinic appointment",
-        complete: false,
-        date: "20/5/2022",
-        time: "16:30",
-        details: "Clinic name, address, meeting with Dr. Name"
-    },
-    {
-        id: "58694a0f-3da1-471f-bd96-145571e29d73",
-        title: "Clinic appointment",
-        complete: false,
-        date: "28/5/2022",
-        time: "12:30",
-        details: "Clinic name, address, meeting with Dr. Name"
-    },
-    {
-        id: "58694a0f-3da1-471f-bd96-145571e29d74",
-        title: "idk",
-        complete: false,
-        date: "28/5/2022",
-        time: "17:30",
-        details: "Clinic name, address, meeting with Dr. Name"
-    },
-    {
-        id: "58694a0f-3da1-471f-bd96-145571e29d75",
-        title: "Reminder",
-        complete: false,
-        date: "28/5/2022",
-        time: "",
-        details: "",
-    },
-];
-
-const tempDailyRems = [];
-const tempDatedRems = [];
-
-DATA.map((reminder) => {
-    if (reminder.date === "daily") {
-        tempDailyRems.push(reminder);
-    } else {
-        //TODO implement date sorting since this functioanlity is entirely FE and users can add reminders
-        let dateIndex = tempDatedRems.findIndex((obj) => obj.date === reminder.date);
-        if (dateIndex === -1) {
-            tempDatedRems.push({date: reminder.date, rems: [reminder]});
-        } else {
-            tempDatedRems[dateIndex].rems.push(reminder);
-        }
-    }
-});
+// const DATA = [
+//     {
+//         id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+//         title: "Take a walk",
+//         complete: true,
+//         date: "daily",
+//         time: "",
+//         details: "Aim for above 15 mins duration",
+//     },
+//     {
+//         id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+//         title: "Take medicine",
+//         complete: true,
+//         date: "daily",
+//         time: "10:00",
+//         details: "two 50mg tablets",
+//     },
+//     {
+//         id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f64",
+//         title: "Take medicine",
+//         complete: false,
+//         date: "daily",
+//         time: "15:00",
+//         details: "two 50mg tablets",
+//     },
+//     {
+//         id: "58694a0f-3da1-471f-bd96-145571e29d72",
+//         title: "Clinic appointment",
+//         complete: false,
+//         date: "20/5/2022",
+//         time: "16:30",
+//         details: "Clinic name, address, meeting with Dr. Name"
+//     },
+//     {
+//         id: "58694a0f-3da1-471f-bd96-145571e29d73",
+//         title: "Clinic appointment",
+//         complete: false,
+//         date: "28/5/2022",
+//         time: "12:30",
+//         details: "Clinic name, address, meeting with Dr. Name"
+//     },
+//     {
+//         id: "58694a0f-3da1-471f-bd96-145571e29d74",
+//         title: "idk",
+//         complete: false,
+//         date: "28/5/2022",
+//         time: "17:30",
+//         details: "Clinic name, address, meeting with Dr. Name"
+//     },
+//     {
+//         id: "58694a0f-3da1-471f-bd96-145571e29d75",
+//         title: "Reminder",
+//         complete: false,
+//         date: "28/5/2022",
+//         time: "",
+//         details: "",
+//     },
+// ];
 
 const Reminder = ({ title, time, details, complete, daily }) => {
     return (
@@ -132,19 +119,134 @@ const renderDates = ({ item }) => (
     </View>
 );
 
-export const RemindersScreen = ({ navigation, data }) => {
-    const [dailyRems, setDailyRems] = React.useState(tempDailyRems); //simply an array of reminders for storing 'daily' reminders
-    const [datedRems, setDatedRems] = React.useState(tempDatedRems); //an array that contains [key: date, value: [array of relevant reminders]] pairs
+const storeData = async (value) => {
+    try {
+        const jsonValue = JSON.stringify(value);
+        await AsyncStorage.setItem('@reminders', jsonValue);
+    } catch (e) {
+        console.log(e);
+    }
+}
 
-    console.log(datedRems);
-    console.log(dailyRems);
+const getData = async () => {
+    try {
+        const jsonValue = await AsyncStorage.getItem('@reminders')
+        return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch(e) {
+        console.log(e)
+    }
+}
 
-    
+export const RemindersScreen = ({ navigation }) => {
+    const [data, setData] = React.useState([]); 
+    const [isModalVisible, setModalVisible] = React.useState(false);
+    const [frequency, setFrequency] = React.useState(0);
+    const [newTitle, setNewTitle] = React.useState("");
+    const [newDescription, setNewDescription] = React.useState("");
+    const [newTime, setNewTime] = React.useState("00:00");
+    const [newDate, setNewDate] = React.useState("1/1/2022");
 
-    
+    const dailyRems = []; //simply an array of reminders for storing 'daily' reminders
+    const datedRems = []; //an array that contains [key: date, value: [array of relevant reminders]] pairs
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+            setData(await getData());
+        }
+        console.log("fetch");
+        fetchData();
+    }, [])
+
+    data.map((reminder) => {
+        if (reminder.date === "daily") {
+            dailyRems.push(reminder);
+        } else {
+            //TODO implement date sorting since this functionality is entirely FE and users can add reminders
+            let dateIndex = datedRems.findIndex((obj) => obj.date === reminder.date);
+            if (dateIndex === -1) {
+                datedRems.push({date: reminder.date, rems: [reminder]});
+            } else {
+                datedRems[dateIndex].rems.push(reminder);
+            }
+        }
+    });
 
     return (
         <View style={{ flex: 1 }}>
+            <Modal
+                animationType="slide"
+                transparent="true"
+                visible={isModalVisible}
+                onRequestClose={() => {setModalVisible(!isModalVisible)}}>
+                <View style={styles.modalBase}>
+                    <Text style={styles.mainHeader}>Add New Reminder</Text>
+                    <Text>Title</Text>
+                    <TextInput
+                        id="TitleInput"
+                        style={styles}
+                        value={newTitle}
+                        onChangeText={setNewTitle}
+                    />
+                    <Text>Description</Text>
+                    <TextInput
+                        style={styles.largeTextEntry}
+                        multiline='true'
+                        value={newDescription}
+                        onChangeText={setNewDescription}
+                    />
+                    <Text>When</Text>
+                    <TextInput></TextInput>
+                    <TextInput></TextInput>
+                    <Text>Frequency</Text>
+                    <div style={{display: 'flex'}}>
+                        <Pressable
+                            style={frequency==0 ? [styles.likertButton, styles.likert1s] : [styles.likertButton, styles.likert1]}
+                            onPress={() => setFrequency(0)}
+                            >
+                            <Text style={{margin: 'auto'}}>Once</Text>
+                        </Pressable>
+                        <Pressable
+                            style={frequency==1  ? [styles.likertButton, styles.orangeBackground] : [styles.likertButton, styles.likert2]}
+                            onPress={() => setFrequency(1)}
+                            >
+                            <Text style={{margin: 'auto'}}>Monthly</Text>
+                        </Pressable>
+                        <Pressable
+                            style={frequency==2 ? [styles.likertButton, styles.likert3s] : [styles.likertButton, styles.likert3]}
+                            onPress={() => setFrequency(2)}
+                            >
+                            <Text style={{margin: 'auto'}}>Weekly</Text>
+                        </Pressable>
+                        <Pressable
+                            style={frequency==3 ? [styles.likertButton, styles.yellowBackground] : [styles.likertButton, styles.likert4]}
+                            onPress={() => setFrequency(3)}
+                            >
+                            <Text style={{margin: 'auto'}}>Daily</Text>
+                        </Pressable>
+                    </div>
+                    <Pressable
+                        style={[styles.wideButton, styles.greenBackground, {margin: '10px', marginHorizontal: '30%'}]}
+                        onPress={() => {
+                            setData([...data, {id: "1", title: newTitle, complete: false, time: newTime, date: frequency===3 ? "daily" : newDate, details: newDescription}]);
+                            storeData(data);
+                            setNewTitle("");
+                            setNewDescription("");
+                            setNewTime("00:00");
+                            setNewDate("1/1/2022");
+                            setFrequency(0);
+                            setModalVisible(!isModalVisible);
+                        }}
+                    >
+                        <Text style={{ fontSize: "20px", marginHorizontal: "auto" }}>Add</Text>
+                    </Pressable>
+                    <Pressable
+                        style={[styles.wideButton, styles.orangeBackground, {margin: '10px', marginHorizontal: '30%'}]}
+                        onPress={() => {setModalVisible(!isModalVisible)}}
+                    >
+                        <Text style={{ fontSize: "16px", marginHorizontal: "auto" }}>Cancel</Text>
+                    </Pressable>
+                </View>
+            </Modal>
             <View style={[styles.wideTile, styles.blueBackground]}>
                 <Text style={[styles.subHeader, {color: '#FFF'}]}>Daily Reminders</Text>
                 <FlatList
@@ -171,8 +273,7 @@ export const RemindersScreen = ({ navigation, data }) => {
             >
                 <TouchableOpacity
                     onPress={() => {
-                        console.log("hi");
-                        navigation.navigate("Add Reminder");
+                        setModalVisible(!isModalVisible)
                     }}
                 >
                     <Image
@@ -184,19 +285,3 @@ export const RemindersScreen = ({ navigation, data }) => {
         </View>
     );
 };
-
-// const styles = StyleSheet.create({
-//     container: {
-//         flex: 1,
-//         marginTop: StatusBar.currentHeight || 0,
-//     },
-//     item: {
-//         backgroundColor: "lightblue",
-//         padding: 20,
-//         marginVertical: 8,
-//         marginHorizontal: 16,
-//     },
-//     title: {
-//         fontSize: 32,
-//     },
-// });

@@ -17,13 +17,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(255,255,255,0.8)',
     },
     wideButton: {
-        backgroundColor: bmBlue,
-        color: bmBlue,
         padding: '15px',
         borderRadius: 4,
     },
     halfButton: {
-        backgroundColor: bmYellow,
         color: 'black',
         uppercase: false,
         padding: '5px',
@@ -188,6 +185,13 @@ const styles = StyleSheet.create({
         margin: '1%',
         padding: '1%',
     },
+    modalBase: {
+        marginTop: '10%',
+        marginHorizontal: '4%',
+        backgroundColor: '#FFF',
+        height: '95%',
+        padding: '4%',
+    }
 })
 
 export default styles;
