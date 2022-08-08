@@ -7,6 +7,8 @@ export const bmGreen = '#75D9A9'
 export const bmYellow = '#F3E6A2' //maybe replace, kinda ugly
 export const bmOrange = '#FFA978'
 
+const bmTealRGB = '117, 217, 211'
+
 const styles = StyleSheet.create({
     wideTile: {
         margin: '2%',
@@ -43,6 +45,9 @@ const styles = StyleSheet.create({
     tealBackground: {
         backgroundColor: bmTeal,
     },
+    tealBackground50: {
+        backgroundColor: `rgba(${bmTealRGB}, 0.5)`,
+    },
     greenBackground: {
         backgroundColor: bmGreen,
     },
@@ -53,9 +58,12 @@ const styles = StyleSheet.create({
         backgroundColor: bmOrange,
     },
     libraryButton: {
-        backgroundColor: bmBlue,
-        marginHorizontal: '3%',
-        marginVertical: '1%'
+        backgroundColor: 'rgba(255,255,255,0.8)',
+        marginHorizontal: '2%',
+        marginVertical: '1%',
+        height: '50px',
+        display: 'flex',
+        flexDirection: 'row',
     },
     conditionButton: {
         margin: '3%',
@@ -71,7 +79,7 @@ const styles = StyleSheet.create({
         width: '80%',
         alignSelf: 'flex-end',
     },
-    homeReminderButton: {
+    reminderButton: {
         marginHorizontal: '1%',
         marginVertical: '1%',
         padding: '1%',
@@ -167,6 +175,18 @@ const styles = StyleSheet.create({
         borderRadius: '50%',
         margin: '5px',
         display: 'inline-block',
+    },
+    dailyReminder: {
+        borderRadius: '5px',
+        backgroundColor: '#FFF',
+        flexDirection: 'row',
+        margin: '1%',
+        padding: '1%',
+    },
+    datedReminder: {
+        flexDirection: 'row',
+        margin: '1%',
+        padding: '1%',
     },
 })
 

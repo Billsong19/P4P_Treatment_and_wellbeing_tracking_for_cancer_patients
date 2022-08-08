@@ -127,10 +127,10 @@ export default function App() {
                     <BottomTab.Screen
                         name="Information Library"
                         component={InfoLibScreens}
-                        // options={{ 
-                        //     headerShown: false,
-                        //     tabBarIcon: () => (<Icon></Icon>) 
-                        // }}
+                        options={{ 
+                            headerShown: false,
+                            // tabBarIcon: () => (<Icon></Icon>) 
+                        }}
                     /> 
                     <BottomTab.Screen
                         name="Home"

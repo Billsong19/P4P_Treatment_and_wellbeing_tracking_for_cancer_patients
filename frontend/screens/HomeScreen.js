@@ -46,7 +46,7 @@ export const HomeScreen = ({ navigation }) => {
                 {reminders.map((reminder, index) => {
                     return <Pressable
                             key={index}
-                            style={[styles.homeReminderButton, styles.tealBorder, {display: 'flex', flexDirection: "row"}]}
+                            style={[styles.reminderButton, styles.tealBorder, {display: 'flex', flexDirection: "row"}]}
                             onPress={() =>
                             navigation.navigate('Reminders') //, { reminderId: `${route.params.condition}`}
                         }
