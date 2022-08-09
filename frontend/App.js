@@ -23,7 +23,6 @@ import { ConditionScreen } from "./screens/ConditionScreen";
 import { DetailsScreen } from "./screens/DetailsScreen";
 import { HCPContactScreen } from "./screens/HCPContactScreen.js";
 import { MoreHelpScreen } from "./screens/MoreHelpScreen.js";
-import { AddReminderScreen } from "./screens/AddReminderScreen.js";
 import { ProfileScreen } from "./screens/ProfileScreen.js";
 import userIcon from "./public/user-solid.svg";
 
@@ -86,10 +85,6 @@ function RemindersScreens() {
             <Stack.Screen
                 name="Reminders"
                 component={RemindersScreen}
-            />
-            <Stack.Screen
-                name="Add Reminder"
-                component={AddReminderScreen}
             />
             </Stack.Navigator>
     )
