@@ -153,6 +153,11 @@ const styles = StyleSheet.create({
     likert7: {
         border: `1px solid ${bmTeal}`,
     },
+    textEntry: {
+        border: '1px solid #000',
+        marginVertical: '10px',
+        backgroundColor: '#FFF',
+    },
     largeTextEntry: {
         border: '1px solid #000',
         marginVertical: '10px',
@@ -173,6 +178,23 @@ const styles = StyleSheet.create({
         margin: '5px',
         display: 'inline-block',
     },
+    radioFill: {
+        height: '16px',
+        width: '16px',
+        borderRadius: '50%',
+        margin: '5px',
+        display: 'inline-block',
+        backgroundColor: `${bmBlue}`,
+        right: '3px',
+        bottom: '3px',
+    },
+    emptyRadioButton: {
+        height: '24px',
+        width: '24px',
+        borderRadius: '50%',
+        margin: 'auto',
+        display: 'inline-block',
+    },
     dailyReminder: {
         borderRadius: '5px',
         backgroundColor: '#FFF',
@@ -186,12 +208,21 @@ const styles = StyleSheet.create({
         padding: '1%',
     },
     modalBase: {
+        border: `1px solid #999`,
         marginTop: '10%',
         marginHorizontal: '4%',
         backgroundColor: '#FFF',
         height: '95%',
         padding: '4%',
-    }
+        zIndex: '9',
+    },
+    underModal: {
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        zIndex: '8',
+    },
 })
 
 export default styles;

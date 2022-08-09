@@ -179,50 +179,64 @@ export const RemindersScreen = ({ navigation }) => {
                 visible={isModalVisible}
                 onRequestClose={() => {setModalVisible(!isModalVisible)}}>
                 <View style={styles.modalBase}>
-                    <Text style={styles.mainHeader}>Add New Reminder</Text>
-                    <Text>Title</Text>
+                    <Text style={[styles.mainHeader, {marginBottom: '4%'}]}>Add New Reminder</Text>
+                    <Text style={styles.subHeader}>Title</Text>
                     <TextInput
                         id="TitleInput"
-                        style={styles}
+                        style={styles.textEntry}
                         value={newTitle}
                         onChangeText={setNewTitle}
                     />
-                    <Text>Description</Text>
+                    <Text style={styles.subHeader}>Description</Text>
                     <TextInput
                         style={styles.largeTextEntry}
                         multiline='true'
                         value={newDescription}
                         onChangeText={setNewDescription}
                     />
-                    <Text>When</Text>
-                    <TextInput></TextInput>
-                    <TextInput></TextInput>
-                    <Text>Frequency</Text>
+                    <Text style={styles.subHeader}>When</Text>
                     <div style={{display: 'flex'}}>
-                        <Pressable
-                            style={frequency==0 ? [styles.likertButton, styles.likert1s] : [styles.likertButton, styles.likert1]}
-                            onPress={() => setFrequency(0)}
-                            >
+                        <TextInput style={styles.textEntry}></TextInput>
+                        <TextInput style={styles.textEntry}></TextInput>
+                    </div>
+                    <Text style={styles.subHeader}>Frequency</Text>
+                    <div style={{display: 'flex'}}>
+                        <View style={{flex: 1, margin: '10px'}}>
+                            <Pressable
+                                style={[styles.emptyRadioButton, styles.blueBorder]}
+                                onPress={() => setFrequency(0)}
+                                >
+                                    {frequency==0 ? <View style={styles.radioFill}/> : null}
+                            </Pressable>
                             <Text style={{margin: 'auto'}}>Once</Text>
-                        </Pressable>
-                        <Pressable
-                            style={frequency==1  ? [styles.likertButton, styles.orangeBackground] : [styles.likertButton, styles.likert2]}
-                            onPress={() => setFrequency(1)}
-                            >
+                        </View>
+                        <View style={{flex: 1, margin: '10px'}}>
+                            <Pressable
+                                style={[styles.emptyRadioButton, styles.blueBorder]}
+                                onPress={() => setFrequency(1)}
+                                >
+                                    {frequency==1 ? <View style={styles.radioFill}/> : null}
+                            </Pressable>
                             <Text style={{margin: 'auto'}}>Monthly</Text>
-                        </Pressable>
-                        <Pressable
-                            style={frequency==2 ? [styles.likertButton, styles.likert3s] : [styles.likertButton, styles.likert3]}
-                            onPress={() => setFrequency(2)}
-                            >
+                        </View>
+                        <View style={{flex: 1, margin: '10px'}}>
+                            <Pressable
+                                style={[styles.emptyRadioButton, styles.blueBorder]}
+                                onPress={() => setFrequency(2)}
+                                >
+                                    {frequency==2 ? <View style={styles.radioFill}/> : null}
+                            </Pressable>
                             <Text style={{margin: 'auto'}}>Weekly</Text>
-                        </Pressable>
-                        <Pressable
-                            style={frequency==3 ? [styles.likertButton, styles.yellowBackground] : [styles.likertButton, styles.likert4]}
-                            onPress={() => setFrequency(3)}
-                            >
+                        </View>
+                        <View style={{flex: 1, margin: '10px'}}>
+                            <Pressable
+                                style={[styles.emptyRadioButton, styles.blueBorder]}
+                                onPress={() => setFrequency(3)}
+                                >
+                                    {frequency==3 ? <View style={styles.radioFill}/> : null}
+                            </Pressable>
                             <Text style={{margin: 'auto'}}>Daily</Text>
-                        </Pressable>
+                        </View>
                     </div>
                     <Pressable
                         style={[styles.wideButton, styles.greenBackground, {margin: '10px', marginHorizontal: '30%'}]}
@@ -247,6 +261,7 @@ export const RemindersScreen = ({ navigation }) => {
                     </Pressable>
                 </View>
             </Modal>
+            <View style={[styles.underModal, {display: isModalVisible ? 'block' : 'none'}]}/>
             <View style={[styles.wideTile, styles.blueBackground]}>
                 <Text style={[styles.subHeader, {color: '#FFF'}]}>Daily Reminders</Text>
                 <FlatList
