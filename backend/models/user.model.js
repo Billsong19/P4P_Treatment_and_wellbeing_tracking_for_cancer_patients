@@ -1,5 +1,5 @@
 //user schema for mongodb
-import mongoose, { Schema, model } from "mongoose";
+const { mongoose, Schema } = require("mongoose");
 
 const contact = new Schema({
     title: { type: String, required: true },
@@ -59,6 +59,8 @@ const user = new Schema({
         treatment_period: { type: Number },
     },
     contacts: [contact],
+    journal: [journalEntry],
+    reminders: [reminder],
 });
 
-export const User = mongoose.model("User", user);
+module.exports = mongoose.model("User", user);
