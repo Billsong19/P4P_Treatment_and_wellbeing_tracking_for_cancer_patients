@@ -25,6 +25,7 @@ import { HCPContactScreen } from "./screens/HCPContactScreen.js";
 import { MoreHelpScreen } from "./screens/MoreHelpScreen.js";
 import { ProfileScreen } from "./screens/ProfileScreen.js";
 import userIcon from "./public/user-solid.svg";
+import Icon from 'react-native-vector-icons/Ionicons'
 
 
 
@@ -50,14 +51,13 @@ function HomeScreens() {
                             navigation.navigate("Profile");
                         }}
                     >
-                        <Image
+                        <Icon
+                            name="person-sharp"
                             style={{
-                                width: 30,
-                                height: 40,
+                                fontSize: '35px',
                                 marginTop: 5,
                                 marginRight: 10,
                             }}
-                            source={userIcon}
                         />
                     </TouchableOpacity>
                 );
@@ -124,18 +124,27 @@ export default function App() {
                         component={InfoLibScreens}
                         options={{ 
                             headerShown: false,
-                            // tabBarIcon: () => (<Icon></Icon>) 
+                            tabBarActiveTintColor: '#75A9D9',
+                            tabBarIcon: (tabInfo) => (<Icon name="library" size={24} color={tabInfo.focused ? '#75A9D9' : '#8e8e8f'}/>) 
                         }}
                     /> 
                     <BottomTab.Screen
                         name="Home"
                         component={HomeScreens}
-                        options={{ headerShown: false }}
+                        options={{ 
+                            headerShown: false,
+                            tabBarActiveTintColor: '#75A9D9',
+                            tabBarIcon: (tabInfo) => (<Icon name="home-sharp" size={24} color={tabInfo.focused ? '#75A9D9' : '#8e8e8f'}/>)
+                        }}
                     />
                     <BottomTab.Screen
                         name="Reminders"
                         component={RemindersScreens}
-                        options={{ headerShown: false }}
+                        options={{
+                            headerShown: false,
+                            tabBarActiveTintColor: '#75A9D9',
+                            tabBarIcon: (tabInfo) => (<Icon name="list" size={24} color={tabInfo.focused ? '#75A9D9' : '#8e8e8f'}/>) 
+                        }}
                     />    
                 </BottomTab.Navigator>
             </NavigationContainer>
