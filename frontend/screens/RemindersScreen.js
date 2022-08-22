@@ -4,9 +4,7 @@ import {
     Text,
     View,
     ScrollView,
-    StatusBar,
-    StyleSheet,
-    Button,
+    CheckBox,
     Modal,
     Image,
     TouchableOpacity,
@@ -77,13 +75,28 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // ];
 
 const Reminder = ({ title, time, details, complete, daily }) => {
+    const [isExpanded, setExpanded] = React.useState(false)
+    const [isComplete, setComplete] = React.useState(complete)
+
     return (
-        <View style={daily ? [styles.blueBorder, styles.dailyReminder] : [styles.tealBorder, styles.tealBackground50, styles.datedReminder]}>
-            <Text>{title}</Text>
-            <Text>{time}</Text>
-            <Text>{complete ? "done" : "not done"}</Text>
-            <Text>{details}</Text>
-        </View>
+        <Pressable
+        onLongPress={() => setComplete(!isComplete)}
+        onPress={() => setExpanded(!isExpanded)}
+        >
+            <View style={daily ? [styles.blueBorder, styles.dailyReminder] : [styles.tealBorder, styles.tealBackground50, styles.datedReminder]}>
+                <View style={{flexDirection: 'row'}}>
+                    <Text style={{flex: 2}}>{title}</Text>
+                    <Text style={{flex: 1}}>{time}</Text>
+                    <CheckBox
+                        value={isComplete}
+                        style={styles.remindersCheck}
+                    />
+                </View>
+                <View>
+                    <Text style={{display: isExpanded ? 'block' : 'none', marginVertical: '10px'}}>{details}</Text>
+                </View>
+            </View>
+        </Pressable>
     );
 };
 

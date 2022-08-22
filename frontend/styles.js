@@ -198,12 +198,10 @@ const styles = StyleSheet.create({
     dailyReminder: {
         borderRadius: '5px',
         backgroundColor: '#FFF',
-        flexDirection: 'row',
         margin: '1%',
         padding: '1%',
     },
     datedReminder: {
-        flexDirection: 'row',
         margin: '1%',
         padding: '1%',
     },
@@ -223,6 +221,10 @@ const styles = StyleSheet.create({
         position: 'absolute',
         zIndex: '8',
     },
+    remindersCheck: {
+        backgroundColor: 'rgba(0,0,0,0)',
+        marginEnd: '5px',
+    }
 })
 
 export default styles;
