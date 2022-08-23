@@ -1,68 +1,75 @@
 import * as React from 'react';
-import { Text, View, Pressable, Image } from "react-native";
+import { Text, ScrollView, Pressable, Image, TouchableHighlight } from "react-native";
 import styles from '../styles';
 
 export const ConditionScreen = ({ navigation, route }) => {
     return(
-        <View style={{height: '100%', backgroundColor: 'rgba(255,255,255,0.5)', paddingBottom: '40px'}}>
+        <ScrollView style={{height: '100%', backgroundColor: 'rgba(255,255,255,1)', paddingBottom: '40px'}}>
             <Text style={{fontSize: '20px', margin: '20px'}}>{route.params.condition}</Text>
-            <Image source={require('../public/stomach.jpg')} style={{width: '80vw', height: '20vh', margin: 'auto'}}/>
-            <Pressable
-                style={[styles.conditionButton, styles.blueBorder]}
+            <Image source={require('../public/bowel.jpg')} style={{width: '80vw', height: '20vh', margin: 'auto'}}/>
+            <TouchableHighlight
+                underlayColor={'#EEE'}
+                style={[styles.conditionButton, styles.blueSide]}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 0})
             }
             >
-                <Text>Overview and Diagnosis</Text>
-            </Pressable>
-            <Pressable
-                style={[styles.conditionButton, styles.tealBorder]}
+                <Text style={styles.subHeader}>Overview and Diagnosis</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+                underlayColor={'#EEE'}
+                style={[styles.conditionButton, styles.tealSide]}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 1})
             }
             >
-                <Text>Chance of Recovery</Text>
-            </Pressable>
-            <Pressable
-                style={[styles.conditionButton, styles.greenBorder]}
+                <Text style={styles.subHeader}>Chance of Recovery</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+                underlayColor={'#EEE'}
+                style={[styles.conditionButton, styles.greenSide]}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 2})
             }
             >
-                <Text>Course of Disease</Text>
-            </Pressable>
-            <Pressable
-                style={[styles.conditionSubButton, styles.greenBorder]}
+                <Text style={styles.subHeader}>Course of Disease</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+                underlayColor={'#EEE'}
+                style={[styles.conditionSubButton, styles.greenSide]}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 3})
             }
             >
                 <Text>Early Stages</Text>
-            </Pressable>
-            <Pressable
-                style={[styles.conditionSubButton, styles.greenBorder]}
+            </TouchableHighlight>
+            <TouchableHighlight
+                underlayColor={'#EEE'}
+                style={[styles.conditionSubButton, styles.greenSide]}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 4})
             }
             >
                 <Text>Development and Complications</Text>
-            </Pressable>
-            <Pressable
-                style={[styles.conditionButton, styles.yellowBorder]}
+            </TouchableHighlight>
+            <TouchableHighlight
+                underlayColor={'#EEE'}
+                style={[styles.conditionButton, styles.yellowSide]}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 5})
             }
             >
-                <Text>Treatment</Text>
-            </Pressable>
-            <Pressable
-                style={[styles.conditionButton, styles.orangeBorder]}
+                <Text style={styles.subHeader}>Treatment</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+                underlayColor={'#EEE'}
+                style={[styles.conditionButton, styles.orangeSide]}
                 onPress={() =>
                 navigation.navigate('Details', { condition: `${route.params.condition}`, section: 6})
             }
             >
-                <Text>Risks and Long-term Implications</Text>
-            </Pressable>
-        </View>
+                <Text style={styles.subHeader}>Risks and Long-term Implications</Text>
+            </TouchableHighlight>
+        </ScrollView>
     );
 }

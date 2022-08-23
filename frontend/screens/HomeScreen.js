@@ -4,6 +4,8 @@ import {
     View,
     Button,
     Pressable,
+    TouchableHighlight,
+    ImageBackground,
 } from "react-native";
 import styles from "../styles";
 
@@ -12,12 +14,17 @@ export const HomeScreen = ({ navigation }) => {
 
     return (
         <View>
+            <ImageBackground
+            source={require("../public/bmbgHome.png")}
+            style={{ width: "100vw", height: "calc(100vh - 80px)", position: "absolute" }}
+        >
             <View style={[styles.wideTile, styles.blueDivider]}>
                 <Text>Welcome back %user%</Text>
                 <Text style={{ fontSize: "20px", marginVertical: "10px" }}>
                     %current-treatment-period%
                 </Text>
-                <Pressable
+                <TouchableHighlight
+                    underlayColor={'#8AB6DF'}
                     style={[styles.wideButton, styles.blueBackground]}
                     onPress={() => navigation.navigate("Wellbeing Journal")}
                 >
@@ -26,14 +33,15 @@ export const HomeScreen = ({ navigation }) => {
                     >
                         How are you feeling today?
                     </Text>
-                </Pressable>
+                </TouchableHighlight>
             </View>
             <View style={[styles.wideTile, styles.tealDivider]}>
                 <div style={{ display: "flex", flexDirection: "row"}}>
                     <Text style={[styles.mainHeader, {marginVertical: "10px", flex: 1 }]}>
                         Upcoming Reminders
                     </Text>
-                    <Pressable
+                    <TouchableHighlight
+                        underlayColor={'#EEE'}
                         onPress={() => navigation.navigate("Reminders")}
                     >
                         <Text
@@ -41,19 +49,22 @@ export const HomeScreen = ({ navigation }) => {
                         >
                             See all {'>'}
                         </Text>
-                    </Pressable>
+                    </TouchableHighlight>
                 </div>
                 {reminders.map((reminder, index) => {
-                    return <Pressable
+                    return <TouchableHighlight
+                            underlayColor={'#EEE'}
                             key={index}
                             style={[styles.reminderButton, styles.tealBorder, {display: 'flex', flexDirection: "row"}]}
                             onPress={() =>
                             navigation.navigate('Reminders') //, { reminderId: `${route.params.condition}`}
                         }
                         >
-                            <View style={[styles.dot, styles.blueBackground]}/>
-                            <Text style={{ fontSize: "16px"}}>{reminder}</Text>
-                        </Pressable>
+                            <View style={{display: 'flex', flexDirection: "row"}}>
+                                <View style={[styles.dot, styles.blueBackground]}/>
+                                <Text style={{ fontSize: "16px"}}>{reminder}</Text>
+                            </View>
+                        </TouchableHighlight>
                 })}
             </View>
             <View style={[styles.wideTile]}>
@@ -61,7 +72,8 @@ export const HomeScreen = ({ navigation }) => {
                     Patient Support
                 </Text>
                 <div style={{ display: "flex" }}>
-                    <Pressable
+                    <TouchableHighlight
+                        underlayColor={'#8ADFB6'}
                         style={[styles.halfButton, styles.greenBackground]}
                         onPress={() =>
                             navigation.navigate("Contact Healthcare Provider")
@@ -76,8 +88,9 @@ export const HomeScreen = ({ navigation }) => {
                         >
                             Contact Healthcare Provider
                         </Text>
-                    </Pressable>
-                    <Pressable
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        underlayColor={'#8ADFB6'}
                         style={[styles.halfButton, styles.greenBackground]}
                         onPress={() => navigation.navigate("More Help")}
                     >
@@ -90,9 +103,10 @@ export const HomeScreen = ({ navigation }) => {
                         >
                             More Help
                         </Text>
-                    </Pressable>
+                    </TouchableHighlight>
                 </div>
             </View>
+            </ImageBackground>
         </View>
     );
 };

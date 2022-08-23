@@ -24,7 +24,6 @@ import { DetailsScreen } from "./screens/DetailsScreen";
 import { HCPContactScreen } from "./screens/HCPContactScreen.js";
 import { MoreHelpScreen } from "./screens/MoreHelpScreen.js";
 import { ProfileScreen } from "./screens/ProfileScreen.js";
-import userIcon from "./public/user-solid.svg";
 import Icon from 'react-native-vector-icons/Ionicons'
 
 

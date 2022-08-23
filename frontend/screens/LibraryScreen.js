@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TouchableOpacity, Image, Text, View, Pressable, ScrollView } from "react-native";
+import { TouchableOpacity, Image, Text, View, Pressable, ScrollView, TouchableHighlight } from "react-native";
 import styles from '../styles';
 
 export const LibraryScreen = ({navigation}) => {
@@ -39,35 +39,36 @@ export const LibraryScreen = ({navigation}) => {
     ]
 
     return(
-        <ScrollView>
+        <ScrollView style={{backgroundColor: "white"}}>
             <TouchableOpacity
                 onPress={() =>
                     navigation.navigate("Condition", {
-                        condition: "Stomach Cancer",
+                        condition: "Bowel Cancer",
                     })
                 }
+                style={[styles.wideTile, styles.blueDivider, {marginTop: '2%', alignSelf: 'flex-start'}]}
             >
                 <View>
                     <Image
                         source={require("../public/bowel.jpg")}
-                        style={{ width: "100%", height: "100%" }}
+                        resizeMode='cover'
+                        style={{ width: "90vw", height: "25vh", display: 'block'}}
                     />
-                    <Text>Stomach Cancer</Text>
+                    <Text>Bowel Cancer</Text>
                 </View>
             </TouchableOpacity>
             {DATA.map((cancer, index) => {
-                return <Pressable
+                return <TouchableHighlight
                     key={index}
-                    style={styles.libraryButton}
+                    style={[styles.libraryButton]}
+                    activeOpacity={0.9}
+                    underlayColor={'#EEE'}
                     onPress={() =>
                         navigation.navigate('Condition', {condition: cancer.type})
                     }
                 >
-                    <Text style={[styles.subHeader, {margin: 'auto'}]}>{cancer.type}</Text>
-                    <Image source={require(`../public/${cancer.img}`)}
-                        style={{ width: "50%", height: "100%", marginLeft: 'auto' }}
-                        />
-                </Pressable>
+                    <Text style={[styles.subHeader, styles.libraryButton, {marginVertical: 'auto'}]}>{cancer.type}</Text>
+                </TouchableHighlight>
             })}
             
         </ScrollView>
