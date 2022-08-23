@@ -55,23 +55,21 @@ const styles = StyleSheet.create({
         backgroundColor: bmOrange,
     },
     libraryButton: {
-        backgroundColor: 'rgba(255,255,255,0.8)',
         marginHorizontal: '2%',
         marginVertical: '1%',
+        padding: '1%',
         height: '50px',
         display: 'flex',
         flexDirection: 'row',
     },
     conditionButton: {
-        margin: '3%',
-        padding: '2%',
-        borderRadius: 4,
+        marginVertical: '1%',
+        padding: '4%',
         backgroundColor: 'rgba(255,255,255,0.8)',
+        borderWidth: '0px 20px 0px 0px'
     },
     conditionSubButton: {
-        margin: '2%',
         padding: '1%',
-        borderRadius: 4,
         backgroundColor: 'rgba(255,255,255,0.8)',
         width: '80%',
         alignSelf: 'flex-end',
@@ -115,6 +113,26 @@ const styles = StyleSheet.create({
     orangeDivier: {
         borderBottomWidth: `4px`,
         borderBottomColor: `${bmOrange}`,
+    },
+    blueSide: {
+        borderRightWidth: `20px`,
+        borderRightColor: `${bmBlue}`,
+    },
+    tealSide: {
+        borderRightWidth: `20px`,
+        borderRightColor: `${bmTeal}`,
+    },
+    greenSide: {
+        borderRightWidth: `20px`,
+        borderRightColor: `${bmGreen}`,
+    },
+    yellowSide: {
+        borderRightWidth: `20px`,
+        borderRightColor: `${bmYellow}`,
+    },
+    orangeSide: {
+        borderRightWidth: `20px`,
+        borderRightColor: `${bmOrange}`,
     },
     likertButton: {
         height: '30px',
@@ -224,7 +242,14 @@ const styles = StyleSheet.create({
     remindersCheck: {
         backgroundColor: 'rgba(0,0,0,0)',
         marginEnd: '5px',
-    }
+    },
+    searchBar: {
+        margin: '1%',
+        borderRadius: '4px',
+        border: `1px solid #DDD`,
+        flexDirection: 'row',
+        display: 'flex',
+    },
 })
 
 export default styles;

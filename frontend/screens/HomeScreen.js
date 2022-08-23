@@ -1,5 +1,12 @@
 import * as React from "react";
-import { Text, View, Button, Pressable } from "react-native";
+import {
+    Text,
+    View,
+    Button,
+    Pressable,
+    TouchableHighlight,
+    ImageBackground,
+} from "react-native";
 import styles from "../styles";
 import { UserContext } from "../components/UserContext.js";
 
@@ -11,102 +18,139 @@ export const HomeScreen = ({ navigation }) => {
     ];
     return (
         <View>
-            <View style={[styles.wideTile, styles.blueDivider]}>
-                <Text>Welcome back %user%</Text>
-                <Text style={{ fontSize: "20px", marginVertical: "10px" }}>
-                    %current-treatment-period%
-                </Text>
-                <Pressable
-                    style={[styles.wideButton, styles.blueBackground]}
-                    onPress={() => navigation.navigate("Wellbeing Journal")}
-                >
-                    <Text
-                        style={{ fontSize: "20px", marginHorizontal: "auto" }}
-                    >
-                        How are you feeling today?
+            <ImageBackground
+                source={require("../public/bmbgHome.png")}
+                style={{
+                    width: "100vw",
+                    height: "calc(100vh - 80px)",
+                    position: "absolute",
+                }}
+            >
+                <View style={[styles.wideTile, styles.blueDivider]}>
+                    <Text>Welcome back %user%</Text>
+                    <Text style={{ fontSize: "20px", marginVertical: "10px" }}>
+                        %current-treatment-period%
                     </Text>
-                </Pressable>
-            </View>
-            <View style={[styles.wideTile, styles.tealDivider]}>
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                    <Text
-                        style={[
-                            styles.mainHeader,
-                            { marginVertical: "10px", flex: 1 },
-                        ]}
+                    <TouchableHighlight
+                        underlayColor={"#8AB6DF"}
+                        style={[styles.wideButton, styles.blueBackground]}
+                        onPress={() => navigation.navigate("Wellbeing Journal")}
                     >
-                        Upcoming Reminders
-                    </Text>
-                    <Pressable onPress={() => navigation.navigate("Reminders")}>
                         <Text
                             style={{
-                                fontSize: "14px",
-                                margin: "10px",
-                                alignSelf: "flex-end",
-                                flex: 1,
-                                color: "grey",
+                                fontSize: "20px",
+                                marginHorizontal: "auto",
                             }}
                         >
-                            See all {">"}
+                            How are you feeling today?
                         </Text>
-                    </Pressable>
-                </div>
-                {reminders.map((reminder, index) => {
-                    return (
-                        <Pressable
-                            key={index}
+                    </TouchableHighlight>
+                </View>
+                <View style={[styles.wideTile, styles.tealDivider]}>
+                    <div style={{ display: "flex", flexDirection: "row" }}>
+                        <Text
                             style={[
-                                styles.reminderButton,
-                                styles.tealBorder,
-                                { display: "flex", flexDirection: "row" },
+                                styles.mainHeader,
+                                { marginVertical: "10px", flex: 1 },
                             ]}
-                            onPress={
-                                () => navigation.navigate("Reminders") //, { reminderId: `${route.params.condition}`}
+                        >
+                            Upcoming Reminders
+                        </Text>
+                        <TouchableHighlight
+                            underlayColor={"#EEE"}
+                            onPress={() => navigation.navigate("Reminders")}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: "14px",
+                                    margin: "10px",
+                                    alignSelf: "flex-end",
+                                    flex: 1,
+                                    color: "grey",
+                                }}
+                            >
+                                See all {">"}
+                            </Text>
+                        </TouchableHighlight>
+                    </div>
+                    {reminders.map((reminder, index) => {
+                        return (
+                            <TouchableHighlight
+                                underlayColor={"#EEE"}
+                                key={index}
+                                style={[
+                                    styles.reminderButton,
+                                    styles.tealBorder,
+                                    { display: "flex", flexDirection: "row" },
+                                ]}
+                                onPress={
+                                    () => navigation.navigate("Reminders") //, { reminderId: `${route.params.condition}`}
+                                }
+                            >
+                                <View
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                    }}
+                                >
+                                    <View
+                                        style={[
+                                            styles.dot,
+                                            styles.blueBackground,
+                                        ]}
+                                    />
+                                    <Text style={{ fontSize: "16px" }}>
+                                        {reminder}
+                                    </Text>
+                                </View>
+                            </TouchableHighlight>
+                        );
+                    })}
+                </View>
+                <View style={[styles.wideTile]}>
+                    <Text
+                        style={[styles.mainHeader, { marginVertical: "10px" }]}
+                    >
+                        Patient Support
+                    </Text>
+                    <div style={{ display: "flex" }}>
+                        <TouchableHighlight
+                            underlayColor={"#8ADFB6"}
+                            style={[styles.halfButton, styles.greenBackground]}
+                            onPress={() =>
+                                navigation.navigate(
+                                    "Contact Healthcare Provider"
+                                )
                             }
                         >
-                            <View style={[styles.dot, styles.blueBackground]} />
-                            <Text style={{ fontSize: "16px" }}>{reminder}</Text>
-                        </Pressable>
-                    );
-                })}
-            </View>
-            <View style={[styles.wideTile]}>
-                <Text style={[styles.mainHeader, { marginVertical: "10px" }]}>
-                    Patient Support
-                </Text>
-                <div style={{ display: "flex" }}>
-                    <Pressable
-                        style={[styles.halfButton, styles.greenBackground]}
-                        onPress={() =>
-                            navigation.navigate("Contact Healthcare Provider")
-                        }
-                    >
-                        <Text
-                            style={{
-                                fontSize: "20px",
-                                marginHorizontal: "auto",
-                                textAlign: "center",
-                            }}
+                            <Text
+                                style={{
+                                    fontSize: "20px",
+                                    marginHorizontal: "auto",
+                                    textAlign: "center",
+                                }}
+                            >
+                                Contact Healthcare Provider
+                            </Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight
+                            underlayColor={"#8ADFB6"}
+                            style={[styles.halfButton, styles.greenBackground]}
+                            onPress={() => navigation.navigate("More Help")}
                         >
-                            Contact Healthcare Provider
-                        </Text>
-                    </Pressable>
-                    <Pressable
-                        style={[styles.halfButton, styles.greenBackground]}
-                        onPress={() => navigation.navigate("More Help")}
-                    >
-                        <Text
-                            style={{
-                                fontSize: "20px",
-                                marginHorizontal: "auto",
-                                textAlign: "center",
-                            }}
-                        >
-                            More Help
-                        </Text>
-                    </Pressable>
-                </div>
-            </View>
+                            <Text
+                                style={{
+                                    fontSize: "20px",
+                                    marginHorizontal: "auto",
+                                    textAlign: "center",
+                                }}
+                            >
+                                More Help
+                            </Text>
+                        </TouchableHighlight>
+                    </div>
+                </View>
+            </ImageBackground>
         </View>
     );
 };

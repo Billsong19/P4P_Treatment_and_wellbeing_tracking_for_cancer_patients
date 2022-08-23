@@ -1,13 +1,8 @@
-import * as React from "react";
-import {
-    TouchableOpacity,
-    Image,
-    Text,
-    View,
-    Pressable,
-    ScrollView,
-} from "react-native";
-import styles from "../styles";
+import * as React from 'react';
+import { TouchableOpacity, Image, Text, View, Pressable, ScrollView, TouchableHighlight, TextInput } from "react-native";
+import styles from '../styles';
+import Icon from 'react-native-vector-icons/Ionicons'
+import { style } from '@mui/system';
 
 export const LibraryScreen = ({ navigation }) => {
     const DATA = [
@@ -43,49 +38,55 @@ export const LibraryScreen = ({ navigation }) => {
             type: "Brain Tumor",
             img: "brain.jpg",
         },
-    ];
+    ]
+    const [search, setSearch] = React.useState("")
+    const [filteredData, setFilteredData] = React.useState(DATA)
 
-    return (
-        <ScrollView>
+    React.useEffect(() => {
+        setFilteredData(DATA.filter(data => data.type.toLowerCase().includes(search.toLowerCase())))
+    }, [search])
+
+    return(
+        <ScrollView style={{backgroundColor: "white"}}>
+            <View style={styles.searchBar}>
+                <Icon name="search" style={{fontSize: 20, marginEnd: '10px'}}/>
+                <TextInput
+                    placeholder="Search..."
+                    style={{width: '90%'}}
+                    value={search}
+                    onChangeText={setSearch}
+                >
+                </TextInput>
+                <Icon id="removeSearch" name="close" color="#999" onPress={() => setSearch("")} style={{display: search.length > 0 ? 'block' : 'none', fontSize: 20}}/>
+            </View>
             <TouchableOpacity
                 onPress={() =>
                     navigation.navigate("Condition", {
-                        condition: "Stomach Cancer",
+                        condition: "Bowel Cancer",
                     })
                 }
+                style={[styles.wideTile, styles.blueDivider, {marginTop: '2%', alignSelf: 'flex-start'}]}
             >
                 <View>
                     {/* <Image
                         source={require("../public/bowel.jpg")}
-                        style={{ width: "100%", height: "100%" }}
-                    /> */}
-                    <Text>Stomach Cancer</Text>
+                        resizeMode='cover'
+                        style={{ width: "90vw", height: "25vh", display: 'block'}}
+                    />
+                    <Text>Bowel Cancer</Text>
                 </View>
             </TouchableOpacity>
-            {DATA.map((cancer, index) => {
-                return (
-                    <Pressable
-                        key={index}
-                        style={styles.libraryButton}
-                        onPress={() =>
-                            navigation.navigate("Condition", {
-                                condition: cancer.type,
-                            })
-                        }
-                    >
-                        <Text style={[styles.subHeader, { margin: "auto" }]}>
-                            {cancer.type}
-                        </Text>
-                        <Image
-                            source={require(`../public/${cancer.img}`)}
-                            style={{
-                                width: "50%",
-                                height: "100%",
-                                marginLeft: "auto",
-                            }}
-                        />
-                    </Pressable>
-                );
+            {filteredData.map((cancer, index) => {
+                return <TouchableHighlight
+                    key={index}
+                    style={[styles.libraryButton]}
+                    underlayColor={'#EEE'}
+                    onPress={() =>
+                        navigation.navigate('Condition', {condition: cancer.type})
+                    }
+                >
+                    <Text style={[styles.subHeader, styles.libraryButton, {marginVertical: 'auto'}]}>{cancer.type}</Text>
+                </TouchableHighlight>
             })}
         </ScrollView>
     );

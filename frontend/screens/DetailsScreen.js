@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, Button } from "react-native";
+import { Text, ScrollView, Button } from "react-native";
 import styles, { bmBlue, bmTeal, bmGreen, bmYellow, bmOrange } from '../styles';
 
 const MAX_PAGES = 6;
@@ -48,7 +48,7 @@ export const DetailsScreen = ({ navigation , route}) => {
     }
 
     return(
-        <View style={{backgroundColor: pageColor, height: '100%', width: '100vw'}}>
+        <ScrollView style={{backgroundColor: pageColor, height: '100%', width: '100vw'}}>
             <Text style={{fontSize: '20px', marginHorizontal: '20px', marginTop: '20px'}}>{route.params.condition}</Text>
             <Text style={{fontSize: '20px', marginHorizontal: '20px', marginBottom: '20px'}}>{page}</Text>
             <div style={{backgroundColor: '#FFF', marginLeft: '1%', width: '98%'}}>
@@ -77,6 +77,6 @@ export const DetailsScreen = ({ navigation , route}) => {
                     setPageNo(pageNo+1)
             }
             />
-        </View>
+        </ScrollView>
     );
 }
