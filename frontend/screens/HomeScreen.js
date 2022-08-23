@@ -1,15 +1,14 @@
 import * as React from "react";
-import {
-    Text,
-    View,
-    Button,
-    Pressable,
-} from "react-native";
+import { Text, View, Button, Pressable } from "react-native";
 import styles from "../styles";
+import { UserContext } from "../components/UserContext.js";
 
 export const HomeScreen = ({ navigation }) => {
-    const reminders = ["Muscle training - by end of day", "Clinic visit - Tomorrow 15:10", "Surgery prep appointment - 4/6 14:30"]
-
+    const reminders = [
+        "Muscle training - by end of day",
+        "Clinic visit - Tomorrow 15:10",
+        "Surgery prep appointment - 4/6 14:30",
+    ];
     return (
         <View>
             <View style={[styles.wideTile, styles.blueDivider]}>
@@ -29,31 +28,46 @@ export const HomeScreen = ({ navigation }) => {
                 </Pressable>
             </View>
             <View style={[styles.wideTile, styles.tealDivider]}>
-                <div style={{ display: "flex", flexDirection: "row"}}>
-                    <Text style={[styles.mainHeader, {marginVertical: "10px", flex: 1 }]}>
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                    <Text
+                        style={[
+                            styles.mainHeader,
+                            { marginVertical: "10px", flex: 1 },
+                        ]}
+                    >
                         Upcoming Reminders
                     </Text>
-                    <Pressable
-                        onPress={() => navigation.navigate("Reminders")}
-                    >
+                    <Pressable onPress={() => navigation.navigate("Reminders")}>
                         <Text
-                            style={{ fontSize: "14px", margin: "10px", alignSelf: "flex-end", flex: 1, color: "grey"}}
+                            style={{
+                                fontSize: "14px",
+                                margin: "10px",
+                                alignSelf: "flex-end",
+                                flex: 1,
+                                color: "grey",
+                            }}
                         >
-                            See all {'>'}
+                            See all {">"}
                         </Text>
                     </Pressable>
                 </div>
                 {reminders.map((reminder, index) => {
-                    return <Pressable
+                    return (
+                        <Pressable
                             key={index}
-                            style={[styles.reminderButton, styles.tealBorder, {display: 'flex', flexDirection: "row"}]}
-                            onPress={() =>
-                            navigation.navigate('Reminders') //, { reminderId: `${route.params.condition}`}
-                        }
+                            style={[
+                                styles.reminderButton,
+                                styles.tealBorder,
+                                { display: "flex", flexDirection: "row" },
+                            ]}
+                            onPress={
+                                () => navigation.navigate("Reminders") //, { reminderId: `${route.params.condition}`}
+                            }
                         >
-                            <View style={[styles.dot, styles.blueBackground]}/>
-                            <Text style={{ fontSize: "16px"}}>{reminder}</Text>
+                            <View style={[styles.dot, styles.blueBackground]} />
+                            <Text style={{ fontSize: "16px" }}>{reminder}</Text>
                         </Pressable>
+                    );
                 })}
             </View>
             <View style={[styles.wideTile]}>

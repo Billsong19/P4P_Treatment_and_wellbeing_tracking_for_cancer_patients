@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import plusImage from "../public/plus.svg";
 import styles from "../styles.js";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // const DATA = [
 //     {
@@ -75,25 +75,50 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // ];
 
 const Reminder = ({ title, time, details, complete, daily }) => {
-    const [isExpanded, setExpanded] = React.useState(false)
-    const [isComplete, setComplete] = React.useState(complete)
+    const [isExpanded, setExpanded] = React.useState(false);
+    const [isComplete, setComplete] = React.useState(complete);
+    const [reminders, setReminders] = React.useState();
+    useEffect(() => {
+        fetch("http://localhost:5000/userReminders/" + USER_ID, {
+            method: "GET",
+        })
+            .then((response) => response.json())
+            .then((data) => setReminders(data));
+    }, []);
 
     return (
         <Pressable
-        onLongPress={() => setComplete(!isComplete)}
-        onPress={() => setExpanded(!isExpanded)}
+            onLongPress={() => setComplete(!isComplete)}
+            onPress={() => setExpanded(!isExpanded)}
         >
-            <View style={daily ? [styles.blueBorder, styles.dailyReminder] : [styles.tealBorder, styles.tealBackground50, styles.datedReminder]}>
-                <View style={{flexDirection: 'row'}}>
-                    <Text style={{flex: 2}}>{title}</Text>
-                    <Text style={{flex: 1}}>{time}</Text>
+            <View
+                style={
+                    daily
+                        ? [styles.blueBorder, styles.dailyReminder]
+                        : [
+                              styles.tealBorder,
+                              styles.tealBackground50,
+                              styles.datedReminder,
+                          ]
+                }
+            >
+                <View style={{ flexDirection: "row" }}>
+                    <Text style={{ flex: 2 }}>{title}</Text>
+                    <Text style={{ flex: 1 }}>{time}</Text>
                     <CheckBox
                         value={isComplete}
                         style={styles.remindersCheck}
                     />
                 </View>
                 <View>
-                    <Text style={{display: isExpanded ? 'block' : 'none', marginVertical: '10px'}}>{details}</Text>
+                    <Text
+                        style={{
+                            display: isExpanded ? "block" : "none",
+                            marginVertical: "10px",
+                        }}
+                    >
+                        {details}
+                    </Text>
                 </View>
             </View>
         </Pressable>
@@ -121,9 +146,9 @@ const renderDated = ({ item }) => (
 );
 
 const renderDates = ({ item }) => (
-    <View style={{marginBottom: '2%'}}>
+    <View style={{ marginBottom: "2%" }}>
         <Text>{item.date}</Text>
-        <hr style={{width: '100%'}}/>
+        <hr style={{ width: "100%" }} />
         <FlatList
             data={item.rems}
             renderItem={renderDated}
@@ -135,23 +160,23 @@ const renderDates = ({ item }) => (
 const storeData = async (value) => {
     try {
         const jsonValue = JSON.stringify(value);
-        await AsyncStorage.setItem('@reminders', jsonValue);
+        await AsyncStorage.setItem("@reminders", jsonValue);
     } catch (e) {
         console.log(e);
     }
-}
+};
 
 const getData = async () => {
     try {
-        const jsonValue = await AsyncStorage.getItem('@reminders')
+        const jsonValue = await AsyncStorage.getItem("@reminders");
         return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch(e) {
-        console.log(e)
+    } catch (e) {
+        console.log(e);
     }
-}
+};
 
 export const RemindersScreen = ({ navigation }) => {
-    const [data, setData] = React.useState([]); 
+    const [data, setData] = React.useState([]);
     const [isModalVisible, setModalVisible] = React.useState(false);
     const [frequency, setFrequency] = React.useState(0);
     const [newTitle, setNewTitle] = React.useState("");
@@ -165,19 +190,21 @@ export const RemindersScreen = ({ navigation }) => {
     React.useEffect(() => {
         const fetchData = async () => {
             setData(await getData());
-        }
+        };
         console.log("fetch");
         fetchData();
-    }, [])
+    }, []);
 
     data.map((reminder) => {
         if (reminder.date === "daily") {
             dailyRems.push(reminder);
         } else {
             //TODO implement date sorting since this functionality is entirely FE and users can add reminders
-            let dateIndex = datedRems.findIndex((obj) => obj.date === reminder.date);
+            let dateIndex = datedRems.findIndex(
+                (obj) => obj.date === reminder.date
+            );
             if (dateIndex === -1) {
-                datedRems.push({date: reminder.date, rems: [reminder]});
+                datedRems.push({ date: reminder.date, rems: [reminder] });
             } else {
                 datedRems[dateIndex].rems.push(reminder);
             }
@@ -190,9 +217,14 @@ export const RemindersScreen = ({ navigation }) => {
                 animationType="slide"
                 transparent="true"
                 visible={isModalVisible}
-                onRequestClose={() => {setModalVisible(!isModalVisible)}}>
+                onRequestClose={() => {
+                    setModalVisible(!isModalVisible);
+                }}
+            >
                 <View style={styles.modalBase}>
-                    <Text style={[styles.mainHeader, {marginBottom: '4%'}]}>Add New Reminder</Text>
+                    <Text style={[styles.mainHeader, { marginBottom: "4%" }]}>
+                        Add New Reminder
+                    </Text>
                     <Text style={styles.subHeader}>Title</Text>
                     <TextInput
                         id="TitleInput"
@@ -203,58 +235,92 @@ export const RemindersScreen = ({ navigation }) => {
                     <Text style={styles.subHeader}>Description</Text>
                     <TextInput
                         style={styles.largeTextEntry}
-                        multiline='true'
+                        multiline="true"
                         value={newDescription}
                         onChangeText={setNewDescription}
                     />
                     <Text style={styles.subHeader}>When</Text>
-                    <div style={{display: 'flex'}}>
+                    <div style={{ display: "flex" }}>
                         <TextInput style={styles.textEntry}></TextInput>
                         <TextInput style={styles.textEntry}></TextInput>
                     </div>
                     <Text style={styles.subHeader}>Frequency</Text>
-                    <div style={{display: 'flex'}}>
-                        <View style={{flex: 1, margin: '10px'}}>
+                    <div style={{ display: "flex" }}>
+                        <View style={{ flex: 1, margin: "10px" }}>
                             <Pressable
-                                style={[styles.emptyRadioButton, styles.blueBorder]}
+                                style={[
+                                    styles.emptyRadioButton,
+                                    styles.blueBorder,
+                                ]}
                                 onPress={() => setFrequency(0)}
-                                >
-                                    {frequency==0 ? <View style={styles.radioFill}/> : null}
+                            >
+                                {frequency == 0 ? (
+                                    <View style={styles.radioFill} />
+                                ) : null}
                             </Pressable>
-                            <Text style={{margin: 'auto'}}>Once</Text>
+                            <Text style={{ margin: "auto" }}>Once</Text>
                         </View>
-                        <View style={{flex: 1, margin: '10px'}}>
+                        <View style={{ flex: 1, margin: "10px" }}>
                             <Pressable
-                                style={[styles.emptyRadioButton, styles.blueBorder]}
+                                style={[
+                                    styles.emptyRadioButton,
+                                    styles.blueBorder,
+                                ]}
                                 onPress={() => setFrequency(1)}
-                                >
-                                    {frequency==1 ? <View style={styles.radioFill}/> : null}
+                            >
+                                {frequency == 1 ? (
+                                    <View style={styles.radioFill} />
+                                ) : null}
                             </Pressable>
-                            <Text style={{margin: 'auto'}}>Monthly</Text>
+                            <Text style={{ margin: "auto" }}>Monthly</Text>
                         </View>
-                        <View style={{flex: 1, margin: '10px'}}>
+                        <View style={{ flex: 1, margin: "10px" }}>
                             <Pressable
-                                style={[styles.emptyRadioButton, styles.blueBorder]}
+                                style={[
+                                    styles.emptyRadioButton,
+                                    styles.blueBorder,
+                                ]}
                                 onPress={() => setFrequency(2)}
-                                >
-                                    {frequency==2 ? <View style={styles.radioFill}/> : null}
+                            >
+                                {frequency == 2 ? (
+                                    <View style={styles.radioFill} />
+                                ) : null}
                             </Pressable>
-                            <Text style={{margin: 'auto'}}>Weekly</Text>
+                            <Text style={{ margin: "auto" }}>Weekly</Text>
                         </View>
-                        <View style={{flex: 1, margin: '10px'}}>
+                        <View style={{ flex: 1, margin: "10px" }}>
                             <Pressable
-                                style={[styles.emptyRadioButton, styles.blueBorder]}
+                                style={[
+                                    styles.emptyRadioButton,
+                                    styles.blueBorder,
+                                ]}
                                 onPress={() => setFrequency(3)}
-                                >
-                                    {frequency==3 ? <View style={styles.radioFill}/> : null}
+                            >
+                                {frequency == 3 ? (
+                                    <View style={styles.radioFill} />
+                                ) : null}
                             </Pressable>
-                            <Text style={{margin: 'auto'}}>Daily</Text>
+                            <Text style={{ margin: "auto" }}>Daily</Text>
                         </View>
                     </div>
                     <Pressable
-                        style={[styles.wideButton, styles.greenBackground, {margin: '10px', marginHorizontal: '30%'}]}
+                        style={[
+                            styles.wideButton,
+                            styles.greenBackground,
+                            { margin: "10px", marginHorizontal: "30%" },
+                        ]}
                         onPress={() => {
-                            setData([...data, {id: "1", title: newTitle, complete: false, time: newTime, date: frequency===3 ? "daily" : newDate, details: newDescription}]);
+                            setData([
+                                ...data,
+                                {
+                                    id: "1",
+                                    title: newTitle,
+                                    complete: false,
+                                    time: newTime,
+                                    date: frequency === 3 ? "daily" : newDate,
+                                    details: newDescription,
+                                },
+                            ]);
                             storeData(data);
                             setNewTitle("");
                             setNewDescription("");
@@ -264,19 +330,46 @@ export const RemindersScreen = ({ navigation }) => {
                             setModalVisible(!isModalVisible);
                         }}
                     >
-                        <Text style={{ fontSize: "20px", marginHorizontal: "auto" }}>Add</Text>
+                        <Text
+                            style={{
+                                fontSize: "20px",
+                                marginHorizontal: "auto",
+                            }}
+                        >
+                            Add
+                        </Text>
                     </Pressable>
                     <Pressable
-                        style={[styles.wideButton, styles.orangeBackground, {margin: '10px', marginHorizontal: '30%'}]}
-                        onPress={() => {setModalVisible(!isModalVisible)}}
+                        style={[
+                            styles.wideButton,
+                            styles.orangeBackground,
+                            { margin: "10px", marginHorizontal: "30%" },
+                        ]}
+                        onPress={() => {
+                            setModalVisible(!isModalVisible);
+                        }}
                     >
-                        <Text style={{ fontSize: "16px", marginHorizontal: "auto" }}>Cancel</Text>
+                        <Text
+                            style={{
+                                fontSize: "16px",
+                                marginHorizontal: "auto",
+                            }}
+                        >
+                            Cancel
+                        </Text>
                     </Pressable>
                 </View>
             </Modal>
-            <View style={[styles.underModal, {display: isModalVisible ? 'block' : 'none'}]}/>
+            <View
+                style={[
+                    styles.underModal,
+                    { display: isModalVisible ? "block" : "none" },
+                ]}
+            />
             <View style={[styles.wideTile, styles.blueBackground]}>
-                <Text style={[styles.subHeader, {color: '#FFF'}]}>Daily Reminders</Text>
+                <Text style={[styles.subHeader, { color: "#FFF" }]}>
+                    Daily Reminders
+                </Text>
                 <FlatList
                     data={dailyRems}
                     renderItem={renderDaily}
@@ -301,7 +394,7 @@ export const RemindersScreen = ({ navigation }) => {
             >
                 <TouchableOpacity
                     onPress={() => {
-                        setModalVisible(!isModalVisible)
+                        setModalVisible(!isModalVisible);
                     }}
                 >
                     <Image
