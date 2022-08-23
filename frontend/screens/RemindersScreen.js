@@ -15,6 +15,8 @@ import {
 import plusImage from "../public/plus.svg";
 import styles from "../styles.js";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { v4 as uuidv4 } from 'uuid';
 
 // const DATA = [
 //     {
@@ -75,106 +77,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 //     },
 // ];
 
-const Reminder = ({ title, time, details, complete, daily }) => {
-    const startingHeight = 30;
-    const [isExpanded, setExpanded] = React.useState(false)
-    const [isComplete, setComplete] = React.useState(complete)
-    const [fullHeight, setFullHeight] = React.useState(startingHeight)
-    const animatedHeight = React.useRef(new Animated.Value(startingHeight)).current;
-    const fadeAnim = React.useRef(new Animated.Value(0)).current
-
-    React.useEffect(() => {
-        Animated.spring(animatedHeight, {
-            friction: 100,
-            toValue: isExpanded ? fullHeight : startingHeight,
-            useNativeDriver: false
-        }).start();
-    }, [isExpanded]);
-
-    React.useEffect(() => {
-        if (isExpanded) {
-            Animated.timing(
-            fadeAnim,
-            {
-                toValue: 1,
-                duration: 500,
-                useNativeDriver: false
-            }
-            ).start();
-        } else {
-            Animated.timing(
-                fadeAnim,
-                {
-                    toValue: 0,
-                    duration: 100,
-                    useNativeDriver: false
-                }
-                ).start();
-        }
-      }, [isExpanded])
-
-    const onTextLayout = (e) => {
-        let {x, y, width, height} = e.nativeEvent.layout;
-        height = Math.floor(height) + startingHeight + 15;
-        if(height > startingHeight ){
-            setFullHeight(height);
-        }
-    };
-
-    return (
-        <Pressable
-        onLongPress={() => setComplete(!isComplete)}
-        onPress={() => setExpanded(!isExpanded)}
-        >
-            <Animated.View style={daily ? [styles.blueBorder, styles.dailyReminder, {height: animatedHeight}] : [styles.tealBorder, styles.tealBackground50, styles.datedReminder, {height: animatedHeight}]}>
-                <View style={{flexDirection: 'row'}}>
-                    <Text style={{flex: 2}}>{title}</Text>
-                    <Text style={{flex: 1}}>{time}</Text>
-                    <CheckBox
-                        value={isComplete}
-                        style={styles.remindersCheck}
-                    />
-                </View>
-                <View>
-                    <Animated.Text style={{opacity: fadeAnim, marginVertical: '10px'}} onLayout={(e) => {onTextLayout(e)}}>{details}</Animated.Text>
-                </View>
-            </Animated.View>
-        </Pressable>
-    );
-};
-
-const renderDaily = ({ item }) => (
-    <Reminder
-        title={item.title}
-        time={item.time}
-        complete={item.complete}
-        details={item.details}
-        daily={true}
-    />
-);
-
-const renderDated = ({ item }) => (
-    <Reminder
-        title={item.title}
-        time={item.time}
-        complete={item.complete}
-        details={item.details}
-        daily={false}
-    />
-);
-
-const renderDates = ({ item }) => (
-    <View style={{marginBottom: '2%'}}>
-        <Text>{item.date}</Text>
-        <hr style={{width: '100%'}}/>
-        <FlatList
-            data={item.rems}
-            renderItem={renderDated}
-            keyExtractor={(item) => item.id}
-        />
-    </View>
-);
-
 const storeData = async (value) => {
     try {
         const jsonValue = JSON.stringify(value);
@@ -201,9 +103,128 @@ export const RemindersScreen = ({ navigation }) => {
     const [newDescription, setNewDescription] = React.useState("");
     const [newTime, setNewTime] = React.useState("00:00");
     const [newDate, setNewDate] = React.useState("1/1/2022");
+    const [isEdit, setEdit] = React.useState(false);
+    const [editId, setEditId] = React.useState(-1);
 
     const dailyRems = []; //simply an array of reminders for storing 'daily' reminders
     const datedRems = []; //an array that contains [key: date, value: [array of relevant reminders]] pairs
+
+    const Reminder = ({ id, title, time, details, complete, daily }) => {
+        const startingHeight = 30;
+        const [isExpanded, setExpanded] = React.useState(false)
+        const [isComplete, setComplete] = React.useState(complete)
+        const [fullHeight, setFullHeight] = React.useState(startingHeight)
+        const animatedHeight = React.useRef(new Animated.Value(startingHeight)).current;
+        const fadeAnim = React.useRef(new Animated.Value(0)).current
+    
+        React.useEffect(() => {
+            Animated.spring(animatedHeight, {
+                friction: 100,
+                toValue: isExpanded ? fullHeight : startingHeight,
+                useNativeDriver: false
+            }).start();
+        }, [isExpanded]);
+    
+        React.useEffect(() => {
+            if (isExpanded) {
+                Animated.timing(
+                fadeAnim,
+                {
+                    toValue: 1,
+                    duration: 500,
+                    useNativeDriver: false
+                }
+                ).start();
+            } else {
+                Animated.timing(
+                    fadeAnim,
+                    {
+                        toValue: 0,
+                        duration: 100,
+                        useNativeDriver: false
+                    }
+                    ).start();
+            }
+          }, [isExpanded])
+    
+        const onTextLayout = (e) => {
+            let {x, y, width, height} = e.nativeEvent.layout;
+            height = Math.floor(height) + startingHeight + 15;
+            if(height > startingHeight ){
+                setFullHeight(height);
+            }
+        };
+
+        const setUpEditModal = () => {
+            setEdit(true);
+            setNewTitle(title);
+            setNewDescription(details);
+            setNewTime(time);
+            setEditId(id);
+            setModalVisible(!isModalVisible);
+        }
+    
+        return (
+            <Pressable
+            onLongPress={() => setComplete(!isComplete)}
+            onPress={() => setExpanded(!isExpanded)}
+            >
+                <Animated.View style={daily ? [styles.blueBorder, styles.dailyReminder, {height: animatedHeight}] : [styles.tealBorder, styles.tealBackground50, styles.datedReminder, {height: animatedHeight}]}>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={{flex: 2}}>{title}</Text>
+                        <Text style={{flex: 1}}>{time}</Text>
+                        <CheckBox
+                            value={isComplete}
+                            style={styles.remindersCheck}
+                        />
+                    </View>
+                    <Animated.View style={{opacity: fadeAnim}}>
+                        <Text style={{marginVertical: '10px', maxWidth: '90%'}} onLayout={(e) => {onTextLayout(e)}}>{details}</Text>
+                        <TouchableOpacity 
+                            style={{position: 'absolute', right: '1%', bottom: details ? '6px' : '0px'}}
+                            onPress={() => setUpEditModal()}
+                        >
+                            <Icon name="ellipsis-horizontal" size={20}/>
+                        </TouchableOpacity>
+                    </Animated.View>
+                </Animated.View>
+            </Pressable>
+        );
+    };
+
+    const renderDaily = ({ item }) => (
+        <Reminder
+            id={item.id}
+            title={item.title}
+            time={item.time}
+            complete={item.complete}
+            details={item.details}
+            daily={true}
+        />
+    );
+    
+    const renderDated = ({ item }) => (
+        <Reminder
+            id={item.id}
+            title={item.title}
+            time={item.time}
+            complete={item.complete}
+            details={item.details}
+            daily={false}
+        />
+    );
+    
+    const renderDates = ({ item }) => (
+        <View style={{marginBottom: '2%'}}>
+            <Text>{item.date}</Text>
+            <hr style={{width: '100%'}}/>
+            <FlatList
+                data={item.rems}
+                renderItem={renderDated}
+                keyExtractor={(item) => item.id}
+            />
+        </View>
+    );
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -227,6 +248,17 @@ export const RemindersScreen = ({ navigation }) => {
         }
     });
 
+    const clearModal = () => {
+        setNewTitle("");
+        setNewDescription("");
+        setNewTime("00:00");
+        setNewDate("1/1/2022");
+        setFrequency(0);
+        setEditId(-1);
+        setEdit(false);
+        setModalVisible(!isModalVisible);
+    }
+
     return (
         <View style={{ flex: 1 }}>
             <Modal
@@ -235,7 +267,7 @@ export const RemindersScreen = ({ navigation }) => {
                 visible={isModalVisible}
                 onRequestClose={() => {setModalVisible(!isModalVisible)}}>
                 <View style={styles.modalBase}>
-                    <Text style={[styles.mainHeader, {marginBottom: '4%'}]}>Add New Reminder</Text>
+                    <Text style={[styles.mainHeader, {marginBottom: '4%'}]}>{isEdit? 'Edit Reminder' : 'Add New Reminder'}</Text>
                     <Text style={styles.subHeader}>Title</Text>
                     <TextInput
                         id="TitleInput"
@@ -294,26 +326,43 @@ export const RemindersScreen = ({ navigation }) => {
                         </View>
                     </div>
                     <Pressable
-                        style={[styles.wideButton, styles.greenBackground, {margin: '10px', marginHorizontal: '30%'}]}
-                        onPress={() => {
-                            setData([...data, {id: "1", title: newTitle, complete: false, time: newTime, date: frequency===3 ? "daily" : newDate, details: newDescription}]);
-                            storeData(data);
-                            setNewTitle("");
-                            setNewDescription("");
-                            setNewTime("00:00");
-                            setNewDate("1/1/2022");
-                            setFrequency(0);
-                            setModalVisible(!isModalVisible);
+                        style={[styles.wideButton, styles.greenBackground, { margin: '10px', marginHorizontal: '30%' }]}
+                        onPress={async () => {
+                            if (isEdit) {
+                                const index = data.findIndex((reminder) => reminder.id === editId);
+                                data[index] = {id: reminder.id, title: newTitle, complete: false, time: newTime, date: frequency===3 ? "daily" : newDate, details: newDescription};
+                                setData(data);
+                            } else {
+                                setData([...data, {id: uuidv4(), title: newTitle, complete: false, time: newTime, date: frequency===3 ? "daily" : newDate, details: newDescription}]);
+                            }
+                            await storeData(data);
+                            clearModal();
                         }}
                     >
-                        <Text style={{ fontSize: "20px", marginHorizontal: "auto" }}>Add</Text>
+                        <Text style={[ styles.mainHeader, { marginHorizontal: "auto" }]}>{ isEdit ? 'Save' : 'Add' }</Text>
                     </Pressable>
                     <Pressable
-                        style={[styles.wideButton, styles.orangeBackground, {margin: '10px', marginHorizontal: '30%'}]}
-                        onPress={() => {setModalVisible(!isModalVisible)}}
+                        style={[styles.wideButton, styles.orangeBackground, { margin: '10px', marginHorizontal: '30%' }]}
+                        onPress={() => clearModal()}
                     >
                         <Text style={{ fontSize: "16px", marginHorizontal: "auto" }}>Cancel</Text>
                     </Pressable>
+                    { isEdit ? 
+                    <Pressable
+                        style={[{ borderRadius: '4px', padding: '8px', marginTop: '50px', marginHorizontal: 'auto', border: '2px solid #CF3028' }]}
+                        onPress={async () => {
+                            let tempRems = [...data];
+                            let index = tempRems.findIndex((reminder) => reminder.id === editId);
+                            if (index !== -1) tempRems.splice(index, 1);
+                            setData(tempRems);
+                            await storeData(data)
+                            clearModal();
+                        }}
+                    >
+                        <Text style={[ styles.subHeader, { fontSize: "16px", marginHorizontal: "auto", color: '#CF3028'}]}>Delete</Text>
+                    </Pressable> 
+                    : null
+                    }
                 </View>
             </Modal>
             <View style={[styles.underModal, {display: isModalVisible ? 'block' : 'none'}]}/>
