@@ -62,7 +62,7 @@ function HomeScreens() {
                 );
             },
         })}>
-            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="B M Health" component={HomeScreen} />
             <Stack.Screen
                 name="Wellbeing Journal"
                 component={WellbeingJournalScreen}
@@ -82,7 +82,7 @@ function RemindersScreens() {
     return (
         <Stack.Navigator>
             <Stack.Screen
-                name="Reminders"
+                name="Reminders List"
                 component={RemindersScreen}
             />
             </Stack.Navigator>

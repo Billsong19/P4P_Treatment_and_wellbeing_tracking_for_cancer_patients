@@ -1,6 +1,7 @@
 import * as React from "react";
 import {
     FlatList,
+    Animated,
     Text,
     View,
     ScrollView,
@@ -75,15 +76,57 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 // ];
 
 const Reminder = ({ title, time, details, complete, daily }) => {
+    const startingHeight = 30;
     const [isExpanded, setExpanded] = React.useState(false)
     const [isComplete, setComplete] = React.useState(complete)
+    const [fullHeight, setFullHeight] = React.useState(startingHeight)
+    const animatedHeight = React.useRef(new Animated.Value(startingHeight)).current;
+    const fadeAnim = React.useRef(new Animated.Value(0)).current
+
+    React.useEffect(() => {
+        Animated.spring(animatedHeight, {
+            friction: 100,
+            toValue: isExpanded ? fullHeight : startingHeight,
+            useNativeDriver: false
+        }).start();
+    }, [isExpanded]);
+
+    React.useEffect(() => {
+        if (isExpanded) {
+            Animated.timing(
+            fadeAnim,
+            {
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: false
+            }
+            ).start();
+        } else {
+            Animated.timing(
+                fadeAnim,
+                {
+                    toValue: 0,
+                    duration: 100,
+                    useNativeDriver: false
+                }
+                ).start();
+        }
+      }, [isExpanded])
+
+    const onTextLayout = (e) => {
+        let {x, y, width, height} = e.nativeEvent.layout;
+        height = Math.floor(height) + startingHeight + 15;
+        if(height > startingHeight ){
+            setFullHeight(height);
+        }
+    };
 
     return (
         <Pressable
         onLongPress={() => setComplete(!isComplete)}
         onPress={() => setExpanded(!isExpanded)}
         >
-            <View style={daily ? [styles.blueBorder, styles.dailyReminder] : [styles.tealBorder, styles.tealBackground50, styles.datedReminder]}>
+            <Animated.View style={daily ? [styles.blueBorder, styles.dailyReminder, {height: animatedHeight}] : [styles.tealBorder, styles.tealBackground50, styles.datedReminder, {height: animatedHeight}]}>
                 <View style={{flexDirection: 'row'}}>
                     <Text style={{flex: 2}}>{title}</Text>
                     <Text style={{flex: 1}}>{time}</Text>
@@ -93,9 +136,9 @@ const Reminder = ({ title, time, details, complete, daily }) => {
                     />
                 </View>
                 <View>
-                    <Text style={{display: isExpanded ? 'block' : 'none', marginVertical: '10px'}}>{details}</Text>
+                    <Animated.Text style={{opacity: fadeAnim, marginVertical: '10px'}} onLayout={(e) => {onTextLayout(e)}}>{details}</Animated.Text>
                 </View>
-            </View>
+            </Animated.View>
         </Pressable>
     );
 };
@@ -209,8 +252,7 @@ export const RemindersScreen = ({ navigation }) => {
                     />
                     <Text style={styles.subHeader}>When</Text>
                     <div style={{display: 'flex'}}>
-                        <TextInput style={styles.textEntry}></TextInput>
-                        <TextInput style={styles.textEntry}></TextInput>
+                        
                     </div>
                     <Text style={styles.subHeader}>Frequency</Text>
                     <div style={{display: 'flex'}}>

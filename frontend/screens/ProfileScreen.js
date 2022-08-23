@@ -53,17 +53,17 @@ export const ProfileScreen = ({ navigation }) => {
                     <Text style={styles.subHeader}>{DATA.treatment_period} treatment period</Text>
                 </View>
                 <Pressable
-                    style={[styles.conditionButton, styles.tealBorder]}
+                    style={[styles.conditionButton, styles.tealSide]}
                     onPress={() =>
-                    navigation.navigate('Details', { condition: `${route.params.condition}`, section: 1})
+                    navigation.navigate('Details', { condition: `${DATA.cancer_type}`, section: 1})
                     }
                 >
                     <Text>Chance of Recovery</Text>
                 </Pressable>
                 <Pressable
-                    style={[styles.conditionButton, styles.greenBorder]}
+                    style={[styles.conditionButton, styles.greenSide]}
                     onPress={() =>
-                    navigation.navigate('Details', { condition: `${route.params.condition}`, section: 2})
+                    navigation.navigate('Details', { condition: `${DATA.cancer_type}`, section: 2})
                 }
                 >
                     <Text>Course of Disease</Text>
