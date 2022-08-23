@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { TouchableOpacity, Image, Text, View, Pressable, ScrollView, TouchableHighlight } from "react-native";
+import { TouchableOpacity, Image, Text, View, Pressable, ScrollView, TouchableHighlight, TextInput } from "react-native";
 import styles from '../styles';
+import Icon from 'react-native-vector-icons/Ionicons'
+import { style } from '@mui/system';
 
 export const LibraryScreen = ({navigation}) => {
     const DATA = [
@@ -37,9 +39,26 @@ export const LibraryScreen = ({navigation}) => {
             img:  "brain.jpg"
         },
     ]
+    const [search, setSearch] = React.useState("")
+    const [filteredData, setFilteredData] = React.useState(DATA)
+
+    React.useEffect(() => {
+        setFilteredData(DATA.filter(data => data.type.toLowerCase().includes(search.toLowerCase())))
+    }, [search])
 
     return(
         <ScrollView style={{backgroundColor: "white"}}>
+            <View style={styles.searchBar}>
+                <Icon name="search" style={{fontSize: 20, marginEnd: '10px'}}/>
+                <TextInput
+                    placeholder="Search..."
+                    style={{width: '90%'}}
+                    value={search}
+                    onChangeText={setSearch}
+                >
+                </TextInput>
+                <Icon id="removeSearch" name="close" color="#999" onPress={() => setSearch("")} style={{display: search.length > 0 ? 'block' : 'none', fontSize: 20}}/>
+            </View>
             <TouchableOpacity
                 onPress={() =>
                     navigation.navigate("Condition", {
@@ -57,11 +76,10 @@ export const LibraryScreen = ({navigation}) => {
                     <Text>Bowel Cancer</Text>
                 </View>
             </TouchableOpacity>
-            {DATA.map((cancer, index) => {
+            {filteredData.map((cancer, index) => {
                 return <TouchableHighlight
                     key={index}
                     style={[styles.libraryButton]}
-                    activeOpacity={0.9}
                     underlayColor={'#EEE'}
                     onPress={() =>
                         navigation.navigate('Condition', {condition: cancer.type})

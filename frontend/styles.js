@@ -242,7 +242,14 @@ const styles = StyleSheet.create({
     remindersCheck: {
         backgroundColor: 'rgba(0,0,0,0)',
         marginEnd: '5px',
-    }
+    },
+    searchBar: {
+        margin: '1%',
+        borderRadius: '4px',
+        border: `1px solid #DDD`,
+        flexDirection: 'row',
+        display: 'flex',
+    },
 })
 
 export default styles;
