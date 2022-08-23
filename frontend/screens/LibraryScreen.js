@@ -61,11 +61,7 @@ export const LibraryScreen = ({ navigation }) => {
   }, [search]);
 
   return (
-    <ScrollView
-      style={{ backgroundColor: "white", flex: 1 }}
-      contentContainerStyle={{ flexGrow: 1 }}
-      alwaysBounceVertical={true}
-    >
+    <ScrollView style={{ backgroundColor: "white" }}>
       <View style={styles.searchBar}>
         <Ionicons name="search" style={{ fontSize: 20, marginEnd: 10 }} />
         <TextInput
