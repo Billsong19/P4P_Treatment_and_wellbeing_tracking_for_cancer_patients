@@ -10,6 +10,10 @@ export const bmOrange = '#FFA978'
 const bmTealRGB = '117, 217, 211'
 
 const styles = StyleSheet.create({
+    page: {
+        margin: '0',
+        padding: '2%',
+    },
     wideTile: {
         margin: '2%',
         marginTop: '0',
@@ -35,6 +39,10 @@ const styles = StyleSheet.create({
     subHeader: {
         fontWeight: '500',
         fontSize: '18px',
+    },
+    subHeader2: {
+        fontWeight: '500',
+        fontSize: '16px',
     },
     blueBackground: {
         backgroundColor: bmBlue,
@@ -136,10 +144,10 @@ const styles = StyleSheet.create({
     },
     likertButton: {
         height: '30px',
-        width: '30px',
-        margin: 'auto',
+        width: '12vw',
+        marginHorizontal: 'auto',
         borderRadius: '4px',
-        backgroundColor: '#D9D9D9',
+        backgroundColor: '#E9E9E9',
     },
     likert1: {
         border: `1px solid #FD7070`,
@@ -172,15 +180,17 @@ const styles = StyleSheet.create({
         border: `1px solid ${bmTeal}`,
     },
     textEntry: {
-        border: '1px solid #000',
+        border: '1px solid #888',
         marginVertical: '10px',
+        padding: '2px',
         backgroundColor: '#FFF',
     },
     largeTextEntry: {
-        border: '1px solid #000',
+        border: '1px solid #888',
         marginVertical: '10px',
         lineHeight: '2.5ex',
         height: '7.5ex',
+        padding: '4px',
         backgroundColor: '#FFF',
     },
     smallButton: {

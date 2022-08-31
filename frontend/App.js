@@ -108,10 +108,10 @@ function InfoLibScreens() {
 
 export default function App() {
     return (
-        <ImageBackground
-            source={require("./public/bmbg.png")}
-            style={{ width: "100vw", height: "100vh", position: "absolute" }}
-        >
+        // <ImageBackground
+        //     source={require("./public/bmbg.png")}
+        //     style={{ width: "100vw", height: "100vh", position: "absolute" }}
+        // >
             <NavigationContainer theme={navTheme}>
                 
                 
@@ -147,7 +147,7 @@ export default function App() {
                     />    
                 </BottomTab.Navigator>
             </NavigationContainer>
-        </ImageBackground>
+        // </ImageBackground>
     );
 }
 

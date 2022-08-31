@@ -109,7 +109,7 @@ export const RemindersScreen = ({ navigation }) => {
     const dailyRems = []; //simply an array of reminders for storing 'daily' reminders
     const datedRems = []; //an array that contains [key: date, value: [array of relevant reminders]] pairs
 
-    const Reminder = ({ id, title, time, details, complete, daily }) => {
+    const Reminder = ({ id, title, time, details, complete, date }) => {
         const startingHeight = 30;
         const [isExpanded, setExpanded] = React.useState(false)
         const [isComplete, setComplete] = React.useState(complete)
@@ -163,19 +163,31 @@ export const RemindersScreen = ({ navigation }) => {
             setEditId(id);
             setModalVisible(!isModalVisible);
         }
+
+        const toggleComplete = async () => {
+            const index = data.findIndex((reminder) => reminder.id === id);
+            data[index] = {id: id, title: title, complete: !isComplete, time: time, date: date, details: details};
+            setData(data);
+            setComplete(!isComplete)
+            await storeData(data);
+        }
     
         return (
             <Pressable
-            onLongPress={() => setComplete(!isComplete)}
+            onLongPress={() => toggleComplete()}
             onPress={() => setExpanded(!isExpanded)}
             >
-                <Animated.View style={daily ? [styles.blueBorder, styles.dailyReminder, {height: animatedHeight}] : [styles.tealBorder, styles.tealBackground50, styles.datedReminder, {height: animatedHeight}]}>
+                <Animated.View style={date === "daily" ? [styles.blueBorder, styles.dailyReminder, {height: animatedHeight}] : [styles.tealBorder, styles.tealBackground50, styles.datedReminder, {height: animatedHeight}]}>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={{flex: 2}}>{title}</Text>
                         <Text style={{flex: 1}}>{time}</Text>
                         <CheckBox
                             value={isComplete}
                             style={styles.remindersCheck}
+                            onValueChange={() => {
+                                toggleComplete()
+                                setExpanded(isExpanded)
+                            }}
                         />
                     </View>
                     <Animated.View style={{opacity: fadeAnim}}>
@@ -199,7 +211,7 @@ export const RemindersScreen = ({ navigation }) => {
             time={item.time}
             complete={item.complete}
             details={item.details}
-            daily={true}
+            date="daily"
         />
     );
     
@@ -210,7 +222,7 @@ export const RemindersScreen = ({ navigation }) => {
             time={item.time}
             complete={item.complete}
             details={item.details}
-            daily={false}
+            date={item.date}
         />
     );
     
@@ -230,7 +242,6 @@ export const RemindersScreen = ({ navigation }) => {
         const fetchData = async () => {
             setData(await getData());
         }
-        console.log("fetch");
         fetchData();
     }, [])
 
@@ -304,7 +315,7 @@ export const RemindersScreen = ({ navigation }) => {
                                 >
                                     {frequency==1 ? <View style={styles.radioFill}/> : null}
                             </Pressable>
-                            <Text style={{margin: 'auto'}}>Monthly</Text>
+                            <Text style={{margin: 'auto'}}>Weekly</Text>
                         </View>
                         <View style={{flex: 1, margin: '10px'}}>
                             <Pressable
@@ -312,15 +323,6 @@ export const RemindersScreen = ({ navigation }) => {
                                 onPress={() => setFrequency(2)}
                                 >
                                     {frequency==2 ? <View style={styles.radioFill}/> : null}
-                            </Pressable>
-                            <Text style={{margin: 'auto'}}>Weekly</Text>
-                        </View>
-                        <View style={{flex: 1, margin: '10px'}}>
-                            <Pressable
-                                style={[styles.emptyRadioButton, styles.blueBorder]}
-                                onPress={() => setFrequency(3)}
-                                >
-                                    {frequency==3 ? <View style={styles.radioFill}/> : null}
                             </Pressable>
                             <Text style={{margin: 'auto'}}>Daily</Text>
                         </View>
@@ -330,7 +332,7 @@ export const RemindersScreen = ({ navigation }) => {
                         onPress={async () => {
                             if (isEdit) {
                                 const index = data.findIndex((reminder) => reminder.id === editId);
-                                data[index] = {id: reminder.id, title: newTitle, complete: false, time: newTime, date: frequency===3 ? "daily" : newDate, details: newDescription};
+                                data[index] = {id: editId, title: newTitle, complete: false, time: newTime, date: frequency===3 ? "daily" : newDate, details: newDescription};
                                 setData(data);
                             } else {
                                 setData([...data, {id: uuidv4(), title: newTitle, complete: false, time: newTime, date: frequency===3 ? "daily" : newDate, details: newDescription}]);
@@ -355,7 +357,7 @@ export const RemindersScreen = ({ navigation }) => {
                             let index = tempRems.findIndex((reminder) => reminder.id === editId);
                             if (index !== -1) tempRems.splice(index, 1);
                             setData(tempRems);
-                            await storeData(data)
+                            await storeData(data);
                             clearModal();
                         }}
                     >

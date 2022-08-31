@@ -29,7 +29,7 @@ export const HomeScreen = ({ navigation }) => {
                     onPress={() => navigation.navigate("Wellbeing Journal")}
                 >
                     <Text
-                        style={{ fontSize: "20px", marginHorizontal: "auto" }}
+                        style={[styles.subHeader, { marginHorizontal: "auto", color: '#fff' }]}
                     >
                         How are you feeling today?
                     </Text>
@@ -41,6 +41,7 @@ export const HomeScreen = ({ navigation }) => {
                         Upcoming Reminders
                     </Text>
                     <TouchableHighlight
+                        style={{borderRadius: '4px'}}
                         underlayColor={'#EEE'}
                         onPress={() => navigation.navigate("Reminders")}
                     >
