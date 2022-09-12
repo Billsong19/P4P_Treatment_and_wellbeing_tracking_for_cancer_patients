@@ -10,103 +10,145 @@ import {
 import styles from "../styles";
 
 export const HomeScreen = ({ navigation }) => {
-    const reminders = ["Muscle training - by end of day", "Clinic visit - Tomorrow 15:10", "Surgery prep appointment - 4/6 14:30"]
+    const reminders = [
+        "Muscle training - by end of day",
+        "Clinic visit - Tomorrow 15:10",
+        "Surgery prep appointment - 4/6 14:30",
+    ];
 
     return (
         <View>
             <ImageBackground
-            source={require("../public/bmbgHome.png")}
-            style={{ width: "100vw", height: "calc(100vh - 80px)", position: "absolute" }}
-        >
-            <View style={[styles.wideTile, styles.blueDivider]}>
-                <Text>Welcome back %user%</Text>
-                <Text style={{ fontSize: "20px", marginVertical: "10px" }}>
-                    %current-treatment-period%
-                </Text>
-                <TouchableHighlight
-                    underlayColor={'#8AB6DF'}
-                    style={[styles.wideButton, styles.blueBackground]}
-                    onPress={() => navigation.navigate("Wellbeing Journal")}
-                >
-                    <Text
-                        style={[styles.subHeader, { marginHorizontal: "auto", color: '#fff' }]}
-                    >
-                        How are you feeling today?
-                    </Text>
-                </TouchableHighlight>
-            </View>
-            <View style={[styles.wideTile, styles.tealDivider]}>
-                <div style={{ display: "flex", flexDirection: "row"}}>
-                    <Text style={[styles.mainHeader, {marginVertical: "10px", flex: 1 }]}>
-                        Upcoming Reminders
+                source={require("../public/bmbgHome.png")}
+                style={{
+                    width: "100%",
+                    height: "100%",
+                    position: "absolute",
+                }}
+            >
+                <View style={[styles.wideTile, styles.blueDivider]}>
+                    <Text>Welcome back %user%</Text>
+                    <Text style={{ fontSize: 20.0, marginVertical: 10 }}>
+                        %current-treatment-period%
                     </Text>
                     <TouchableHighlight
-                        style={{borderRadius: '4px'}}
-                        underlayColor={'#EEE'}
-                        onPress={() => navigation.navigate("Reminders")}
+                        underlayColor={"#8AB6DF"}
+                        style={[styles.wideButton, styles.blueBackground]}
+                        onPress={() => navigation.navigate("Wellbeing Journal")}
                     >
                         <Text
-                            style={{ fontSize: "14px", margin: "10px", alignSelf: "flex-end", flex: 1, color: "grey"}}
+                            style={[
+                                styles.subHeader,
+                                { marginHorizontal: "auto", color: "#fff" },
+                            ]}
                         >
-                            See all {'>'}
+                            How are you feeling today?
                         </Text>
                     </TouchableHighlight>
-                </div>
-                {reminders.map((reminder, index) => {
-                    return <TouchableHighlight
-                            underlayColor={'#EEE'}
-                            key={index}
-                            style={[styles.reminderButton, styles.tealBorder, {display: 'flex', flexDirection: "row"}]}
-                            onPress={() =>
-                            navigation.navigate('Reminders') //, { reminderId: `${route.params.condition}`}
-                        }
+                </View>
+                <View style={[styles.wideTile, styles.tealDivider]}>
+                    <View style={{ display: "flex", flexDirection: "row" }}>
+                        <Text
+                            style={[
+                                styles.mainHeader,
+                                { marginVertical: 10, flex: 1 },
+                            ]}
                         >
-                            <View style={{display: 'flex', flexDirection: "row"}}>
-                                <View style={[styles.dot, styles.blueBackground]}/>
-                                <Text style={{ fontSize: "16px"}}>{reminder}</Text>
-                            </View>
+                            Upcoming Reminders
+                        </Text>
+                        <TouchableHighlight
+                            style={{ borderRadius: 4 }}
+                            underlayColor={"#EEE"}
+                            onPress={() => navigation.navigate("Reminders")}
+                        >
+                            <Text
+                                style={{
+                                    fontSize: 14,
+                                    margin: 10,
+                                    alignSelf: "flex-end",
+                                    flex: 1,
+                                    color: "grey",
+                                }}
+                            >
+                                See all {">"}
+                            </Text>
                         </TouchableHighlight>
-                })}
-            </View>
-            <View style={[styles.wideTile]}>
-                <Text style={[styles.mainHeader, { marginVertical: "10px" }]}>
-                    Patient Support
-                </Text>
-                <div style={{ display: "flex" }}>
-                    <TouchableHighlight
-                        underlayColor={'#8ADFB6'}
-                        style={[styles.halfButton, styles.greenBackground]}
-                        onPress={() =>
-                            navigation.navigate("Contact Healthcare Provider")
-                        }
-                    >
-                        <Text
-                            style={{
-                                fontSize: "20px",
-                                marginHorizontal: "auto",
-                                textAlign: "center",
-                            }}
+                    </View>
+                    {reminders.map((reminder, index) => {
+                        return (
+                            <TouchableHighlight
+                                underlayColor={"#EEE"}
+                                key={index}
+                                style={[
+                                    styles.reminderButton,
+                                    styles.tealBorder,
+                                    { display: "flex", flexDirection: "row" },
+                                ]}
+                                onPress={
+                                    () => navigation.navigate("Reminders") //, { reminderId: `${route.params.condition}`}
+                                }
+                            >
+                                <View
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "row",
+                                    }}
+                                >
+                                    <View
+                                        style={[
+                                            styles.dot,
+                                            styles.blueBackground,
+                                        ]}
+                                    />
+                                    <Text style={{ fontSize: 20 }}>
+                                        {reminder}
+                                    </Text>
+                                </View>
+                            </TouchableHighlight>
+                        );
+                    })}
+                </View>
+                <View style={[styles.wideTile]}>
+                    <Text style={[styles.mainHeader, { marginVertical: 10 }]}>
+                        Patient Support
+                    </Text>
+                    <View style={{ display: "flex" }}>
+                        <TouchableHighlight
+                            underlayColor={"#8ADFB6"}
+                            style={[styles.halfButton, styles.greenBackground]}
+                            onPress={() =>
+                                navigation.navigate(
+                                    "Contact Healthcare Provider"
+                                )
+                            }
                         >
-                            Contact Healthcare Provider
-                        </Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight
-                        underlayColor={'#8ADFB6'}
-                        style={[styles.halfButton, styles.greenBackground]}
-                        onPress={() => navigation.navigate("More Help")}
-                    >
-                        <Text
-                            style={{
-                                fontSize: "20px",
-                                marginHorizontal: "auto",
-                                textAlign: "center",
-                            }}
+                            <Text
+                                style={{
+                                    fontSize: 20,
+                                    marginHorizontal: "auto",
+                                    textAlign: "center",
+                                }}
+                            >
+                                Contact Healthcare Provider
+                            </Text>
+                        </TouchableHighlight>
+                        <TouchableHighlight
+                            underlayColor={"#8ADFB6"}
+                            style={[styles.halfButton, styles.greenBackground]}
+                            onPress={() => navigation.navigate("More Help")}
                         >
-                            More Help
-                        </Text>
-                    </TouchableHighlight>
-                </div>
-            </View>
+                            <Text
+                                style={{
+                                    fontSize: 20,
+                                    marginHorizontal: "auto",
+                                    textAlign: "center",
+                                }}
+                            >
+                                More Help
+                            </Text>
+                        </TouchableHighlight>
+                    </View>
+                </View>
             </ImageBackground>
         </View>
     );

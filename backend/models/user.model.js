@@ -2,7 +2,7 @@
 const { mongoose, Schema } = require("mongoose");
 
 const contact = new Schema({
-    title: { type: String, required: true },
+    title: String,
     name: { type: String, required: true },
     email: String,
     phone: { type: Number, required: true },

@@ -14,9 +14,9 @@ import {
 } from "react-native";
 import plusImage from "../public/plus.svg";
 import styles from "../styles.js";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { v4 as uuidv4 } from 'uuid';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Icon from "react-native-vector-icons/Ionicons";
+import { v4 as uuidv4 } from "uuid";
 
 // const DATA = [
 //     {
@@ -80,23 +80,23 @@ import { v4 as uuidv4 } from 'uuid';
 const storeData = async (value) => {
     try {
         const jsonValue = JSON.stringify(value);
-        await AsyncStorage.setItem('@reminders', jsonValue);
+        await AsyncStorage.setItem("@reminders", jsonValue);
     } catch (e) {
         console.log(e);
     }
-}
+};
 
 const getData = async () => {
     try {
-        const jsonValue = await AsyncStorage.getItem('@reminders')
+        const jsonValue = await AsyncStorage.getItem("@reminders");
         return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch(e) {
-        console.log(e)
+    } catch (e) {
+        console.log(e);
     }
-}
+};
 
 export const RemindersScreen = ({ navigation }) => {
-    const [data, setData] = React.useState([]); 
+    const [data, setData] = React.useState([]);
     const [isModalVisible, setModalVisible] = React.useState(false);
     const [frequency, setFrequency] = React.useState(0);
     const [newTitle, setNewTitle] = React.useState("");
@@ -111,46 +111,42 @@ export const RemindersScreen = ({ navigation }) => {
 
     const Reminder = ({ id, title, time, details, complete, date }) => {
         const startingHeight = 30;
-        const [isExpanded, setExpanded] = React.useState(false)
-        const [isComplete, setComplete] = React.useState(complete)
-        const [fullHeight, setFullHeight] = React.useState(startingHeight)
-        const animatedHeight = React.useRef(new Animated.Value(startingHeight)).current;
-        const fadeAnim = React.useRef(new Animated.Value(0)).current
-    
+        const [isExpanded, setExpanded] = React.useState(false);
+        const [isComplete, setComplete] = React.useState(complete);
+        const [fullHeight, setFullHeight] = React.useState(startingHeight);
+        const animatedHeight = React.useRef(
+            new Animated.Value(startingHeight)
+        ).current;
+        const fadeAnim = React.useRef(new Animated.Value(0)).current;
+
         React.useEffect(() => {
             Animated.spring(animatedHeight, {
                 friction: 100,
                 toValue: isExpanded ? fullHeight : startingHeight,
-                useNativeDriver: false
+                useNativeDriver: false,
             }).start();
         }, [isExpanded]);
-    
+
         React.useEffect(() => {
             if (isExpanded) {
-                Animated.timing(
-                fadeAnim,
-                {
+                Animated.timing(fadeAnim, {
                     toValue: 1,
                     duration: 500,
-                    useNativeDriver: false
-                }
-                ).start();
+                    useNativeDriver: false,
+                }).start();
             } else {
-                Animated.timing(
-                    fadeAnim,
-                    {
-                        toValue: 0,
-                        duration: 100,
-                        useNativeDriver: false
-                    }
-                    ).start();
+                Animated.timing(fadeAnim, {
+                    toValue: 0,
+                    duration: 100,
+                    useNativeDriver: false,
+                }).start();
             }
-          }, [isExpanded])
-    
+        }, [isExpanded]);
+
         const onTextLayout = (e) => {
-            let {x, y, width, height} = e.nativeEvent.layout;
+            let { x, y, width, height } = e.nativeEvent.layout;
             height = Math.floor(height) + startingHeight + 15;
-            if(height > startingHeight ){
+            if (height > startingHeight) {
                 setFullHeight(height);
             }
         };
@@ -162,41 +158,74 @@ export const RemindersScreen = ({ navigation }) => {
             setNewTime(time);
             setEditId(id);
             setModalVisible(!isModalVisible);
-        }
+        };
 
         const toggleComplete = async () => {
             const index = data.findIndex((reminder) => reminder.id === id);
-            data[index] = {id: id, title: title, complete: !isComplete, time: time, date: date, details: details};
+            data[index] = {
+                id: id,
+                title: title,
+                complete: !isComplete,
+                time: time,
+                date: date,
+                details: details,
+            };
             setData(data);
-            setComplete(!isComplete)
+            setComplete(!isComplete);
             await storeData(data);
-        }
-    
+        };
+
         return (
             <Pressable
-            onLongPress={() => toggleComplete()}
-            onPress={() => setExpanded(!isExpanded)}
+                onLongPress={() => toggleComplete()}
+                onPress={() => setExpanded(!isExpanded)}
             >
-                <Animated.View style={date === "daily" ? [styles.blueBorder, styles.dailyReminder, {height: animatedHeight}] : [styles.tealBorder, styles.tealBackground50, styles.datedReminder, {height: animatedHeight}]}>
-                    <View style={{flexDirection: 'row'}}>
-                        <Text style={{flex: 2}}>{title}</Text>
-                        <Text style={{flex: 1}}>{time}</Text>
+                <Animated.View
+                    style={
+                        date === "daily"
+                            ? [
+                                  styles.blueBorder,
+                                  styles.dailyReminder,
+                                  { height: animatedHeight },
+                              ]
+                            : [
+                                  styles.tealBorder,
+                                  styles.tealBackground50,
+                                  styles.datedReminder,
+                                  { height: animatedHeight },
+                              ]
+                    }
+                >
+                    <View style={{ flexDirection: "row" }}>
+                        <Text style={{ flex: 2 }}>{title}</Text>
+                        <Text style={{ flex: 1 }}>{time}</Text>
                         <CheckBox
                             value={isComplete}
                             style={styles.remindersCheck}
                             onValueChange={() => {
-                                toggleComplete()
-                                setExpanded(isExpanded)
+                                toggleComplete();
+                                setExpanded(isExpanded);
                             }}
                         />
                     </View>
-                    <Animated.View style={{opacity: fadeAnim}}>
-                        <Text style={{marginVertical: '10px', maxWidth: '90%'}} onLayout={(e) => {onTextLayout(e)}}>{details}</Text>
-                        <TouchableOpacity 
-                            style={{position: 'absolute', right: '1%', bottom: details ? '6px' : '0px'}}
+                    <Animated.View style={{ opacity: fadeAnim }}>
+                        <Text
+                            style={{ marginVertical: 10, maxWidth: "90%" }}
+                            onLayout={(e) => {
+                                onTextLayout(e);
+                            }}
+                        >
+                            {details}
+                        </Text>
+                        <TouchableOpacity
+                            style={{
+                                position: "absolute",
+                                right: "1%",
+                                bottom: details ? 6 : 0,
+                            }}
                             onPress={() => setUpEditModal()}
                         >
-                            <Icon name="ellipsis-horizontal" size={20}/>
+                            <Icon name="ellipsis-horizontal" size={20} />
                         </TouchableOpacity>
                     </Animated.View>
                 </Animated.View>
@@ -214,7 +243,7 @@ export const RemindersScreen = ({ navigation }) => {
             date="daily"
         />
     );
-    
+
     const renderDated = ({ item }) => (
         <Reminder
             id={item.id}
@@ -225,11 +254,11 @@ export const RemindersScreen = ({ navigation }) => {
             date={item.date}
         />
     );
-    
+
     const renderDates = ({ item }) => (
-        <View style={{marginBottom: '2%'}}>
+        <View style={{ marginBottom: "2%" }}>
             <Text>{item.date}</Text>
-            <hr style={{width: '100%'}}/>
+            <hr style={{ width: "100%" }} />
             <FlatList
                 data={item.rems}
                 renderItem={renderDated}
@@ -241,18 +270,20 @@ export const RemindersScreen = ({ navigation }) => {
     React.useEffect(() => {
         const fetchData = async () => {
             setData(await getData());
-        }
+        };
         fetchData();
-    }, [])
+    }, []);
 
     data.map((reminder) => {
         if (reminder.date === "daily") {
             dailyRems.push(reminder);
         } else {
             //TODO implement date sorting since this functionality is entirely FE and users can add reminders
-            let dateIndex = datedRems.findIndex((obj) => obj.date === reminder.date);
+            let dateIndex = datedRems.findIndex(
+                (obj) => obj.date === reminder.date
+            );
             if (dateIndex === -1) {
-                datedRems.push({date: reminder.date, rems: [reminder]});
+                datedRems.push({ date: reminder.date, rems: [reminder] });
             } else {
                 datedRems[dateIndex].rems.push(reminder);
             }
@@ -268,7 +299,7 @@ export const RemindersScreen = ({ navigation }) => {
         setEditId(-1);
         setEdit(false);
         setModalVisible(!isModalVisible);
-    }
+    };
 
     return (
         <View style={{ flex: 1 }}>
@@ -276,9 +307,14 @@ export const RemindersScreen = ({ navigation }) => {
                 animationType="slide"
                 transparent="true"
                 visible={isModalVisible}
-                onRequestClose={() => {setModalVisible(!isModalVisible)}}>
+                onRequestClose={() => {
+                    setModalVisible(!isModalVisible);
+                }}
+            >
                 <View style={styles.modalBase}>
-                    <Text style={[styles.mainHeader, {marginBottom: '4%'}]}>{isEdit? 'Edit Reminder' : 'Add New Reminder'}</Text>
+                    <Text style={[styles.mainHeader, { marginBottom: "4%" }]}>
+                        {isEdit ? "Edit Reminder" : "Add New Reminder"}
+                    </Text>
                     <Text style={styles.subHeader}>Title</Text>
                     <TextInput
                         id="TitleInput"
@@ -289,87 +325,169 @@ export const RemindersScreen = ({ navigation }) => {
                     <Text style={styles.subHeader}>Description</Text>
                     <TextInput
                         style={styles.largeTextEntry}
-                        multiline='true'
+                        multiline="true"
                         value={newDescription}
                         onChangeText={setNewDescription}
                     />
                     <Text style={styles.subHeader}>When</Text>
-                    <div style={{display: 'flex'}}>
-                        
-                    </div>
+                    <div style={{ display: "flex" }}></div>
                     <Text style={styles.subHeader}>Frequency</Text>
-                    <div style={{display: 'flex'}}>
-                        <View style={{flex: 1, margin: '10px'}}>
+                    <div style={{ display: "flex" }}>
+                        <View style={{ flex: 1, margin: 10 }}>
                             <Pressable
-                                style={[styles.emptyRadioButton, styles.blueBorder]}
+                                style={[
+                                    styles.emptyRadioButton,
+                                    styles.blueBorder,
+                                ]}
                                 onPress={() => setFrequency(0)}
-                                >
-                                    {frequency==0 ? <View style={styles.radioFill}/> : null}
+                            >
+                                {frequency == 0 ? (
+                                    <View style={styles.radioFill} />
+                                ) : null}
                             </Pressable>
-                            <Text style={{margin: 'auto'}}>Once</Text>
+                            <Text style={{ margin: "auto" }}>Once</Text>
                         </View>
-                        <View style={{flex: 1, margin: '10px'}}>
+                        <View style={{ flex: 1, margin: 10 }}>
                             <Pressable
-                                style={[styles.emptyRadioButton, styles.blueBorder]}
+                                style={[
+                                    styles.emptyRadioButton,
+                                    styles.blueBorder,
+                                ]}
                                 onPress={() => setFrequency(1)}
-                                >
-                                    {frequency==1 ? <View style={styles.radioFill}/> : null}
+                            >
+                                {frequency == 1 ? (
+                                    <View style={styles.radioFill} />
+                                ) : null}
                             </Pressable>
-                            <Text style={{margin: 'auto'}}>Weekly</Text>
+                            <Text style={{ margin: "auto" }}>Weekly</Text>
                         </View>
-                        <View style={{flex: 1, margin: '10px'}}>
+                        <View style={{ flex: 1, margin: 10 }}>
                             <Pressable
-                                style={[styles.emptyRadioButton, styles.blueBorder]}
+                                style={[
+                                    styles.emptyRadioButton,
+                                    styles.blueBorder,
+                                ]}
                                 onPress={() => setFrequency(2)}
-                                >
-                                    {frequency==2 ? <View style={styles.radioFill}/> : null}
+                            >
+                                {frequency == 2 ? (
+                                    <View style={styles.radioFill} />
+                                ) : null}
                             </Pressable>
-                            <Text style={{margin: 'auto'}}>Daily</Text>
+                            <Text style={{ margin: "auto" }}>Daily</Text>
                         </View>
                     </div>
                     <Pressable
-                        style={[styles.wideButton, styles.greenBackground, { margin: '10px', marginHorizontal: '30%' }]}
+                        style={[
+                            styles.wideButton,
+                            styles.greenBackground,
+                            { margin: 10, marginHorizontal: "30%" },
+                        ]}
                         onPress={async () => {
                             if (isEdit) {
-                                const index = data.findIndex((reminder) => reminder.id === editId);
-                                data[index] = {id: editId, title: newTitle, complete: false, time: newTime, date: frequency===3 ? "daily" : newDate, details: newDescription};
+                                const index = data.findIndex(
+                                    (reminder) => reminder.id === editId
+                                );
+                                data[index] = {
+                                    id: editId,
+                                    title: newTitle,
+                                    complete: false,
+                                    time: newTime,
+                                    date: frequency === 3 ? "daily" : newDate,
+                                    details: newDescription,
+                                };
                                 setData(data);
                             } else {
-                                setData([...data, {id: uuidv4(), title: newTitle, complete: false, time: newTime, date: frequency===3 ? "daily" : newDate, details: newDescription}]);
+                                setData([
+                                    ...data,
+                                    {
+                                        id: uuidv4(),
+                                        title: newTitle,
+                                        complete: false,
+                                        time: newTime,
+                                        date:
+                                            frequency === 3 ? "daily" : newDate,
+                                        details: newDescription,
+                                    },
+                                ]);
                             }
                             await storeData(data);
                             clearModal();
                         }}
                     >
-                        <Text style={[ styles.mainHeader, { marginHorizontal: "auto" }]}>{ isEdit ? 'Save' : 'Add' }</Text>
+                        <Text
+                            style={[
+                                styles.mainHeader,
+                                { marginHorizontal: "auto" },
+                            ]}
+                        >
+                            {isEdit ? "Save" : "Add"}
+                        </Text>
                     </Pressable>
                     <Pressable
-                        style={[styles.wideButton, styles.orangeBackground, { margin: '10px', marginHorizontal: '30%' }]}
+                        style={[
+                            styles.wideButton,
+                            styles.orangeBackground,
+                            { margin: 10, marginHorizontal: "30%" },
+                        ]}
                         onPress={() => clearModal()}
                     >
-                        <Text style={{ fontSize: "16px", marginHorizontal: "auto" }}>Cancel</Text>
+                        <Text
+                            style={{
+                                fontSize: 16,
+                                marginHorizontal: "auto",
+                            }}
+                        >
+                            Cancel
+                        </Text>
                     </Pressable>
-                    { isEdit ? 
-                    <Pressable
-                        style={[{ borderRadius: '4px', padding: '8px', marginTop: '50px', marginHorizontal: 'auto', border: '2px solid #CF3028' }]}
-                        onPress={async () => {
-                            let tempRems = [...data];
-                            let index = tempRems.findIndex((reminder) => reminder.id === editId);
-                            if (index !== -1) tempRems.splice(index, 1);
-                            setData(tempRems);
-                            await storeData(data);
-                            clearModal();
-                        }}
-                    >
-                        <Text style={[ styles.subHeader, { fontSize: "16px", marginHorizontal: "auto", color: '#CF3028'}]}>Delete</Text>
-                    </Pressable> 
-                    : null
-                    }
+                    {isEdit ? (
+                        <Pressable
+                            style={[
+                                {
+                                    borderRadius: 4,
+                                    padding: 8,
+                                    marginTop: 50,
+                                    marginHorizontal: "auto",
+                                    border: "2 solid #CF3028",
+                                },
+                            ]}
+                            onPress={async () => {
+                                let tempRems = [...data];
+                                let index = tempRems.findIndex(
+                                    (reminder) => reminder.id === editId
+                                );
+                                if (index !== -1) tempRems.splice(index, 1);
+                                setData(tempRems);
+                                await storeData(data);
+                                clearModal();
+                            }}
+                        >
+                            <Text
+                                style={[
+                                    styles.subHeader,
+                                    {
+                                        fontSize: 16,
+                                        marginHorizontal: "auto",
+                                        color: "#CF3028",
+                                    },
+                                ]}
+                            >
+                                Delete
+                            </Text>
+                        </Pressable>
+                    ) : null}
                 </View>
             </Modal>
-            <View style={[styles.underModal, {display: isModalVisible ? 'block' : 'none'}]}/>
+            <View
+                style={[
+                    styles.underModal,
+                    { display: isModalVisible ? "block" : "none" },
+                ]}
+            />
             <View style={[styles.wideTile, styles.blueBackground]}>
-                <Text style={[styles.subHeader, {color: '#FFF'}]}>Daily Reminders</Text>
+                <Text style={[styles.subHeader, { color: "#FFF" }]}>
+                    Daily Reminders
+                </Text>
                 <FlatList
                     data={dailyRems}
                     renderItem={renderDaily}
@@ -394,7 +512,7 @@ export const RemindersScreen = ({ navigation }) => {
             >
                 <TouchableOpacity
                     onPress={() => {
-                        setModalVisible(!isModalVisible)
+                        setModalVisible(!isModalVisible);
                     }}
                 >
                     <Image
