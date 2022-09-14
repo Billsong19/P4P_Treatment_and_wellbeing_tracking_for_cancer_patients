@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Text, ScrollView, Button } from "react-native";
+import { Text, ScrollView, Button, View } from "react-native";
 import styles, { bmBlue, bmTeal, bmGreen, bmYellow, bmOrange } from "../styles";
 
 const MAX_PAGES = 6;
@@ -75,7 +75,7 @@ export const DetailsScreen = ({ navigation, route }) => {
             >
                 {page}
             </Text>
-            <div
+            <View
                 style={{
                     backgroundColor: "#FFF",
                     marginLeft: "1%",
@@ -84,33 +84,32 @@ export const DetailsScreen = ({ navigation, route }) => {
             >
                 {contents.map((section, index) => {
                     return (
-                        <div
+                        <View
                             key={index}
                             style={{ margin: 10, marginBottom: 20 }}
                         >
                             <Text>{section[0]}</Text>
-                            <hr
+                            <View
                                 style={{
                                     width: "92%",
-                                    backgroundColor: "pageColor",
+                                    borderBottomColor: "pageColor",
+                                    borderBottomWidth: 1,
                                 }}
                             />
                             <Text>{section[1]}</Text>
-                            <div
+                            <View
                                 style={{
-                                    display: "block",
                                     width: "50%",
                                     minHeight: 10,
                                     backgroundColor: pageColor,
                                     marginLeft: 0,
                                 }}
                             >
-                                <span />
-                            </div>
-                        </div>
+                            </View>
+                        </View>
                     );
                 })}
-            </div>
+            </View>
             <Text>{pageNo}</Text>
             <Button
                 title="Previous"

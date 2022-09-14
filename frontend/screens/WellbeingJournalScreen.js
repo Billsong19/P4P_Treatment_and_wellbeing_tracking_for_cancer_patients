@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Pressable, Text, TextInput, View, ScrollView } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
+import LikertButtons from "../components/LikertButtons";
 import styles, { bmBlue } from "../styles";
 
 export const WellbeingJournalScreen = ({ navigation }) => {
@@ -29,100 +30,7 @@ export const WellbeingJournalScreen = ({ navigation }) => {
                 <Text style={[styles.subHeader2, { marginVertical: 10 }]}>
                     How are you physically feeling today?
                 </Text>
-                <View
-                    style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        marginBottom: 10,
-                        alignItems: "flex-start",
-                    }}
-                >
-                    <View style={{ margin: "auto" }}>
-                        <Pressable
-                            style={
-                                phys == 1
-                                    ? [styles.likertButton, styles.likert1s]
-                                    : [styles.likertButton, styles.likert1]
-                            }
-                            onPress={() => setPhys(1)}
-                        >
-                            <Text style={{ margin: "auto" }}>1</Text>
-                        </Pressable>
-                        <Text style={{ textAlign: "center" }}>Terrible</Text>
-                    </View>
-                    <Pressable
-                        style={
-                            phys == 2
-                                ? [styles.likertButton, styles.orangeBackground]
-                                : [styles.likertButton, styles.likert2]
-                        }
-                        onPress={() => setPhys(2)}
-                    >
-                        <Text style={{ margin: "auto" }}>2</Text>
-                    </Pressable>
-                    <Pressable
-                        style={
-                            phys == 3
-                                ? [styles.likertButton, styles.likert3s]
-                                : [styles.likertButton, styles.likert3]
-                        }
-                        onPress={() => setPhys(3)}
-                    >
-                        <Text style={{ margin: "auto" }}>3</Text>
-                    </Pressable>
-                    <View style={{ margin: "auto" }}>
-                        <Pressable
-                            style={
-                                phys == 4
-                                    ? [
-                                          styles.likertButton,
-                                          styles.yellowBackground,
-                                      ]
-                                    : [styles.likertButton, styles.likert4]
-                            }
-                            onPress={() => setPhys(4)}
-                        >
-                            <Text style={{ margin: "auto" }}>4</Text>
-                        </Pressable>
-                        <Text style={{ textAlign: "center" }}>Alright</Text>
-                    </View>
-                    <Pressable
-                        style={
-                            phys == 5
-                                ? [styles.likertButton, styles.likert5s]
-                                : [styles.likertButton, styles.likert5]
-                        }
-                        onPress={() => setPhys(5)}
-                    >
-                        <Text style={{ margin: "auto" }}>5</Text>
-                    </Pressable>
-                    <Pressable
-                        style={
-                            phys == 6
-                                ? [styles.likertButton, styles.greenBackground]
-                                : [styles.likertButton, styles.likert6]
-                        }
-                        onPress={() => setPhys(6)}
-                    >
-                        <Text style={{ margin: "auto" }}>6</Text>
-                    </Pressable>
-                    <View style={{ margin: "auto" }}>
-                        <Pressable
-                            style={
-                                phys == 7
-                                    ? [
-                                          styles.likertButton,
-                                          styles.tealBackground,
-                                      ]
-                                    : [styles.likertButton, styles.likert7]
-                            }
-                            onPress={() => setPhys(7)}
-                        >
-                            <Text style={{ margin: "auto" }}>7</Text>
-                        </Pressable>
-                        <Text style={{ textAlign: "center" }}>Great</Text>
-                    </View>
-                </View>
+                <LikertButtons active={phys} setActive={setPhys}/>
                 <Text style={[styles.subHeader2, { marginVertical: 10 }]}>
                     Do you have any notable symptoms?
                 </Text>
@@ -131,7 +39,7 @@ export const WellbeingJournalScreen = ({ navigation }) => {
                         Same as yesterday: mild nausea, mild headache
                     </Text>
                 </Pressable>
-                <div style={{ display: "flex" }}>
+                <View style={{ display: "flex", flexDirection: "row" }}>
                     <TextInput
                         id="symptomInput"
                         placeholder="symptom"
@@ -183,7 +91,7 @@ export const WellbeingJournalScreen = ({ navigation }) => {
                             +
                         </Text>
                     </Pressable>
-                </div>
+                </View>
                 <View style={{ marginVertical: 10 }}>
                     {symptoms.length < 1 ? (
                         <Text>None</Text>
@@ -239,101 +147,15 @@ export const WellbeingJournalScreen = ({ navigation }) => {
             >
                 How are you mentally feeling today?
             </Text>
-            <View
-                style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    marginBottom: 10,
-                    alignItems: "flex-start",
-                }}
-            >
-                <View style={{ margin: "auto" }}>
-                    <Pressable
-                        style={
-                            ment == 1
-                                ? [styles.likertButton, styles.likert1s]
-                                : [styles.likertButton, styles.likert1]
-                        }
-                        onPress={() => setMental(1)}
-                    >
-                        <Text style={{ margin: "auto" }}>1</Text>
-                    </Pressable>
-                    <Text style={{ textAlign: "center" }}>Terrible</Text>
-                </View>
-                <Pressable
-                    style={
-                        ment == 2
-                            ? [styles.likertButton, styles.orangeBackground]
-                            : [styles.likertButton, styles.likert2]
-                    }
-                    onPress={() => setMental(2)}
-                >
-                    <Text style={{ margin: "auto" }}>2</Text>
-                </Pressable>
-                <Pressable
-                    style={
-                        ment == 3
-                            ? [styles.likertButton, styles.likert3s]
-                            : [styles.likertButton, styles.likert3]
-                    }
-                    onPress={() => setMental(3)}
-                >
-                    <Text style={{ margin: "auto" }}>3</Text>
-                </Pressable>
-                <View style={{ margin: "auto" }}>
-                    <Pressable
-                        style={
-                            ment == 4
-                                ? [styles.likertButton, styles.yellowBackground]
-                                : [styles.likertButton, styles.likert4]
-                        }
-                        onPress={() => setMental(4)}
-                    >
-                        <Text style={{ margin: "auto" }}>4</Text>
-                    </Pressable>
-                    <Text style={{ textAlign: "center" }}>Alright</Text>
-                </View>
-                <Pressable
-                    style={
-                        ment == 5
-                            ? [styles.likertButton, styles.likert5s]
-                            : [styles.likertButton, styles.likert5]
-                    }
-                    onPress={() => setMental(5)}
-                >
-                    <Text style={{ margin: "auto" }}>5</Text>
-                </Pressable>
-                <Pressable
-                    style={
-                        ment == 6
-                            ? [styles.likertButton, styles.greenBackground]
-                            : [styles.likertButton, styles.likert6]
-                    }
-                    onPress={() => setMental(6)}
-                >
-                    <Text style={{ margin: "auto" }}>6</Text>
-                </Pressable>
-                <View style={{ margin: "auto" }}>
-                    <Pressable
-                        style={
-                            ment == 7
-                                ? [styles.likertButton, styles.tealBackground]
-                                : [styles.likertButton, styles.likert7]
-                        }
-                        onPress={() => setMental(7)}
-                    >
-                        <Text style={{ margin: "auto" }}>7</Text>
-                    </Pressable>
-                    <Text style={{ textAlign: "center" }}>Great</Text>
-                </View>
-            </View>
+            <LikertButtons active={ment} setActive={setMental}/>
             <Text style={[styles.subHeader2, { marginVertical: 10 }]}>
                 Anything else of note?
             </Text>
             <TextInput
                 style={styles.largeTextEntry}
                 placeholder="optional"
-                multiline="true"
+                multiline={true}
+                textAlignVertical='top'
             />
             <Pressable
                 style={

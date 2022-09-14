@@ -5,7 +5,6 @@ import {
     Text,
     View,
     ScrollView,
-    CheckBox,
     Modal,
     Image,
     TouchableOpacity,
@@ -16,66 +15,68 @@ import plusImage from "../public/plus.svg";
 import styles from "../styles.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import IonIcons from "@expo/vector-icons/Ionicons";
+import 'react-native-get-random-values';
 import { v4 as uuidv4 } from "uuid";
+import CheckBox from '@react-native-community/checkbox';
 
-// const DATA = [
-//     {
-//         id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-//         title: "Take a walk",
-//         complete: true,
-//         date: "daily",
-//         time: "",
-//         details: "Aim for above 15 mins duration",
-//     },
-//     {
-//         id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-//         title: "Take medicine",
-//         complete: true,
-//         date: "daily",
-//         time: "10:00",
-//         details: "two 50mg tablets",
-//     },
-//     {
-//         id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f64",
-//         title: "Take medicine",
-//         complete: false,
-//         date: "daily",
-//         time: "15:00",
-//         details: "two 50mg tablets",
-//     },
-//     {
-//         id: "58694a0f-3da1-471f-bd96-145571e29d72",
-//         title: "Clinic appointment",
-//         complete: false,
-//         date: "20/5/2022",
-//         time: "16:30",
-//         details: "Clinic name, address, meeting with Dr. Name"
-//     },
-//     {
-//         id: "58694a0f-3da1-471f-bd96-145571e29d73",
-//         title: "Clinic appointment",
-//         complete: false,
-//         date: "28/5/2022",
-//         time: "12:30",
-//         details: "Clinic name, address, meeting with Dr. Name"
-//     },
-//     {
-//         id: "58694a0f-3da1-471f-bd96-145571e29d74",
-//         title: "idk",
-//         complete: false,
-//         date: "28/5/2022",
-//         time: "17:30",
-//         details: "Clinic name, address, meeting with Dr. Name"
-//     },
-//     {
-//         id: "58694a0f-3da1-471f-bd96-145571e29d75",
-//         title: "Reminder",
-//         complete: false,
-//         date: "28/5/2022",
-//         time: "",
-//         details: "",
-//     },
-// ];
+const DATA = [
+    {
+        id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+        title: "Take a walk",
+        complete: true,
+        date: "daily",
+        time: "",
+        details: "Aim for above 15 mins duration",
+    },
+    {
+        id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+        title: "Take medicine",
+        complete: true,
+        date: "daily",
+        time: "10:00",
+        details: "two 50mg tablets",
+    },
+    {
+        id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f64",
+        title: "Take medicine",
+        complete: false,
+        date: "daily",
+        time: "15:00",
+        details: "two 50mg tablets",
+    },
+    {
+        id: "58694a0f-3da1-471f-bd96-145571e29d72",
+        title: "Clinic appointment",
+        complete: false,
+        date: "20/5/2022",
+        time: "16:30",
+        details: "Clinic name, address, meeting with Dr. Name"
+    },
+    {
+        id: "58694a0f-3da1-471f-bd96-145571e29d73",
+        title: "Clinic appointment",
+        complete: false,
+        date: "28/5/2022",
+        time: "12:30",
+        details: "Clinic name, address, meeting with Dr. Name"
+    },
+    {
+        id: "58694a0f-3da1-471f-bd96-145571e29d74",
+        title: "idk",
+        complete: false,
+        date: "28/5/2022",
+        time: "17:30",
+        details: "Clinic name, address, meeting with Dr. Name"
+    },
+    {
+        id: "58694a0f-3da1-471f-bd96-145571e29d75",
+        title: "Reminder",
+        complete: false,
+        date: "28/5/2022",
+        time: "",
+        details: "",
+    },
+];
 
 const storeData = async (value) => {
     try {
@@ -146,7 +147,7 @@ export const RemindersScreen = ({ navigation }) => {
         const onTextLayout = (e) => {
             let { x, y, width, height } = e.nativeEvent.layout;
             height = Math.floor(height) + startingHeight + 15;
-            if (height > startingHeight) {
+            if (height > fullHeight) {
                 setFullHeight(height);
             }
         };
@@ -209,11 +210,13 @@ export const RemindersScreen = ({ navigation }) => {
                         />
                     </View>
                     <Animated.View style={{ opacity: fadeAnim }}>
-                        <Text
-                            style={{ marginVertical: 10, maxWidth: "90%" }}
-                            onLayout={(e) => {
+                        <ScrollView style={{height: 0}}>
+                            <Text onLayout={(e) => {
                                 onTextLayout(e);
-                            }}
+                            }}>{details}</Text>
+                        </ScrollView>
+                        <Text
+                            style={{ marginBottom: 2, maxWidth: '90%' }}
                         >
                             {details}
                         </Text>
@@ -221,7 +224,7 @@ export const RemindersScreen = ({ navigation }) => {
                             style={{
                                 position: "absolute",
                                 right: "1%",
-                                bottom: details ? 6 : 0,
+                                bottom: details ? 3 : 0,
                             }}
                             onPress={() => setUpEditModal()}
                         >
@@ -258,7 +261,11 @@ export const RemindersScreen = ({ navigation }) => {
     const renderDates = ({ item }) => (
         <View style={{ marginBottom: "2%" }}>
             <Text>{item.date}</Text>
-            <hr style={{ width: "100%" }} />
+            <View style={{
+                width: "100%",
+                borderBottomColor: "#EEE",
+                borderBottomWidth: 1,
+            }} />
             <FlatList
                 data={item.rems}
                 renderItem={renderDated}
@@ -274,21 +281,55 @@ export const RemindersScreen = ({ navigation }) => {
         fetchData();
     }, []);
 
-    data.map((reminder) => {
-        if (reminder.date === "daily") {
-            dailyRems.push(reminder);
-        } else {
-            //TODO implement date sorting since this functionality is entirely FE and users can add reminders
-            let dateIndex = datedRems.findIndex(
-                (obj) => obj.date === reminder.date
-            );
-            if (dateIndex === -1) {
-                datedRems.push({ date: reminder.date, rems: [reminder] });
+    if (data !== null) {
+        data.map((reminder) => {
+            if (reminder.date === "daily") {
+                dailyRems.push(reminder);
             } else {
-                datedRems[dateIndex].rems.push(reminder);
+                //TODO implement date sorting since this functionality is entirely FE and users can add reminders
+                let dateIndex = datedRems.findIndex(
+                    (obj) => obj.date === reminder.date
+                );
+                if (dateIndex === -1) {
+                    datedRems.push({ date: reminder.date, rems: [reminder] });
+                } else {
+                    datedRems[dateIndex].rems.push(reminder);
+                }
             }
+        });
+    }
+
+    const saveReminder = async () => {
+        if (isEdit) {
+            const index = data.findIndex(
+                (reminder) => reminder.id === editId
+            );
+            data[index] = {
+                id: editId,
+                title: newTitle,
+                complete: false,
+                time: newTime,
+                date: frequency === 2 ? "daily" : newDate,
+                details: newDescription,
+            };
+            setData(data);
+        } else {
+            setData([
+                ...data,
+                {
+                    id: uuidv4(),
+                    title: newTitle,
+                    complete: false,
+                    time: newTime,
+                    date:
+                        frequency === 2 ? "daily" : newDate,
+                    details: newDescription,
+                },
+            ]);
         }
-    });
+        await storeData(data);
+        clearModal();
+    }
 
     const clearModal = () => {
         setNewTitle("");
@@ -305,7 +346,7 @@ export const RemindersScreen = ({ navigation }) => {
         <View style={{ flex: 1 }}>
             <Modal
                 animationType="slide"
-                transparent="true"
+                transparent={true}
                 visible={isModalVisible}
                 onRequestClose={() => {
                     setModalVisible(!isModalVisible);
@@ -325,14 +366,15 @@ export const RemindersScreen = ({ navigation }) => {
                     <Text style={styles.subHeader}>Description</Text>
                     <TextInput
                         style={styles.largeTextEntry}
-                        multiline="true"
+                        multiline={true}
+                        textAlignVertical='top'
                         value={newDescription}
                         onChangeText={setNewDescription}
                     />
                     <Text style={styles.subHeader}>When</Text>
-                    <div style={{ display: "flex" }}></div>
+                    <View style={{ display: "flex", flexDirection: "row" }}></View>
                     <Text style={styles.subHeader}>Frequency</Text>
-                    <div style={{ display: "flex" }}>
+                    <View style={{ display: "flex", flexDirection: "row" }}>
                         <View style={{ flex: 1, margin: 10 }}>
                             <Pressable
                                 style={[
@@ -375,44 +417,14 @@ export const RemindersScreen = ({ navigation }) => {
                             </Pressable>
                             <Text style={{ margin: "auto" }}>Daily</Text>
                         </View>
-                    </div>
+                    </View>
                     <Pressable
                         style={[
                             styles.wideButton,
                             styles.greenBackground,
                             { margin: 10, marginHorizontal: "30%" },
                         ]}
-                        onPress={async () => {
-                            if (isEdit) {
-                                const index = data.findIndex(
-                                    (reminder) => reminder.id === editId
-                                );
-                                data[index] = {
-                                    id: editId,
-                                    title: newTitle,
-                                    complete: false,
-                                    time: newTime,
-                                    date: frequency === 3 ? "daily" : newDate,
-                                    details: newDescription,
-                                };
-                                setData(data);
-                            } else {
-                                setData([
-                                    ...data,
-                                    {
-                                        id: uuidv4(),
-                                        title: newTitle,
-                                        complete: false,
-                                        time: newTime,
-                                        date:
-                                            frequency === 3 ? "daily" : newDate,
-                                        details: newDescription,
-                                    },
-                                ]);
-                            }
-                            await storeData(data);
-                            clearModal();
-                        }}
+                        onPress={async () => saveReminder()}
                     >
                         <Text
                             style={[
@@ -448,7 +460,9 @@ export const RemindersScreen = ({ navigation }) => {
                                     padding: 8,
                                     marginTop: 50,
                                     marginHorizontal: "auto",
-                                    border: "2 solid #CF3028",
+                                    borderWidth: 2,
+                                    borderStyle: "solid",
+                                    borderColor: "#CF3028",
                                 },
                             ]}
                             onPress={async () => {
@@ -481,7 +495,7 @@ export const RemindersScreen = ({ navigation }) => {
             <View
                 style={[
                     styles.underModal,
-                    { display: isModalVisible ? "block" : "none" },
+                    { display: isModalVisible ? "flex" : "none" },
                 ]}
             />
             <View style={[styles.wideTile, styles.blueBackground]}>
@@ -494,13 +508,12 @@ export const RemindersScreen = ({ navigation }) => {
                     keyExtractor={(item) => item.id}
                 />
             </View>
-            <ScrollView style={styles.wideTile}>
-                <FlatList
-                    data={datedRems}
-                    renderItem={renderDates}
-                    keyExtractor={(item) => item.date}
-                />
-            </ScrollView>
+            <FlatList
+                style={styles.wideTile}
+                data={datedRems}
+                renderItem={renderDates}
+                keyExtractor={(item) => item.date}
+            />
             <View
                 style={{
                     position: "absolute",
@@ -516,8 +529,8 @@ export const RemindersScreen = ({ navigation }) => {
                     }}
                 >
                     <Image
-                        style={{ width: 50, height: 50 }}
-                        source={plusImage}
+                        style={{ width: 500, height: 50 }}
+                        source={require("../public/plus.svg")}
                     />
                 </TouchableOpacity>
             </View>
