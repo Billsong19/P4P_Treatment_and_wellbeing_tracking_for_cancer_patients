@@ -10,7 +10,7 @@ import {
     TextInput,
 } from "react-native";
 import styles from "../styles";
-import Icon from "react-native-vector-icons/Ionicons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { style } from "@mui/system";
 
 export const LibraryScreen = ({ navigation }) => {
@@ -62,14 +62,17 @@ export const LibraryScreen = ({ navigation }) => {
     return (
         <ScrollView style={{ backgroundColor: "white" }}>
             <View style={styles.searchBar}>
-                <Icon name="search" style={{ fontSize: 20, marginEnd: 10 }} />
+                <Ionicons
+                    name="search"
+                    style={{ fontSize: 20, marginEnd: 10 }}
+                />
                 <TextInput
                     placeholder="Search..."
-                    style={{ width: "90%" }}
+                    style={{ width: "85%" }}
                     value={search}
                     onChangeText={setSearch}
                 ></TextInput>
-                <Icon
+                <Ionicons
                     id="removeSearch"
                     name="close"
                     color="#999"

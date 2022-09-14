@@ -24,7 +24,7 @@ import { DetailsScreen } from "./screens/DetailsScreen";
 import { HCPContactScreen } from "./screens/HCPContactScreen.js";
 import { MoreHelpScreen } from "./screens/MoreHelpScreen.js";
 import { ProfileScreen } from "./screens/ProfileScreen.js";
-import Icon from "react-native-vector-icons/Ionicons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -48,7 +48,7 @@ function HomeScreens() {
                                 navigation.navigate("Profile");
                             }}
                         >
-                            <Icon
+                            <Ionicons
                                 name="person-sharp"
                                 style={{
                                     marginTop: 5,
@@ -110,7 +110,7 @@ export default function App() {
                         headerShown: false,
                         tabBarActiveTintColor: "#75A9D9",
                         tabBarIcon: (tabInfo) => (
-                            <Icon
+                            <Ionicons
                                 name="library"
                                 size={24}
                                 color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
@@ -125,7 +125,7 @@ export default function App() {
                         headerShown: false,
                         tabBarActiveTintColor: "#75A9D9",
                         tabBarIcon: (tabInfo) => (
-                            <Icon
+                            <Ionicons
                                 name="home-sharp"
                                 size={24}
                                 color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
@@ -140,7 +140,7 @@ export default function App() {
                         headerShown: false,
                         tabBarActiveTintColor: "#75A9D9",
                         tabBarIcon: (tabInfo) => (
-                            <Icon
+                            <Ionicons
                                 name="list"
                                 size={24}
                                 color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}

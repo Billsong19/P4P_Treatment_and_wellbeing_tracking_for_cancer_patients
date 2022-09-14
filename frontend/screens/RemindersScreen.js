@@ -15,7 +15,7 @@ import {
 import plusImage from "../public/plus.svg";
 import styles from "../styles.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Icon from "react-native-vector-icons/Ionicons";
+import IonIcons from "@expo/vector-icons/Ionicons";
 import { v4 as uuidv4 } from "uuid";
 
 // const DATA = [
@@ -225,7 +225,7 @@ export const RemindersScreen = ({ navigation }) => {
                             }}
                             onPress={() => setUpEditModal()}
                         >
-                            <Icon name="ellipsis-horizontal" size={20} />
+                            <IonIcons name="ellipsis-horizontal" size={20} />
                         </TouchableOpacity>
                     </Animated.View>
                 </Animated.View>
