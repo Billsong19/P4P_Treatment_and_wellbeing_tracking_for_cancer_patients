@@ -1,5 +1,12 @@
 import * as React from "react";
-import { Pressable, StyleSheet, Text, View, Button } from "react-native";
+import {
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
+    Button,
+    ScrollView,
+} from "react-native";
 import styles from "../styles";
 
 export const ProfileScreen = ({ navigation }) => {
@@ -17,7 +24,7 @@ export const ProfileScreen = ({ navigation }) => {
         ],
     };
     return (
-        <View>
+        <ScrollView>
             <View
                 style={[
                     styles.wideTile,
@@ -121,6 +128,6 @@ export const ProfileScreen = ({ navigation }) => {
                     );
                 })}
             </View>
-        </View>
+        </ScrollView>
     );
 };
