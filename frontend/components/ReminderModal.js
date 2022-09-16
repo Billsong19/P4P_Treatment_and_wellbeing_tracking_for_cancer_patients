@@ -1,128 +1,141 @@
 import * as React from "react";
 import {
-    FlatList,
-    Animated,
-    Text,
-    View,
-    ScrollView,
-    Modal,
-    Image,
-    TouchableOpacity,
-    TextInput,
-    Pressable,
+  FlatList,
+  Animated,
+  Text,
+  View,
+  ScrollView,
+  Modal,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  Pressable,
 } from "react-native";
 import styles from "../styles.js";
-import CheckBox from '@react-native-community/checkbox';
+import CheckBox from "@react-native-community/checkbox";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import DatePicker from "react-native-date-picker";
+import DatePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 
 const storeData = async (value) => {
-    try {
-        const jsonValue = JSON.stringify(value);
-        await AsyncStorage.setItem("@reminders", jsonValue);
-    } catch (e) {
-        console.log(e);
-    }
+  try {
+    const jsonValue = JSON.stringify(value);
+    await AsyncStorage.setItem("@reminders", jsonValue);
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export default ReminderModal = (props) => {
-    const [dateTime, setDateTime] = React.useState(new Date());
+  const [dateTime, setDateTime] = React.useState(new Date());
 
-    const clearModal = () => {
-        props.setNewTitle("");
-        props.setNewDescription("");
-        props.setNewFrequency(0);
-        props.setEditId(-1);
-        props.setEdit(false);
-        props.setModalVisible(!props.isModalVisible);
-        setDateTime(new Date());
-    };
+  const clearModal = () => {
+    props.setNewTitle("");
+    props.setNewDescription("");
+    props.setNewFrequency(0);
+    props.setEditId(-1);
+    props.setEdit(false);
+    props.setModalVisible(!props.isModalVisible);
+    setDateTime(new Date());
+  };
 
-    const saveReminder = async (data, setData) => {
-        let tempRems = [...props.data];
-        if (props.isEdit) {
-            const index = data.findIndex(
-                (reminder) => reminder.id === props.editId
-            );
-            tempRems[index] = {
-                id: props.editId,
-                title: props.newTitle,
-                complete: false,
-                frequency: props.newFrequency,
-                date: dayjs(dateTime).format("YYYY/MM/DD"),
-                time: dayjs(dateTime).format("HH:mm"),
-                details: props.newDescription,
-            };
-        } else {
-            tempRems.push({
-                id: uuidv4(),
-                title: props.newTitle,
-                complete: false,
-                frequency: props.newFrequency,
-                date: dayjs(dateTime).format("YYYY/MM/DD"),
-                time: dayjs(dateTime).format("HH:mm"),
-                details: props.newDescription,
-            })
-        }
-        setData(tempRems);
-        await storeData(tempRems);
-        clearModal();
+  const saveReminder = async (data, setData) => {
+    let tempRems = [...props.data];
+    if (props.isEdit) {
+      const index = data.findIndex((reminder) => reminder.id === props.editId);
+      tempRems[index] = {
+        id: props.editId,
+        title: props.newTitle,
+        complete: false,
+        frequency: props.newFrequency,
+        date: dayjs(dateTime).format("YYYY/MM/DD"),
+        time: dayjs(dateTime).format("HH:mm"),
+        details: props.newDescription,
+      };
+    } else {
+      tempRems.push({
+        id: uuidv4(),
+        title: props.newTitle,
+        complete: false,
+        frequency: props.newFrequency,
+        date: dayjs(dateTime).format("YYYY/MM/DD"),
+        time: dayjs(dateTime).format("HH:mm"),
+        details: props.newDescription,
+      });
     }
+    setData(tempRems);
+    await storeData(tempRems);
+    clearModal();
+  };
 
-    React.useEffect(() => {
-        if (props.editId == -1) {
-            setDateTime(new Date());
-        } else if (props.newDate !== "" && dayjs(props.newDate + " " + props.newTime).isValid()) {
-            setDateTime(new Date(dayjs(props.newDate + " " + props.newTime)));
-        } else if (props.newTime !== "" && dayjs(dayjs().format("YYYY-MM-DD") + " " + props.newTime).isValid()) {
-            setDateTime(new Date(dayjs(dayjs().format("YYYY-MM-DD") + " " + props.newTime)));
-        } else {
-            setDateTime(new Date());
-        }
-    }, [props.editId]);
+  React.useEffect(() => {
+    if (props.editId == -1) {
+      setDateTime(new Date());
+    } else if (
+      props.newDate !== "" &&
+      dayjs(props.newDate + " " + props.newTime).isValid()
+    ) {
+      setDateTime(new Date(dayjs(props.newDate + " " + props.newTime)));
+    } else if (
+      props.newTime !== "" &&
+      dayjs(dayjs().format("YYYY-MM-DD") + " " + props.newTime).isValid()
+    ) {
+      setDateTime(
+        new Date(dayjs(dayjs().format("YYYY-MM-DD") + " " + props.newTime))
+      );
+    } else {
+      setDateTime(new Date());
+    }
+  }, [props.editId]);
 
-    return (
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={props.isModalVisible}
-            onRequestClose={() => {
-                setModalVisible(!props.isModalVisible);
-            }}
+  return (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={props.isModalVisible}
+      onRequestClose={() => {
+        setModalVisible(!props.isModalVisible);
+      }}
+    >
+      <ScrollView style={styles.modalBase}>
+        <Text style={[styles.mainHeader, { marginBottom: "4%" }]}>
+          {props.isEdit ? "Edit Reminder" : "Add New Reminder"}
+        </Text>
+        <Text style={styles.subHeader}>Title</Text>
+        <TextInput
+          id="TitleInput"
+          style={styles.textEntry}
+          value={props.newTitle}
+          onChangeText={props.setNewTitle}
+        />
+        <Text style={styles.subHeader}>Description</Text>
+        <TextInput
+          style={styles.largeTextEntry}
+          multiline={true}
+          textAlignVertical="top"
+          value={props.newDescription}
+          onChangeText={props.setNewDescription}
+        />
+        <Text style={styles.subHeader}>When</Text>
+        <View
+          style={{ display: "flex", flexDirection: "column", width: "100%" }}
         >
-            <ScrollView style={styles.modalBase}>
-                <Text style={[styles.mainHeader, { marginBottom: "4%" }]}>
-                    {props.isEdit ? "Edit Reminder" : "Add New Reminder"}
-                </Text>
-                <Text style={styles.subHeader}>Title</Text>
-                <TextInput
-                    id="TitleInput"
-                    style={styles.textEntry}
-                    value={props.newTitle}
-                    onChangeText={props.setNewTitle}
-                />
-                <Text style={styles.subHeader}>Description</Text>
-                <TextInput
-                    style={styles.largeTextEntry}
-                    multiline={true}
-                    textAlignVertical="top"
-                    value={props.newDescription}
-                    onChangeText={props.setNewDescription}
-                />
-                <Text style={styles.subHeader}>When</Text>
-                <View style={{ display: "flex", flexDirection: "column", width: '100%' }}>
-                    <DatePicker
-                        style={props.newFrequency === 1 ? {alignSelf: "flex-start"} : {alignSelf: "center"}}
-                        date={dateTime}
-                        mode={props.newFrequency == 0 ? "datetime" : "time"}
-                        onDateChange={(date) => {
-                            setDateTime(date)
-                        }}
-                        />
-                    {/* {props.newFrequency === 1
+          <DatePicker
+            style={
+              props.newFrequency === 1
+                ? { alignSelf: "flex-start" }
+                : { alignSelf: "center" }
+            }
+            value={new Date()}
+            date={dateTime}
+            mode={props.newFrequency == 0 ? "datetime" : "time"}
+            onDateChange={(date) => {
+              setDateTime(date);
+            }}
+          />
+          {/* {props.newFrequency === 1
                         ? <View>
                             <View>
                                 <Text>M</Text>
@@ -136,125 +149,112 @@ export default ReminderModal = (props) => {
                             </View>
                         </View>
                         : null} */}
-                </View>
-                <Text style={styles.subHeader}>Frequency</Text>
-                <View style={{ display: "flex", flexDirection: "row" }}>
-                    <View style={{ flex: 1, margin: 10 }}>
-                        <Pressable
-                            style={[
-                                styles.emptyRadioButton,
-                                styles.blueBorder,
-                            ]}
-                            onPress={() => props.setNewFrequency(0)}
-                        >
-                            {props.newFrequency == 0 ? (
-                                <View style={styles.radioFill} />
-                            ) : null}
-                        </Pressable>
-                        <Text style={{ alignSelf: "center" }}>Once</Text>
-                    </View>
-                    <View style={{ flex: 1, margin: 10 }}>
-                        <Pressable
-                            style={[
-                                styles.emptyRadioButton,
-                                styles.blueBorder,
-                            ]}
-                            onPress={() => props.setNewFrequency(1)}
-                        >
-                            {props.newFrequency == 1 ? (
-                                <View style={styles.radioFill} />
-                            ) : null}
-                        </Pressable>
-                        <Text style={{ alignSelf: "center" }}>Weekly</Text>
-                    </View>
-                    <View style={{ flex: 1, margin: 10 }}>
-                        <Pressable
-                            style={[
-                                styles.emptyRadioButton,
-                                styles.blueBorder,
-                            ]}
-                            onPress={() => props.setNewFrequency(2)}
-                        >
-                            {props.newFrequency == 2 ? (
-                                <View style={styles.radioFill} />
-                            ) : null}
-                        </Pressable>
-                        <Text style={{ alignSelf: "center" }}>Daily</Text>
-                    </View>
-                </View>
-                <Pressable
-                    style={[
-                        styles.wideButton,
-                        styles.greenBackground,
-                        { margin: 10, marginHorizontal: "30%" },
-                    ]}
-                    onPress={() => saveReminder(props.data, props.setData)}
-                >
-                    <Text
-                        style={[
-                            styles.mainHeader,
-                            { alignSelf: "center" },
-                        ]}
-                    >
-                        {props.isEdit ? "Save" : "Add"}
-                    </Text>
-                </Pressable>
-                <Pressable
-                    style={[
-                        styles.wideButton,
-                        styles.orangeBackground,
-                        { margin: 10, marginHorizontal: "30%" },
-                    ]}
-                    onPress={() => clearModal()}
-                >
-                    <Text
-                        style={{
-                            fontSize: 16,
-                            alignSelf: "center",
-                        }}
-                    >
-                        Cancel
-                    </Text>
-                </Pressable>
-                {props.isEdit ? (
-                    <Pressable
-                        style={[styles.wideButton,
-                            {
-                                borderRadius: 4,
-                                padding: 8,
-                                marginTop: 50,
-                                marginHorizontal: "30%",
-                                borderWidth: 2,
-                                borderStyle: "solid",
-                                borderColor: "#CF3028",
-                            },
-                        ]}
-                        onPress={async () => {
-                            let tempRems = [...props.data];
-                            let index = tempRems.findIndex(
-                                (reminder) => reminder.id === props.editId
-                            );
-                            if (index !== -1) tempRems.splice(index, 1);
-                            props.setData(tempRems);
-                            clearModal();
-                            await storeData(tempRems);
-                        }}
-                    >
-                        <Text
-                            style={[
-                                styles.subHeader,
-                                {
-                                    fontSize: 16,
-                                    alignSelf: "center",
-                                    color: "#CF3028",
-                                },
-                            ]}
-                        >
-                            Delete
-                        </Text>
-                    </Pressable>
-                ) : null}
-            </ScrollView>
-        </Modal>
-    )
-}
+        </View>
+        <Text style={styles.subHeader}>Frequency</Text>
+        <View style={{ display: "flex", flexDirection: "row" }}>
+          <View style={{ flex: 1, margin: 10 }}>
+            <Pressable
+              style={[styles.emptyRadioButton, styles.blueBorder]}
+              onPress={() => props.setNewFrequency(0)}
+            >
+              {props.newFrequency == 0 ? (
+                <View style={styles.radioFill} />
+              ) : null}
+            </Pressable>
+            <Text style={{ alignSelf: "center" }}>Once</Text>
+          </View>
+          <View style={{ flex: 1, margin: 10 }}>
+            <Pressable
+              style={[styles.emptyRadioButton, styles.blueBorder]}
+              onPress={() => props.setNewFrequency(1)}
+            >
+              {props.newFrequency == 1 ? (
+                <View style={styles.radioFill} />
+              ) : null}
+            </Pressable>
+            <Text style={{ alignSelf: "center" }}>Weekly</Text>
+          </View>
+          <View style={{ flex: 1, margin: 10 }}>
+            <Pressable
+              style={[styles.emptyRadioButton, styles.blueBorder]}
+              onPress={() => props.setNewFrequency(2)}
+            >
+              {props.newFrequency == 2 ? (
+                <View style={styles.radioFill} />
+              ) : null}
+            </Pressable>
+            <Text style={{ alignSelf: "center" }}>Daily</Text>
+          </View>
+        </View>
+        <Pressable
+          style={[
+            styles.wideButton,
+            styles.greenBackground,
+            { margin: 10, marginHorizontal: "30%" },
+          ]}
+          onPress={() => saveReminder(props.data, props.setData)}
+        >
+          <Text style={[styles.mainHeader, { alignSelf: "center" }]}>
+            {props.isEdit ? "Save" : "Add"}
+          </Text>
+        </Pressable>
+        <Pressable
+          style={[
+            styles.wideButton,
+            styles.orangeBackground,
+            { margin: 10, marginHorizontal: "30%" },
+          ]}
+          onPress={() => clearModal()}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              alignSelf: "center",
+            }}
+          >
+            Cancel
+          </Text>
+        </Pressable>
+        {props.isEdit ? (
+          <Pressable
+            style={[
+              styles.wideButton,
+              {
+                borderRadius: 4,
+                padding: 8,
+                marginTop: 50,
+                marginHorizontal: "30%",
+                borderWidth: 2,
+                borderStyle: "solid",
+                borderColor: "#CF3028",
+              },
+            ]}
+            onPress={async () => {
+              let tempRems = [...props.data];
+              let index = tempRems.findIndex(
+                (reminder) => reminder.id === props.editId
+              );
+              if (index !== -1) tempRems.splice(index, 1);
+              props.setData(tempRems);
+              clearModal();
+              await storeData(tempRems);
+            }}
+          >
+            <Text
+              style={[
+                styles.subHeader,
+                {
+                  fontSize: 16,
+                  alignSelf: "center",
+                  color: "#CF3028",
+                },
+              ]}
+            >
+              Delete
+            </Text>
+          </Pressable>
+        ) : null}
+      </ScrollView>
+    </Modal>
+  );
+};
