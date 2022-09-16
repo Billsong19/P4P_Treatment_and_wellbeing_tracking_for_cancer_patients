@@ -134,7 +134,7 @@ export default Reminder = ({ id, title, time, details, complete, frequency, date
                             right: "1%",
                             bottom: details ? 3 : 0,
                         }}
-                        onPress={() => setUpEditModal({title, details, time, frequency, id})}
+                        onPress={() => setUpEditModal({title, details, date, time, frequency, id})}
                     >
                         <IonIcons name="ellipsis-horizontal" size={20} />
                     </TouchableOpacity>

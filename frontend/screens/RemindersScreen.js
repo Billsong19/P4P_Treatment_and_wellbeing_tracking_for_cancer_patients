@@ -17,6 +17,7 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from "uuid";
 import Reminder from "../components/Reminder";
 import ReminderModal from "../components/ReminderModal.js";
+import dayjs from "dayjs";
 
 const DATA = [
     {
@@ -52,7 +53,7 @@ const DATA = [
         title: "Clinic appointment",
         complete: false,
         frequency: 0,
-        date: "20/5/2022",
+        date: "2022-5-22",
         time: "16:30",
         details: "Clinic name, address, meeting with Dr. Name"
     },
@@ -61,7 +62,7 @@ const DATA = [
         title: "Clinic appointment",
         complete: false,
         frequency: 0,
-        date: "28/5/2022",
+        date: "2022-5-28",
         time: "12:30",
         details: "Clinic name, address, meeting with Dr. Name"
     },
@@ -70,7 +71,7 @@ const DATA = [
         title: "idk",
         complete: false,
         frequency: 0,
-        date: "28/5/2022",
+        date: "2022-7-1",
         time: "17:30",
         details: "Clinic name, address, meeting with Dr. Name"
     },
@@ -79,7 +80,7 @@ const DATA = [
         title: "Reminder",
         complete: false,
         frequency: 1,
-        date: "28/5/2022",
+        date: "2022-8-2",
         time: "",
         details: "",
     },
@@ -100,19 +101,20 @@ export const RemindersScreen = ({ navigation }) => {
     const [newFrequency, setNewFrequency] = React.useState(0);
     const [newTitle, setNewTitle] = React.useState("");
     const [newDescription, setNewDescription] = React.useState("");
-    const [newTime, setNewTime] = React.useState("00:00");
-    const [newDate, setNewDate] = React.useState("1/1/2022");
+    const [newTime, setNewTime] = React.useState("");
+    const [newDate, setNewDate] = React.useState("");
     const [isEdit, setEdit] = React.useState(false);
     const [editId, setEditId] = React.useState(-1);
 
     const dailyRems = []; //an array of reminders for storing 'daily' reminders
     const datedRems = []; //an array that stores [key: date, value: [array of relevant reminders]] pairs
 
-    const setUpEditModal = ({title, details, time, frequency, id}) => {
+    const setUpEditModal = ({title, details, date, time, frequency, id}) => {
         setEdit(true);
         setNewTitle(title);
         setNewDescription(details);
         setNewFrequency(frequency);
+        setNewDate(date);
         setNewTime(time);
         setEditId(id);
         setModalVisible(!isModalVisible);

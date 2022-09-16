@@ -151,56 +151,6 @@ const styles = StyleSheet.create({
         borderRightWidth: 20,
         borderRightColor: `${bmOrange}`,
     },
-    likertButton: {
-        height: 30,
-        width: 45,
-        borderRadius: 4,
-        backgroundColor: "#E9E9E9",
-    },
-    likert1: {
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: '#FD7070',
-    },
-    likert1s: {
-        backgroundColor: "#FD7070",
-    },
-    likert2: {
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: `${bmOrange}`,
-    },
-    likert3: {
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: '#FFD39F',
-    },
-    likert3s: {
-        backgroundColor: "#FFD39F",
-    },
-    likert4: {
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: `${bmYellow}`,
-    },
-    likert5: {
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: '#D9F3A3',
-    },
-    likert5s: {
-        backgroundColor: "#D9F3A3",
-    },
-    likert6: {
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: `${bmGreen}`,
-    },
-    likert7: {
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: `${bmTeal}`,
-    },
     textEntry: {
         borderWidth: 1,
         borderStyle: 'solid',
@@ -245,7 +195,7 @@ const styles = StyleSheet.create({
         height: 24,
         width: 24,
         borderRadius: 12,
-        margin: "auto",
+        alignSelf: 'center',
         display: "flex",
     },
     dailyReminder: {
@@ -262,7 +212,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderStyle: 'solid',
         borderColor: '#999',
-        marginTop: "10%",
+        marginTop: "2%",
         marginHorizontal: "4%",
         backgroundColor: "#FFF",
         height: "95%",
