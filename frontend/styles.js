@@ -241,6 +241,15 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         display: "flex",
     },
+    dateButton: {
+        padding: 8,
+        margin: 5,
+        alignSelf: "center",
+        borderRadius: 4,
+        borderWidth: 1,
+        borderStyle: 'solid',
+        borderColor: '#DDD',
+    }
 });
 
 export default styles;

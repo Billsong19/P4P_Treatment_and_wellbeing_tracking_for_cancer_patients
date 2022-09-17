@@ -1,12 +1,9 @@
 import * as React from "react";
 import {
-  FlatList,
-  Animated,
   Text,
   View,
   ScrollView,
   Modal,
-  Image,
   TouchableOpacity,
   TextInput,
   Pressable,
@@ -16,7 +13,7 @@ import CheckBox from "@react-native-community/checkbox";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
-import DatePicker from "@react-native-community/datetimepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 
 const storeData = async (value) => {
@@ -30,6 +27,8 @@ const storeData = async (value) => {
 
 export default ReminderModal = (props) => {
   const [dateTime, setDateTime] = React.useState(new Date());
+  const [pickerMode, setPickerMode] = React.useState("date");
+  const [pickerVisible, setPickerVisible] = React.useState(false);
 
   const clearModal = () => {
     props.setNewTitle("");
@@ -70,6 +69,21 @@ export default ReminderModal = (props) => {
     clearModal();
   };
 
+  const onPickerChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setPickerVisible(false);
+    setDateTime(currentDate);
+  };
+
+  const showPicker = (mode) => {
+    if (Platform.OS === 'android') {
+      setPickerVisible(false);
+      // for iOS, add a button that closes the picker
+    }
+    setPickerMode(mode);
+    setPickerVisible(true);
+  };
+
   React.useEffect(() => {
     if (props.editId == -1) {
       setDateTime(new Date());
@@ -88,6 +102,7 @@ export default ReminderModal = (props) => {
     } else {
       setDateTime(new Date());
     }
+    console.log(dateTime)
   }, [props.editId]);
 
   return (
@@ -120,21 +135,38 @@ export default ReminderModal = (props) => {
         />
         <Text style={styles.subHeader}>When</Text>
         <View
-          style={{ display: "flex", flexDirection: "column", width: "100%" }}
+          style={{ display: "flex", flexDirection: "row", justifyContent: "center" }}
         >
-          <DatePicker
+          <TouchableOpacity
+            onPress={() => {showPicker("time")}}
+            style={styles.dateButton}
+          >
+            <Text style={styles.subHeader}>
+              {dayjs(dateTime).format("HH:mm")}
+            </Text>
+          </TouchableOpacity>
+          {props.newFrequency === 0 && 
+          <TouchableOpacity
+            onPress={() => {showPicker("date")}}
+            style={styles.dateButton}
+          >
+            <Text style={styles.subHeader}>
+              {dayjs(dateTime).format("ddd D MMM YYYY")}
+            </Text>
+          </TouchableOpacity>
+          }
+          {pickerVisible && 
+          <DateTimePicker
             style={
               props.newFrequency === 1
                 ? { alignSelf: "flex-start" }
                 : { alignSelf: "center" }
             }
-            value={new Date()}
-            date={dateTime}
-            mode={props.newFrequency == 0 ? "datetime" : "time"}
-            onDateChange={(date) => {
-              setDateTime(date);
-            }}
+            value={dateTime}
+            mode={pickerMode}
+            onChange={onPickerChange}
           />
+          }
           {/* {props.newFrequency === 1
                         ? <View>
                             <View>
