@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import styles from "../styles.js";
 import IonIcons from "@expo/vector-icons/Ionicons";
-import CheckBox from '@react-native-community/checkbox';
+import CheckBox from 'expo-checkbox';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setUpEditModal } from "./ReminderModal.js";
 
@@ -106,8 +106,8 @@ export default Reminder = ({ id, title, time, details, complete, frequency, date
                 }
             >
                 <View style={{ flexDirection: "row" }}>
-                    <Text style={{ flex: 2 }}>{title}</Text>
-                    <Text style={{ flex: 1 }}>{time}</Text>
+                    <Text style={{ flex: 2, fontSize: 18 }}>{title}</Text>
+                    <Text style={{ flex: 1, fontSize: 18 }}>{time}</Text>
                     <CheckBox
                         value={isComplete}
                         style={styles.remindersCheck}
@@ -124,7 +124,7 @@ export default Reminder = ({ id, title, time, details, complete, frequency, date
                         }}>{details}</Text>
                     </ScrollView>
                     <Text
-                        style={{ marginBottom: 2, maxWidth: '90%' }}
+                        style={{ marginBottom: 2, maxWidth: '90%', marginTop: 4 }}
                     >
                         {details}
                     </Text>
@@ -132,7 +132,7 @@ export default Reminder = ({ id, title, time, details, complete, frequency, date
                         style={{
                             position: "absolute",
                             right: "1%",
-                            bottom: details ? 3 : 0,
+                            bottom: -4,
                         }}
                         onPress={() => setUpEditModal({title, details, date, time, frequency, id})}
                     >

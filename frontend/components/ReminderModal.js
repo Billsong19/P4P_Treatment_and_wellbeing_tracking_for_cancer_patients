@@ -9,7 +9,7 @@ import {
   Pressable,
 } from "react-native";
 import styles from "../styles.js";
-import CheckBox from "@react-native-community/checkbox";
+import { CheckBox } from "expo-checkbox";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
@@ -41,7 +41,7 @@ export default ReminderModal = (props) => {
   };
 
   const saveReminder = async (data, setData) => {
-    let tempRems = [...props.data];
+    let tempRems = (props.data == null) ? [] : [...props.data];
     if (props.isEdit) {
       const index = data.findIndex((reminder) => reminder.id === props.editId);
       tempRems[index] = {
@@ -102,7 +102,6 @@ export default ReminderModal = (props) => {
     } else {
       setDateTime(new Date());
     }
-    console.log(dateTime)
   }, [props.editId]);
 
   return (

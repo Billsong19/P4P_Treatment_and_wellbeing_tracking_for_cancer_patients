@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(0,0,0,0)",
         marginEnd: 5,
         position: "relative",
-        bottom: 6,
+        bottom: 0,
     },
     searchBar: {
         margin: "1%",
