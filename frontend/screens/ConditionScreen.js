@@ -1,10 +1,13 @@
+import { maxHeight } from "@mui/system";
 import * as React from "react";
 import {
     Text,
     ScrollView,
+    View,
     Pressable,
     Image,
     TouchableHighlight,
+    StyleSheet,
 } from "react-native";
 import styles from "../styles";
 
@@ -12,18 +15,21 @@ export const ConditionScreen = ({ navigation, route }) => {
     return (
         <ScrollView
             style={{
-                height: "100%",
                 backgroundColor: "rgba(255,255,255,1)",
-                paddingBottom: 40,
             }}
+            contentContainerStyle={{ flexGrow: 1 }}
         >
+            
             <Text style={{ fontSize: 20, margin: 20 }}>
                 {route.params.condition}
             </Text>
-            <Image
-                source={require("../public/bowel.jpg")}
-                style={{ width: "80%", height: "20%", margin: "auto" }}
-            />
+            <View style={{maxHeight: 200}}>
+                <Image
+                    source={require("../public/bowel.jpg")}
+                    resizeMode="cover"
+                    style={{ width: "100%", maxHeight: 200 }}
+                />
+            </View>
             <TouchableHighlight
                 underlayColor={"#EEE"}
                 style={[styles.conditionButton, styles.blueSide]}
@@ -70,7 +76,7 @@ export const ConditionScreen = ({ navigation, route }) => {
                     })
                 }
             >
-                <Text>Early Stages</Text>
+                <Text style={styles.subHeader2}>Early Stages</Text>
             </TouchableHighlight>
             <TouchableHighlight
                 underlayColor={"#EEE"}
@@ -82,7 +88,7 @@ export const ConditionScreen = ({ navigation, route }) => {
                     })
                 }
             >
-                <Text>Development and Complications</Text>
+                <Text style={styles.subHeader2}>Development and Complications</Text>
             </TouchableHighlight>
             <TouchableHighlight
                 underlayColor={"#EEE"}

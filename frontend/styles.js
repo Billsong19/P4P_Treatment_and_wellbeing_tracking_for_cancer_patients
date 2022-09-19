@@ -1,4 +1,3 @@
-import React from "react";
 import { StyleSheet } from "react-native";
 
 export const bmBlue = "#75A9D9";
@@ -64,11 +63,11 @@ const styles = StyleSheet.create({
     },
     libraryButton: {
         marginHorizontal: "2%",
-        marginVertical: "1%",
-        padding: "1%",
-        height: 50,
-        display: "flex",
-        flexDirection: "row",
+        padding: 20,
+        height: 65,
+        borderBottomWidth: 1,
+        borderColor: "#DDD",
+
     },
     conditionButton: {
         marginVertical: "1%",
@@ -77,8 +76,9 @@ const styles = StyleSheet.create({
     },
     conditionSubButton: {
         padding: "1%",
+        marginVertical: "0.5%",
         backgroundColor: "rgba(255,255,255,0.8)",
-        width: "80%",
+        width: "90%",
         alignSelf: "flex-end",
     },
     reminderButton: {
@@ -88,27 +88,27 @@ const styles = StyleSheet.create({
     },
     blueBorder: {
         borderWidth: 2,
-        borderStyle: 'solid',
+        borderStyle: "solid",
         borderColor: `${bmBlue}`,
     },
     tealBorder: {
         borderWidth: 2,
-        borderStyle: 'solid',
+        borderStyle: "solid",
         borderColor: `${bmTeal}`,
     },
     greenBorder: {
         borderWidth: 2,
-        borderStyle: 'solid',
+        borderStyle: "solid",
         borderColor: `${bmGreen}`,
     },
     yellowBorder: {
         borderWidth: 2,
-        borderStyle: 'solid',
+        borderStyle: "solid",
         borderColor: `${bmYellow}`,
     },
     orangeBorder: {
         borderWidth: 2,
-        borderStyle: 'solid',
+        borderStyle: "solid",
         borderColor: `${bmOrange}`,
     },
     blueDivider: {
@@ -153,16 +153,16 @@ const styles = StyleSheet.create({
     },
     textEntry: {
         borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: '#888',
+        borderStyle: "solid",
+        borderColor: "#888",
         marginVertical: 10,
         padding: 2,
         backgroundColor: "#FFF",
     },
     largeTextEntry: {
         borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: '#888',
+        borderStyle: "solid",
+        borderColor: "#888",
         marginVertical: 10,
         height: 60,
         padding: 4,
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     smallButton: {
         width: 30,
         height: 30,
-        margin: "auto",
+        alignSelf: "center",
         borderRadius: 4,
     },
     dot: {
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
         height: 24,
         width: 24,
         borderRadius: 12,
-        alignSelf: 'center',
+        alignSelf: "center",
         display: "flex",
     },
     dailyReminder: {
@@ -210,8 +210,8 @@ const styles = StyleSheet.create({
     },
     modalBase: {
         borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: '#999',
+        borderStyle: "solid",
+        borderColor: "#999",
         marginTop: "2%",
         marginHorizontal: "4%",
         backgroundColor: "#FFF",
@@ -229,15 +229,15 @@ const styles = StyleSheet.create({
     remindersCheck: {
         backgroundColor: "rgba(0,0,0,0)",
         marginEnd: 5,
-        position: 'relative',
+        position: "relative",
         bottom: 6,
     },
     searchBar: {
         margin: "1%",
         borderRadius: 4,
         borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: '#DDD',
+        borderStyle: "solid",
+        borderColor: "#DDD",
         flexDirection: "row",
         display: "flex",
     },
@@ -247,8 +247,8 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         borderRadius: 4,
         borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: '#DDD',
+        borderStyle: "solid",
+        borderColor: "#DDD",
     }
 });
 

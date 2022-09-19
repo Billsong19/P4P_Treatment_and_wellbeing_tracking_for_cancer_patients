@@ -50,9 +50,9 @@ function HomeScreens() {
                         >
                             <Ionicons
                                 name="person-sharp"
+                                size={24}
                                 style={{
-                                    marginTop: 5,
-                                    marginRight: 10,
+                                    margin: 5
                                 }}
                             />
                         </TouchableOpacity>

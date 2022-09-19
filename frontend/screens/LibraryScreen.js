@@ -5,6 +5,7 @@ import {
     Text,
     View,
     Pressable,
+    StyleSheet,
     ScrollView,
     TouchableHighlight,
     TextInput,
@@ -60,7 +61,11 @@ export const LibraryScreen = ({ navigation }) => {
     }, [search]);
 
     return (
-        <ScrollView style={{ backgroundColor: "white" }}>
+        <ScrollView
+            style={{ backgroundColor: "white", flex: 1}}
+            contentContainerStyle={{ flexGrow: 1 }}
+            alwaysBounceVertical={true}
+        >
             <View style={styles.searchBar}>
                 <Ionicons
                     name="search"
@@ -92,20 +97,19 @@ export const LibraryScreen = ({ navigation }) => {
                 style={[
                     styles.wideTile,
                     styles.blueDivider,
-                    { marginTop: "2%", alignSelf: "flex-start" },
+                    { marginTop: "2%", alignSelf: "flex-start", width: "96%", maxHeight: 200 },
                 ]}
             >
-                <View>
+                <View style={{ width: "100%" }}>
                     <Image
                         source={require("../public/bowel.jpg")}
                         resizeMode="cover"
                         style={{
-                            width: "90%",
-                            height: "25%",
-                            display: "flex",
+                            width: "100%",
+                            maxHeight: 160,
                         }}
                     />
-                    <Text>Bowel Cancer</Text>
+                    <Text style={{fontSize: 18}}>Bowel Cancer</Text>
                 </View>
             </TouchableOpacity>
             {filteredData.map((cancer, index) => {
@@ -123,8 +127,6 @@ export const LibraryScreen = ({ navigation }) => {
                         <Text
                             style={[
                                 styles.subHeader,
-                                styles.libraryButton,
-                                { marginVertical: "auto" },
                             ]}
                         >
                             {cancer.type}

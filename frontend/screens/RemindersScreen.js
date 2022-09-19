@@ -18,6 +18,7 @@ import { v4 as uuidv4 } from "uuid";
 import Reminder from "../components/Reminder";
 import ReminderModal from "../components/ReminderModal.js";
 import dayjs from "dayjs";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const DATA = [
     {
@@ -109,6 +110,30 @@ export const RemindersScreen = ({ navigation }) => {
     const dailyRems = []; //an array of reminders for storing 'daily' reminders
     const datedRems = []; //an array that stores [key: date, value: [array of relevant reminders]] pairs
 
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+          headerRight: () => (
+            <TouchableOpacity
+                onPress={() => {
+                    setModalVisible(!isModalVisible);
+                }}
+            >
+                <Ionicons
+                    name="add"
+                    size={36}
+                />
+            </TouchableOpacity>
+          ),
+        });
+      }, [navigation]);
+
+      React.useEffect(() => {
+        const fetchData = async () => {
+            setData(await getData());
+        };
+        fetchData();
+    }, []);
+
     const setUpEditModal = ({title, details, date, time, frequency, id}) => {
         setEdit(true);
         setNewTitle(title);
@@ -150,13 +175,6 @@ export const RemindersScreen = ({ navigation }) => {
             />
         </View>
     );
-
-    React.useEffect(() => {
-        const fetchData = async () => {
-            setData(await getData());
-        };
-        fetchData();
-    }, []);
 
     if (data !== null) {
         data.map((reminder) => {
@@ -204,7 +222,7 @@ export const RemindersScreen = ({ navigation }) => {
                     { display: isModalVisible ? "flex" : "none" },
                 ]}
             />
-            <View style={[styles.wideTile, styles.blueBackground]}>
+            <View style={[styles.wideTile, styles.blueBackground, {marginTop: 5}]}>
                 <Text style={[styles.subHeader, { color: "#FFF" }]}>
                     Daily Reminders
                 </Text>
@@ -229,16 +247,6 @@ export const RemindersScreen = ({ navigation }) => {
                     marginRight: 10,
                 }}
             >
-                <TouchableOpacity
-                    onPress={() => {
-                        setModalVisible(!isModalVisible);
-                    }}
-                >
-                    <Image
-                        style={{ width: 500, height: 50 }}
-                        source={require("../public/plus.svg")}
-                    />
-                </TouchableOpacity>
             </View>
         </View>
     );

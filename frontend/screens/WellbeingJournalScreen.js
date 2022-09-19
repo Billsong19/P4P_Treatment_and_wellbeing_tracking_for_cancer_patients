@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Pressable, Text, TextInput, View, ScrollView } from "react-native";
+import { TouchableOpacity, Text, TextInput, View, ScrollView } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import LikertButtons from "../components/LikertButtons";
 import styles, { bmBlue } from "../styles";
@@ -34,11 +34,15 @@ export const WellbeingJournalScreen = ({ navigation }) => {
                 <Text style={[styles.subHeader2, { marginVertical: 10 }]}>
                     Do you have any notable symptoms?
                 </Text>
-                <Pressable style={[styles.wideTile, styles.blueBorder]}>
+                <TouchableOpacity 
+                    style={[styles.wideTile, styles.blueBorder]}
+                    onPress={() => {
+                        setSymptoms([["mild", "nausea"], ["mild", "headache"]])
+                    }}>
                     <Text style={{ color: bmBlue }}>
                         Same as yesterday: mild nausea, mild headache
                     </Text>
-                </Pressable>
+                </TouchableOpacity>
                 <View style={{ display: "flex", flexDirection: "row" }}>
                     <TextInput
                         id="symptomInput"
@@ -53,7 +57,7 @@ export const WellbeingJournalScreen = ({ navigation }) => {
                         onChangeText={setInputSymptom}
                     />
                     <Dropdown
-                        style={{ marginEnd: 10 }}
+                        style={{ marginEnd: 10, width: 150 }}
                         value={inputSeverity}
                         labelField="label"
                         valueField="value"
@@ -65,7 +69,7 @@ export const WellbeingJournalScreen = ({ navigation }) => {
                             setOpen(false);
                         }}
                     />
-                    <Pressable
+                    <TouchableOpacity
                         style={[
                             styles.smallButton,
                             styles.tealBackground,
@@ -85,14 +89,14 @@ export const WellbeingJournalScreen = ({ navigation }) => {
                         <Text
                             style={{
                                 fontSize: 20,
-                                marginHorizontal: "auto",
+                                alignSelf: "center",
                             }}
                         >
                             +
                         </Text>
-                    </Pressable>
+                    </TouchableOpacity>
                 </View>
-                <View style={{ marginVertical: 10 }}>
+                <View style={{ marginBottom: 20, marginTop: 10 }}>
                     {symptoms.length < 1 ? (
                         <Text>None</Text>
                     ) : (
@@ -103,17 +107,18 @@ export const WellbeingJournalScreen = ({ navigation }) => {
                                         display: "flex",
                                         flexDirection: "row",
                                         marginVertical: 5,
+                                        alignSelf: "flex-end"
                                     }}
                                     key={index}
                                 >
-                                    <Text>
+                                    <Text style={{fontSize: 16}}>
                                         {symptom[0]} {symptom[1]}
                                     </Text>
-                                    <Pressable
+                                    <TouchableOpacity
                                         style={[
                                             styles.smallButton,
                                             styles.orangeBackground,
-                                            { marginRight: 18 },
+                                            { marginRight: 18, marginStart: 18 },
                                         ]}
                                         onPress={() => {
                                             var tempSymptoms = [...symptoms]; // who doesn't love needing to manually force re-renders?
@@ -130,12 +135,12 @@ export const WellbeingJournalScreen = ({ navigation }) => {
                                         <Text
                                             style={{
                                                 fontSize: 20,
-                                                marginHorizontal: "auto",
+                                                alignSelf: "center",
                                             }}
                                         >
                                             -
                                         </Text>
-                                    </Pressable>
+                                    </TouchableOpacity>
                                 </View>
                             );
                         })
@@ -143,7 +148,7 @@ export const WellbeingJournalScreen = ({ navigation }) => {
                 </View>
             </View>
             <Text
-                style={[styles.subHeader2, { marginBottom: 10, marginTop: 20 }]}
+                style={[styles.subHeader2, { marginBottom: 10, marginTop: 30 }]}
             >
                 How are you mentally feeling today?
             </Text>
@@ -155,29 +160,29 @@ export const WellbeingJournalScreen = ({ navigation }) => {
                 style={styles.largeTextEntry}
                 placeholder="optional"
                 multiline={true}
-                textAlignVertical='top'
+                textAlignVertical="top"
             />
-            <Pressable
+            <TouchableOpacity
                 style={
                     phys == -1 || ment == -1
                         ? [styles.wideButton, { backgroundColor: "#CCC" }]
                         : [styles.wideButton, styles.blueBackground]
                 }
-                onPress={() => navigation.navigate("Home")}
+                onPress={() => navigation.navigate("B M Health")}
                 disabled={phys == -1 || ment == -1}
             >
                 <Text
                     style={[
                         styles.subHeader,
                         {
-                            marginHorizontal: "auto",
+                            alignSelf: "center",
                             color: phys == -1 || ment == -1 ? "#666" : "#fff",
                         },
                     ]}
                 >
                     Confirm
                 </Text>
-            </Pressable>
+            </TouchableOpacity>
         </ScrollView>
     );
 };
