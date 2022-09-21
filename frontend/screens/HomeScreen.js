@@ -17,18 +17,17 @@ export const HomeScreen = ({ navigation }) => {
         "Surgery prep appointment - 4/6 14:30",
     ];
     return (
-        <View>
+        <View style={{ flex: 1 }}>
             <ImageBackground
                 source={require("../public/bmbgHome.png")}
+                resizeMode="cover"
                 style={{
-                    width: "100vw",
-                    height: "calc(100vh - 80px)",
-                    position: "absolute",
+                    flex: 1,
                 }}
             >
-                <View style={[styles.wideTile, styles.blueDivider]}>
+                <View>
                     <Text>Welcome back %user%</Text>
-                    <Text style={{ fontSize: "20px", marginVertical: "10px" }}>
+                    <Text style={{ fontSize: 20.0, marginVertical: 10 }}>
                         %current-treatment-period%
                     </Text>
                     <TouchableHighlight
@@ -37,33 +36,34 @@ export const HomeScreen = ({ navigation }) => {
                         onPress={() => navigation.navigate("Wellbeing Journal")}
                     >
                         <Text
-                            style={{
-                                fontSize: "20px",
-                                marginHorizontal: "auto",
-                            }}
+                            style={[
+                                styles.subHeader,
+                                { marginHorizontal: "auto", color: "#fff" },
+                            ]}
                         >
                             How are you feeling today?
                         </Text>
                     </TouchableHighlight>
                 </View>
                 <View style={[styles.wideTile, styles.tealDivider]}>
-                    <div style={{ display: "flex", flexDirection: "row" }}>
+                    <View style={{ display: "flex", flexDirection: "row" }}>
                         <Text
                             style={[
                                 styles.mainHeader,
-                                { marginVertical: "10px", flex: 1 },
+                                { marginVertical: 10, flex: 1 },
                             ]}
                         >
                             Upcoming Reminders
                         </Text>
                         <TouchableHighlight
+                            style={{ borderRadius: 4 }}
                             underlayColor={"#EEE"}
                             onPress={() => navigation.navigate("Reminders")}
                         >
                             <Text
                                 style={{
-                                    fontSize: "14px",
-                                    margin: "10px",
+                                    fontSize: 14,
+                                    margin: 10,
                                     alignSelf: "flex-end",
                                     flex: 1,
                                     color: "grey",
@@ -72,48 +72,51 @@ export const HomeScreen = ({ navigation }) => {
                                 See all {">"}
                             </Text>
                         </TouchableHighlight>
-                    </div>
-                    {reminders.map((reminder, index) => {
-                        return (
-                            <TouchableHighlight
-                                underlayColor={"#EEE"}
-                                key={index}
-                                style={[
-                                    styles.reminderButton,
-                                    styles.tealBorder,
-                                    { display: "flex", flexDirection: "row" },
-                                ]}
-                                onPress={
-                                    () => navigation.navigate("Reminders") //, { reminderId: `${route.params.condition}`}
-                                }
-                            >
-                                <View
-                                    style={{
-                                        display: "flex",
-                                        flexDirection: "row",
-                                    }}
+                    </View>
+                    <View>
+                        {reminders.map((reminder, index) => {
+                            return (
+                                <TouchableHighlight
+                                    underlayColor={"#EEE"}
+                                    key={index}
+                                    style={[
+                                        styles.reminderButton,
+                                        styles.tealBorder,
+                                        {
+                                            display: "flex",
+                                            flexDirection: "row",
+                                        },
+                                    ]}
+                                    onPress={
+                                        () => navigation.navigate("Reminders") //, { reminderId: `${route.params.condition}`}
+                                    }
                                 >
                                     <View
-                                        style={[
-                                            styles.dot,
-                                            styles.blueBackground,
-                                        ]}
-                                    />
-                                    <Text style={{ fontSize: "16px" }}>
-                                        {reminder}
-                                    </Text>
-                                </View>
-                            </TouchableHighlight>
-                        );
-                    })}
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "row",
+                                        }}
+                                    >
+                                        <View
+                                            style={[
+                                                styles.dot,
+                                                styles.blueBackground,
+                                            ]}
+                                        />
+                                        <Text style={{ fontSize: 20 }}>
+                                            {reminder}
+                                        </Text>
+                                    </View>
+                                </TouchableHighlight>
+                            );
+                        })}
+                    </View>
                 </View>
                 <View style={[styles.wideTile]}>
-                    <Text
-                        style={[styles.mainHeader, { marginVertical: "10px" }]}
-                    >
+                    <Text style={[styles.mainHeader, { marginVertical: 10 }]}>
                         Patient Support
                     </Text>
-                    <div style={{ display: "flex" }}>
+                    <View style={{ display: "flex", flexDirection: "row" }}>
                         <TouchableHighlight
                             underlayColor={"#8ADFB6"}
                             style={[styles.halfButton, styles.greenBackground]}
@@ -125,7 +128,7 @@ export const HomeScreen = ({ navigation }) => {
                         >
                             <Text
                                 style={{
-                                    fontSize: "20px",
+                                    fontSize: 20,
                                     marginHorizontal: "auto",
                                     textAlign: "center",
                                 }}
@@ -140,7 +143,7 @@ export const HomeScreen = ({ navigation }) => {
                         >
                             <Text
                                 style={{
-                                    fontSize: "20px",
+                                    fontSize: 20,
                                     marginHorizontal: "auto",
                                     textAlign: "center",
                                 }}
@@ -148,7 +151,7 @@ export const HomeScreen = ({ navigation }) => {
                                 More Help
                             </Text>
                         </TouchableHighlight>
-                    </div>
+                    </View>
                 </View>
             </ImageBackground>
         </View>

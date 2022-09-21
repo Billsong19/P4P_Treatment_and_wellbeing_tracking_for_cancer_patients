@@ -24,10 +24,7 @@ import { DetailsScreen } from "./screens/DetailsScreen";
 import { HCPContactScreen } from "./screens/HCPContactScreen.js";
 import { MoreHelpScreen } from "./screens/MoreHelpScreen.js";
 import { ProfileScreen } from "./screens/ProfileScreen.js";
-import { UserContext } from "./components/UserContext.js";
-import userIcon from "./public/user-solid.svg";
-
-const USER_ID = "63031ef7deaf0892071eae0e";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -43,27 +40,27 @@ function HomeScreens() {
     const Stack = createNativeStackNavigator();
     return (
         <Stack.Navigator
-        screenOptions={({ navigation }) => ({
-            headerRight: () => {
-                return (
-                    <TouchableOpacity
-                        onPress={() => {
-                            navigation.navigate("Profile");
-                        }}
-                    >
-                        <Icon
-                            name="person-sharp"
-                            style={{
-                                fontSize: '35px',
-                                marginTop: 5,
-                                marginRight: 10,
+            screenOptions={({ navigation }) => ({
+                headerRight: () => {
+                    return (
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate("Profile");
                             }}
-                        />
-                    </TouchableOpacity>
-                );
-            },
-        })}>
-            <Stack.Screen name="Home" component={HomeScreen} />
+                        >
+                            <Ionicons
+                                name="person-sharp"
+                                size={24}
+                                style={{
+                                    margin: 5,
+                                }}
+                            />
+                        </TouchableOpacity>
+                    );
+                },
+            })}
+        >
+            <Stack.Screen name="B M Health" component={HomeScreen} />
             <Stack.Screen
                 name="Wellbeing Journal"
                 component={WellbeingJournalScreen}
@@ -82,7 +79,7 @@ function RemindersScreens() {
     const Stack = createNativeStackNavigator();
     return (
         <Stack.Navigator>
-            <Stack.Screen name="Reminders" component={RemindersScreen} />
+            <Stack.Screen name="Reminders List" component={RemindersScreen} />
         </Stack.Navigator>
     );
 }
@@ -100,46 +97,60 @@ function InfoLibScreens() {
 
 export default function App() {
     return (
-        <ImageBackground
-            source={require("./public/bmbg.png")}
-            style={{ width: "100vw", height: "100vh", position: "absolute" }}
-        >
-            <NavigationContainer theme={navTheme}>
-                
-                
-                <BottomTab.Navigator
-                    initialRouteName="Home"
-                >  
-                    <BottomTab.Screen
-                        name="Information Library"
-                        component={InfoLibScreens}
-                        options={{ 
-                            headerShown: false,
-                            tabBarActiveTintColor: '#75A9D9',
-                            tabBarIcon: (tabInfo) => (<Icon name="library" size={24} color={tabInfo.focused ? '#75A9D9' : '#8e8e8f'}/>) 
-                        }}
-                    /> 
-                    <BottomTab.Screen
-                        name="Home"
-                        component={HomeScreens}
-                        options={{ 
-                            headerShown: false,
-                            tabBarActiveTintColor: '#75A9D9',
-                            tabBarIcon: (tabInfo) => (<Icon name="home-sharp" size={24} color={tabInfo.focused ? '#75A9D9' : '#8e8e8f'}/>)
-                        }}
-                    />
-                    <BottomTab.Screen
-                        name="Reminders"
-                        component={RemindersScreens}
-                        options={{
-                            headerShown: false,
-                            tabBarActiveTintColor: '#75A9D9',
-                            tabBarIcon: (tabInfo) => (<Icon name="list" size={24} color={tabInfo.focused ? '#75A9D9' : '#8e8e8f'}/>) 
-                        }}
-                    />    
-                </BottomTab.Navigator>
-            </NavigationContainer>
-        </ImageBackground>
+        // <ImageBackground
+        //     source={require("./public/bmbg.png")}
+        //     style={{ width: "100vw", height: "100vh", position: "absolute" }}
+        // >
+        <NavigationContainer theme={navTheme}>
+            <BottomTab.Navigator initialRouteName="Home">
+                <BottomTab.Screen
+                    name="Information Library"
+                    component={InfoLibScreens}
+                    options={{
+                        headerShown: false,
+                        tabBarActiveTintColor: "#75A9D9",
+                        tabBarIcon: (tabInfo) => (
+                            <Ionicons
+                                name="library"
+                                size={24}
+                                color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
+                            />
+                        ),
+                    }}
+                />
+                <BottomTab.Screen
+                    name="Home"
+                    component={HomeScreens}
+                    options={{
+                        headerShown: false,
+                        tabBarActiveTintColor: "#75A9D9",
+                        tabBarIcon: (tabInfo) => (
+                            <Ionicons
+                                name="home-sharp"
+                                size={24}
+                                color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
+                            />
+                        ),
+                    }}
+                />
+                <BottomTab.Screen
+                    name="Reminders"
+                    component={RemindersScreens}
+                    options={{
+                        headerShown: false,
+                        tabBarActiveTintColor: "#75A9D9",
+                        tabBarIcon: (tabInfo) => (
+                            <Ionicons
+                                name="list"
+                                size={24}
+                                color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
+                            />
+                        ),
+                    }}
+                />
+            </BottomTab.Navigator>
+        </NavigationContainer>
+        // </ImageBackground>
     );
 }
 

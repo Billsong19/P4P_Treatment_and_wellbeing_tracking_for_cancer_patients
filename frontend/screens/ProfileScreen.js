@@ -6,6 +6,7 @@ import {
     View,
     Button,
     Linking,
+    ScrollView,
 } from "react-native";
 import styles from "../styles";
 import { UserContext } from "../components/UserContext.js";
@@ -69,7 +70,7 @@ export const ProfileScreen = ({ navigation }) => {
     };
 
     return (
-        <View>
+        <ScrollView>
             <View
                 style={[
                     styles.wideTile,
@@ -77,10 +78,8 @@ export const ProfileScreen = ({ navigation }) => {
                     { flexDirection: "row" },
                 ]}
             >
-                <View style={{ flex: 1, padding: "10px" }}>
-                    <Text style={{ fontSize: 20 }}>
-                        {DATA.first_name + " " + DATA.last_name}
-                    </Text>
+                <View style={{ flex: 1, padding: 10 }}>
+                    <Text style={{ fontSize: 20 }}>{DATA.name}</Text>
                     <Text>{DATA.age}</Text>
                 </View>
                 <Pressable
@@ -93,7 +92,7 @@ export const ProfileScreen = ({ navigation }) => {
                 >
                     <Text
                         style={{
-                            fontSize: "20px",
+                            fontSize: 20,
                             marginHorizontal: "auto",
                             textAlign: "center",
                         }}
@@ -105,30 +104,30 @@ export const ProfileScreen = ({ navigation }) => {
 
             <View style={[styles.wideTile, styles.tealDivider]}>
                 <Text style={styles.mainHeader}>Condition Information</Text>
-                <View style={{ flexDirection: "row", margin: "6px" }}>
+                <View style={{ flexDirection: "row", margin: 6 }}>
                     <Text style={styles.subHeader}>{DATA.cancer_type} </Text>
                     <Text style={{ marginLeft: "auto" }}>
                         Diagnosed: {DATA.diagnosis_date}
                     </Text>
                 </View>
 
-                <View style={{ flexDirection: "row", margin: "6px" }}>
+                <View style={{ flexDirection: "row", margin: 6 }}>
                     <Text style={styles.subHeader}>{DATA.stage} </Text>
                     <Text style={{ marginLeft: "auto" }}>
                         as of: {DATA.last_stage_update}
                     </Text>
                 </View>
 
-                <View style={{ margin: "6px" }}>
+                <View style={{ margin: 6 }}>
                     <Text style={styles.subHeader}>
                         {DATA.treatment_period} treatment period
                     </Text>
                 </View>
                 <Pressable
-                    style={[styles.conditionButton, styles.tealBorder]}
+                    style={[styles.conditionButton, styles.tealSide]}
                     onPress={() =>
                         navigation.navigate("Details", {
-                            condition: `${route.params.condition}`,
+                            condition: `${DATA.cancer_type}`,
                             section: 1,
                         })
                     }
@@ -136,10 +135,10 @@ export const ProfileScreen = ({ navigation }) => {
                     <Text>Chance of Recovery</Text>
                 </Pressable>
                 <Pressable
-                    style={[styles.conditionButton, styles.greenBorder]}
+                    style={[styles.conditionButton, styles.greenSide]}
                     onPress={() =>
                         navigation.navigate("Details", {
-                            condition: `${route.params.condition}`,
+                            condition: `${DATA.cancer_type}`,
                             section: 2,
                         })
                     }
@@ -155,16 +154,18 @@ export const ProfileScreen = ({ navigation }) => {
                         <View
                             style={[
                                 styles.yellowDivider,
-                                { paddingVertical: "5px" },
+                                { paddingVertical: 5 },
                             ]}
                             key={index}
                         >
-                            <Text>{contact.title}</Text>
-                            <Text>{contact.name}</Text>
+                            <Text>{staff_member.title}</Text>
+                            <Text>{staff_member.name}</Text>
                             <Text
                                 style={{ color: "blue" }}
                                 onPress={() => {
-                                    Linking.openURL(`tel:${contact.phone}`);
+                                    Linking.openURL(
+                                        `tel:${staff_member.phone}`
+                                    );
                                 }}
                             >
                                 {contact.phone}
@@ -173,6 +174,6 @@ export const ProfileScreen = ({ navigation }) => {
                     );
                 })}
             </View>
-        </View>
+        </ScrollView>
     );
 };

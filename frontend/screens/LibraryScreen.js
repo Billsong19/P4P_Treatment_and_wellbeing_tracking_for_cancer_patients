@@ -5,12 +5,13 @@ import {
     Text,
     View,
     Pressable,
+    StyleSheet,
     ScrollView,
     TouchableHighlight,
     TextInput,
 } from "react-native";
 import styles from "../styles";
-import Icon from "react-native-vector-icons/Ionicons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { style } from "@mui/system";
 
 export const LibraryScreen = ({ navigation }) => {
@@ -60,25 +61,29 @@ export const LibraryScreen = ({ navigation }) => {
     }, [search]);
 
     return (
-        <ScrollView style={{ backgroundColor: "white" }}>
+        <ScrollView
+            style={{ backgroundColor: "white", flex: 1 }}
+            contentContainerStyle={{ flexGrow: 1 }}
+            alwaysBounceVertical={true}
+        >
             <View style={styles.searchBar}>
-                <Icon
+                <Ionicons
                     name="search"
-                    style={{ fontSize: 20, marginEnd: "10px" }}
+                    style={{ fontSize: 20, marginEnd: 10 }}
                 />
                 <TextInput
                     placeholder="Search..."
-                    style={{ width: "90%" }}
+                    style={{ width: "85%" }}
                     value={search}
                     onChangeText={setSearch}
                 ></TextInput>
-                <Icon
+                <Ionicons
                     id="removeSearch"
                     name="close"
                     color="#999"
                     onPress={() => setSearch("")}
                     style={{
-                        display: search.length > 0 ? "block" : "none",
+                        display: search.length > 0 ? "flex" : "none",
                         fontSize: 20,
                     }}
                 />
@@ -92,20 +97,24 @@ export const LibraryScreen = ({ navigation }) => {
                 style={[
                     styles.wideTile,
                     styles.blueDivider,
-                    { marginTop: "2%", alignSelf: "flex-start" },
+                    {
+                        marginTop: "2%",
+                        alignSelf: "flex-start",
+                        width: "96%",
+                        maxHeight: 200,
+                    },
                 ]}
             >
-                <View>
+                <View style={{ width: "100%" }}>
                     <Image
                         source={require("../public/bowel.jpg")}
                         resizeMode="cover"
                         style={{
-                            width: "90vw",
-                            height: "25vh",
-                            display: "block",
+                            width: "100%",
+                            maxHeight: 160,
                         }}
                     />
-                    <Text>Bowel Cancer</Text>
+                    <Text style={{ fontSize: 18 }}>Bowel Cancer</Text>
                 </View>
             </TouchableOpacity>
             {filteredData.map((cancer, index) => {
@@ -120,15 +129,7 @@ export const LibraryScreen = ({ navigation }) => {
                             })
                         }
                     >
-                        <Text
-                            style={[
-                                styles.subHeader,
-                                styles.libraryButton,
-                                { marginVertical: "auto" },
-                            ]}
-                        >
-                            {cancer.type}
-                        </Text>
+                        <Text style={[styles.subHeader]}>{cancer.type}</Text>
                     </TouchableHighlight>
                 );
             })}
