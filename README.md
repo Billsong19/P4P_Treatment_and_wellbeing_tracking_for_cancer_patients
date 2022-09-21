@@ -14,7 +14,7 @@ Run the app
 
 `npm run web` to run the app in your browser
 
-`npm run android` for android
+`expo start`, then press `a` for android
 
 `npm run ios` for ios
 
