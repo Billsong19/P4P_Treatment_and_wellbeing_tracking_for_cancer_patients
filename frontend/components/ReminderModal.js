@@ -8,7 +8,7 @@ import {
   TextInput,
   Pressable,
 } from "react-native";
-import styles from "../styles.js";
+import styles, { swGreen, swOrange } from "../styles.js";
 import { CheckBox } from "expo-checkbox";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import "react-native-get-random-values";
@@ -29,6 +29,7 @@ export default ReminderModal = (props) => {
   const [dateTime, setDateTime] = React.useState(new Date());
   const [pickerMode, setPickerMode] = React.useState("date");
   const [pickerVisible, setPickerVisible] = React.useState(false);
+  const [processing, setProcessing] = React.useState(false);
 
   const clearModal = () => {
     props.setNewTitle("");
@@ -38,9 +39,11 @@ export default ReminderModal = (props) => {
     props.setEdit(false);
     props.setModalVisible(!props.isModalVisible);
     setDateTime(new Date());
+    setProcessing(false);
   };
 
   const saveReminder = async (data, setData) => {
+    setProcessing(true);
     let tempRems = (props.data == null) ? [] : [...props.data];
     if (props.isEdit) {
       const index = data.findIndex((reminder) => reminder.id === props.editId);
@@ -49,7 +52,7 @@ export default ReminderModal = (props) => {
         title: props.newTitle,
         complete: false,
         frequency: props.newFrequency,
-        date: dayjs(dateTime).format("YYYY/MM/DD"),
+        date: (props.newFrequency === 2) ? "" : dayjs(dateTime).format("YYYY-MM-DD"),
         time: dayjs(dateTime).format("HH:mm"),
         details: props.newDescription,
       };
@@ -59,14 +62,17 @@ export default ReminderModal = (props) => {
         title: props.newTitle,
         complete: false,
         frequency: props.newFrequency,
-        date: dayjs(dateTime).format("YYYY/MM/DD"),
+        date: (props.newFrequency === 2) ? "" : dayjs(dateTime).format("YYYY-MM-DD"),
         time: dayjs(dateTime).format("HH:mm"),
         details: props.newDescription,
       });
     }
-    tempRems.sort((a,b) => dayjs(a.date + a.time) - dayjs(b.date + b.time))
+    tempRems.sort((a,b) => dayjs((a.frequency === 2 ? "2022-01-01" : a.date) + a.time) - dayjs((b.frequency === 2 ? "2022-01-01" : b.date) + b.time));
     setData(tempRems);
-    await storeData(tempRems);
+    const saveData = async (data) => {
+      storeData(data);
+    };
+    saveData(tempRems);
     clearModal();
   };
 
@@ -219,22 +225,25 @@ export default ReminderModal = (props) => {
           </View>
         </View>
         <Pressable
+          disabled={processing}
           style={[
             styles.wideButton,
-            styles.greenBackground,
-            { margin: 10, marginHorizontal: "30%" },
+            { margin: 10,
+              marginHorizontal: "30%",
+              backgroundColor: processing ? "#CCC" : swGreen },
           ]}
           onPress={() => saveReminder(props.data, props.setData)}
         >
           <Text style={[styles.mainHeader, { alignSelf: "center" }]}>
-            {props.isEdit ? "Save" : "Add"}
+            { processing ? "Saving" : props.isEdit ? "Save" : "Add" }
           </Text>
         </Pressable>
         <Pressable
           style={[
             styles.wideButton,
-            styles.orangeBackground,
-            { margin: 10, marginHorizontal: "30%" },
+            { margin: 10,
+              marginHorizontal: "30%",
+              backgroundColor: processing ? "#CCC" : swOrange },
           ]}
           onPress={() => clearModal()}
         >
@@ -269,7 +278,10 @@ export default ReminderModal = (props) => {
               if (index !== -1) tempRems.splice(index, 1);
               props.setData(tempRems);
               clearModal();
-              await storeData(tempRems);
+              const saveData = async (data) => {
+                storeData(data);
+              };
+              saveData(tempRems);
             }}
           >
             <Text

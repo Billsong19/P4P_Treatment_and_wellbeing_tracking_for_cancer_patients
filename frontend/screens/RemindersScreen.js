@@ -134,7 +134,7 @@ export const RemindersScreen = ({ navigation }) => {
         fetchData();
         if (data !== null) {
             let tempData = [...data]
-            tempData.sort((a,b) => dayjs(a.date + a.time) - dayjs(b.date + b.time))
+            tempData.sort((a,b) => dayjs((a.frequency === 2 ? "2022-01-01" : a.date) + a.time) - dayjs((b.frequency === 2 ? "2022-01-01" : b.date) + b.time));
             setData(tempData);
         }
     }, []);
