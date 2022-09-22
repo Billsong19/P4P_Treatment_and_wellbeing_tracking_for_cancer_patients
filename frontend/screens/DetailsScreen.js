@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Text, ScrollView, Button, View } from "react-native";
-import styles, { bmBlue, bmTeal, bmGreen, bmYellow, bmOrange } from "../styles";
+import styles, { swBlue, swTeal, swGreen, swYellow, swOrange } from "../styles";
 
 const MAX_PAGES = 6;
 
@@ -24,35 +24,35 @@ export const DetailsScreen = ({ navigation, route }) => {
     ];
 
     let page = "";
-    let pageColor = bmBlue;
+    let pageColor = swBlue;
     switch (pageNo) {
         case 0:
             page = "Overview and Diagnosis";
-            pageColor = bmBlue;
+            pageColor = swBlue;
             break;
         case 1:
             page = "Chance of Recovery";
-            pageColor = bmTeal;
+            pageColor = swTeal;
             break;
         case 2:
             page = "Course of Disease";
-            pageColor = bmGreen;
+            pageColor = swGreen;
             break;
         case 3:
             page = "Early Stages";
-            pageColor = bmGreen;
+            pageColor = swGreen;
             break;
         case 4:
             page = "Development and Complications";
-            pageColor = bmGreen;
+            pageColor = swGreen;
             break;
         case 5:
             page = "Treatments";
-            pageColor = bmYellow;
+            pageColor = swYellow;
             break;
         case 6:
             page = "Risks and long-term implications";
-            pageColor = bmOrange;
+            pageColor = swOrange;
             break;
         default:
             page = "Error";

@@ -127,11 +127,16 @@ export const RemindersScreen = ({ navigation }) => {
         });
       }, [navigation]);
 
-      React.useEffect(() => {
+    React.useEffect(() => {
         const fetchData = async () => {
             setData(await getData());
         };
         fetchData();
+        if (data !== null) {
+            let tempData = [...data]
+            tempData.sort((a,b) => dayjs(a.date + a.time) - dayjs(b.date + b.time))
+            setData(tempData);
+        }
     }, []);
 
     const setUpEditModal = ({title, details, date, time, frequency, id}) => {
@@ -162,7 +167,7 @@ export const RemindersScreen = ({ navigation }) => {
 
     const renderDates = ({ item }) => (
         <View style={{ marginBottom: "2%" }}>
-            <Text>{item.date}</Text>
+            <Text>{dayjs(item.date).isValid() ? dayjs(item.date).format("DD MMMM YYYY") : `${item.date}`}</Text>
             <View style={{
                 width: "100%",
                 borderBottomColor: "#EEE",

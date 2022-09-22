@@ -27,7 +27,7 @@ const storeData = async (value) => {
 };
 
 export default Reminder = ({ id, title, time, details, complete, frequency, date, data, setData, setUpEditModal }) => {
-    const startingHeight = 30;
+    const startingHeight = 35;
     const [isExpanded, setExpanded] = React.useState(false);
     const [isComplete, setComplete] = React.useState(complete);
     const [fullHeight, setFullHeight] = React.useState(startingHeight);
@@ -35,6 +35,7 @@ export default Reminder = ({ id, title, time, details, complete, frequency, date
         new Animated.Value(startingHeight)
     ).current;
     const fadeAnim = React.useRef(new Animated.Value(0)).current;
+    const semiFadeAnim = React.useRef(new Animated.Value(isComplete ? 0.5 : 1)).current;
 
     React.useEffect(() => {
         Animated.spring(animatedHeight, {
@@ -59,6 +60,22 @@ export default Reminder = ({ id, title, time, details, complete, frequency, date
             }).start();
         }
     }, [isExpanded]);
+
+    React.useEffect(() => {
+        if (isComplete) {
+            Animated.timing(semiFadeAnim, {
+                toValue: 0.5,
+                duration: 500,
+                useNativeDriver: false,
+            }).start();
+        } else {
+            Animated.timing(semiFadeAnim, {
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: false,
+            }).start();
+        }
+    }, [isComplete]);
 
     const onTextLayout = (e) => {
         let { x, y, width, height } = e.nativeEvent.layout;
@@ -95,18 +112,20 @@ export default Reminder = ({ id, title, time, details, complete, frequency, date
                         ? [
                               styles.blueBorder,
                               styles.dailyReminder,
-                              { height: animatedHeight },
+                              { height: animatedHeight,
+                                opacity: semiFadeAnim },
                           ]
                         : [
                               styles.tealBorder,
                               styles.tealBackground50,
                               styles.datedReminder,
-                              { height: animatedHeight },
+                              { height: animatedHeight,
+                                opacity: semiFadeAnim },
                           ]
                 }
             >
                 <View style={{ flexDirection: "row" }}>
-                    <Text style={{ flex: 2, fontSize: 18 }}>{title}</Text>
+                    <Text style={{ flex: 3, fontSize: 18 }}>{title}</Text>
                     <Text style={{ flex: 1, fontSize: 18 }}>{time}</Text>
                     <CheckBox
                         value={isComplete}

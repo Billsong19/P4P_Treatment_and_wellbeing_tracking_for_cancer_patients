@@ -60,7 +60,7 @@ function HomeScreens() {
                 },
             })}
         >
-            <Stack.Screen name="B M Health" component={HomeScreen} />
+            <Stack.Screen name="Songward" component={HomeScreen} />
             <Stack.Screen
                 name="Wellbeing Journal"
                 component={WellbeingJournalScreen}
@@ -97,10 +97,6 @@ function InfoLibScreens() {
 
 export default function App() {
     return (
-        // <ImageBackground
-        //     source={require("./public/bmbg.png")}
-        //     style={{ width: "100vw", height: "100vh", position: "absolute" }}
-        // >
         <NavigationContainer theme={navTheme}>
             <BottomTab.Navigator initialRouteName="Home">
                 <BottomTab.Screen

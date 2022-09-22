@@ -6,15 +6,61 @@ import {
     Pressable,
     TouchableHighlight,
     ImageBackground,
+    TouchableOpacity,
+    FlatList,
 } from "react-native";
 import styles from "../styles";
+import dayjs from "dayjs";
 
 export const HomeScreen = ({ navigation }) => {
     const reminders = [
-        "Muscle training - by end of day",
-        "Clinic visit - Tomorrow 15:10",
-        "Surgery prep appointment - 4/6 14:30",
+        {
+            id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
+            title: "Take medicine",
+            complete: true,
+            frequency: 2,
+            date: "",
+            time: "10:00",
+            details: "two 50mg tablets",
+        },
+        {
+            id: "58694a0f-3da1-471f-bd96-145571e29d72",
+            title: "Clinic appointment",
+            complete: false,
+            frequency: 0,
+            date: "2022-5-22",
+            time: "16:30",
+            details: "Clinic name, address, meeting with Dr. Name"
+        },
+        {
+            id: "58694a0f-3da1-471f-bd96-145571e29d73",
+            title: "Surgery prep appointment",
+            complete: false,
+            frequency: 0,
+            date: "2022-5-28",
+            time: "12:30",
+            details: "Clinic name, address, meeting with Dr. Name"
+        },
     ];
+
+    const renderSimpleReminder = ({ item }) => (
+        <TouchableOpacity
+            style={[
+                    styles.tealBorder,
+                    styles.tealBackground50,
+                    styles.datedReminder,
+                    { flexDirection: "row" }
+                    ]
+                }
+            onPress={
+                () => navigation.navigate("Reminders") //, { reminderId: `${route.params.condition}`}
+            }
+            >
+                <Text style={{ flex: 3, fontSize: 18, paddingEnd: 10 }}>{item.title}</Text>
+                <Text style={{ flex: 1, fontSize: 18 }}>{ item.frequency === 2 ? "Daily" : dayjs(item.date).format("D MMM") }</Text>
+                <Text style={{ flex: 1, fontSize: 18 }}>{item.time}</Text>
+        </TouchableOpacity>
+    );
 
     return (
         <View style={{ flex: 1 }}>
@@ -25,7 +71,7 @@ export const HomeScreen = ({ navigation }) => {
                     flex: 1,
                 }}
             >
-                <View>
+                <View style={{margin: '2%'}}>
                     <Text>Welcome back %user%</Text>
                     <Text style={{ fontSize: 20.0, marginVertical: 10 }}>
                         %current-treatment-period%
@@ -73,44 +119,11 @@ export const HomeScreen = ({ navigation }) => {
                             </Text>
                         </TouchableHighlight>
                     </View>
-                    <View>
-                        {reminders.map((reminder, index) => {
-                            return (
-                                <TouchableHighlight
-                                    underlayColor={"#EEE"}
-                                    key={index}
-                                    style={[
-                                        styles.reminderButton,
-                                        styles.tealBorder,
-                                        {
-                                            display: "flex",
-                                            flexDirection: "row",
-                                        },
-                                    ]}
-                                    onPress={
-                                        () => navigation.navigate("Reminders") //, { reminderId: `${route.params.condition}`}
-                                    }
-                                >
-                                    <View
-                                        style={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                        }}
-                                    >
-                                        <View
-                                            style={[
-                                                styles.dot,
-                                                styles.blueBackground,
-                                            ]}
-                                        />
-                                        <Text style={{ fontSize: 20 }}>
-                                            {reminder}
-                                        </Text>
-                                    </View>
-                                </TouchableHighlight>
-                            );
-                        })}
-                    </View>
+                    <FlatList
+                        data={reminders}
+                        renderItem={renderSimpleReminder}
+                        keyExtractor={(item) => item.id}
+                    />
                 </View>
                 <View style={[styles.wideTile]}>
                     <Text style={[styles.mainHeader, { marginVertical: 10 }]}>

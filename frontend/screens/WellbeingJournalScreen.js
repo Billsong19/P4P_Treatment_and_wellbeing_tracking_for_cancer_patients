@@ -2,7 +2,7 @@ import * as React from "react";
 import { TouchableOpacity, Text, TextInput, View, ScrollView } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import LikertButtons from "../components/LikertButtons";
-import styles, { bmBlue } from "../styles";
+import styles, { swBlue } from "../styles";
 
 export const WellbeingJournalScreen = ({ navigation }) => {
     const [phys, setPhys] = React.useState(-1);
@@ -39,7 +39,7 @@ export const WellbeingJournalScreen = ({ navigation }) => {
                     onPress={() => {
                         setSymptoms([["mild", "nausea"], ["mild", "headache"]])
                     }}>
-                    <Text style={{ color: bmBlue }}>
+                    <Text style={{ color: swBlue }}>
                         Same as yesterday: mild nausea, mild headache
                     </Text>
                 </TouchableOpacity>

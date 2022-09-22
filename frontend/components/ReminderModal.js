@@ -64,6 +64,7 @@ export default ReminderModal = (props) => {
         details: props.newDescription,
       });
     }
+    tempRems.sort((a,b) => dayjs(a.date + a.time) - dayjs(b.date + b.time))
     setData(tempRems);
     await storeData(tempRems);
     clearModal();

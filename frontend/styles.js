@@ -1,12 +1,13 @@
 import { StyleSheet } from "react-native";
 
-export const bmBlue = "#75A9D9";
-export const bmTeal = "#75D9D3";
-export const bmGreen = "#75D9A9";
-export const bmYellow = "#F3E6A2"; //maybe replace, kinda ugly
-export const bmOrange = "#FFA978";
+export const swBlue = "#75A9D9";
+export const swTeal = "#75D9D3";
+export const swGreen = "#75D9A9";
+export const swYellow = "#F3E6A2"; //maybe replace, kinda ugly
+export const swOrange = "#FFA978";
 
-const bmTealRGB = "117, 217, 211";
+const swBlueRGB = "37, 150, 190";
+const swTealRGB = "117, 217, 211";
 
 const styles = StyleSheet.create({
     page: {
@@ -44,22 +45,25 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     blueBackground: {
-        backgroundColor: bmBlue,
+        backgroundColor: swBlue,
+    },
+    blueBackground50: {
+        backgroundColor: `rgba(${swBlueRGB}, 0.25)`,
     },
     tealBackground: {
-        backgroundColor: bmTeal,
+        backgroundColor: swTeal,
     },
     tealBackground50: {
-        backgroundColor: `rgba(${bmTealRGB}, 0.5)`,
+        backgroundColor: `rgba(${swTealRGB}, 0.5)`,
     },
     greenBackground: {
-        backgroundColor: bmGreen,
+        backgroundColor: swGreen,
     },
     yellowBackground: {
-        backgroundColor: bmYellow,
+        backgroundColor: swYellow,
     },
     orangeBackground: {
-        backgroundColor: bmOrange,
+        backgroundColor: swOrange,
     },
     libraryButton: {
         marginHorizontal: "2%",
@@ -89,67 +93,67 @@ const styles = StyleSheet.create({
     blueBorder: {
         borderWidth: 2,
         borderStyle: "solid",
-        borderColor: `${bmBlue}`,
+        borderColor: `${swBlue}`,
     },
     tealBorder: {
         borderWidth: 2,
         borderStyle: "solid",
-        borderColor: `${bmTeal}`,
+        borderColor: `${swTeal}`,
     },
     greenBorder: {
         borderWidth: 2,
         borderStyle: "solid",
-        borderColor: `${bmGreen}`,
+        borderColor: `${swGreen}`,
     },
     yellowBorder: {
         borderWidth: 2,
         borderStyle: "solid",
-        borderColor: `${bmYellow}`,
+        borderColor: `${swYellow}`,
     },
     orangeBorder: {
         borderWidth: 2,
         borderStyle: "solid",
-        borderColor: `${bmOrange}`,
+        borderColor: `${swOrange}`,
     },
     blueDivider: {
         borderBottomWidth: 4,
-        borderBottomColor: `${bmBlue}`,
+        borderBottomColor: `${swBlue}`,
     },
     tealDivider: {
         borderBottomWidth: 4,
-        borderBottomColor: `${bmTeal}`,
+        borderBottomColor: `${swTeal}`,
     },
     greenDivider: {
         borderBottomWidth: 4,
-        borderBottomColor: `${bmGreen}`,
+        borderBottomColor: `${swGreen}`,
     },
     yellowDivider: {
         borderBottomWidth: 4,
-        borderBottomColor: `${bmYellow}`,
+        borderBottomColor: `${swYellow}`,
     },
     orangeDivier: {
         borderBottomWidth: 4,
-        borderBottomColor: `${bmOrange}`,
+        borderBottomColor: `${swOrange}`,
     },
     blueSide: {
         borderRightWidth: 20,
-        borderRightColor: `${bmBlue}`,
+        borderRightColor: `${swBlue}`,
     },
     tealSide: {
         borderRightWidth: 20,
-        borderRightColor: `${bmTeal}`,
+        borderRightColor: `${swTeal}`,
     },
     greenSide: {
         borderRightWidth: 20,
-        borderRightColor: `${bmGreen}`,
+        borderRightColor: `${swGreen}`,
     },
     yellowSide: {
         borderRightWidth: 20,
-        borderRightColor: `${bmYellow}`,
+        borderRightColor: `${swYellow}`,
     },
     orangeSide: {
         borderRightWidth: 20,
-        borderRightColor: `${bmOrange}`,
+        borderRightColor: `${swOrange}`,
     },
     textEntry: {
         borderWidth: 1,
@@ -187,7 +191,7 @@ const styles = StyleSheet.create({
         borderRadius: 12,
         margin: 5,
         display: "flex",
-        backgroundColor: `${bmBlue}`,
+        backgroundColor: `${swBlue}`,
         right: 3,
         bottom: 3,
     },
@@ -231,6 +235,8 @@ const styles = StyleSheet.create({
         marginEnd: 5,
         position: "relative",
         bottom: 0,
+        height: 25,
+        width: 25
     },
     searchBar: {
         margin: "1%",

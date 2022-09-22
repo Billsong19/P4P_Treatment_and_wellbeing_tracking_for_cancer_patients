@@ -1,70 +1,71 @@
 import * as React from "react";
-import { TouchableOpacity, Text, TextInput, View, ScrollView } from "react-native";
-import { bmBlue, bmOrange, bmYellow, bmGreen, bmTeal } from "../styles";
+import { TouchableHighlight, Text, TextInput, View, ScrollView } from "react-native";
+import { swBlue, swOrange, swYellow, swGreen, swTeal } from "../styles";
 
 const styles = {
     likertButton: {
-        height: 30,
-        width: 45,
-        borderRadius: 4,
+        height: 40,
+        width: 40,
+        borderRadius: 20,
+        borderWidth: 2,
+        borderStyle: "solid",
         backgroundColor: "#E9E9E9",
         justifyContent: "center",
     },
+    likertText: {
+        textAlign: "center",
+        margin: "auto",
+        fontSize: 16,
+        fontWeight: "500"
+    },
     likert1: {
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: '#FD7070',
+        borderColor: "#FD7070",
     },
     likert1s: {
         backgroundColor: "#FD7070",
+        borderWidth: 0,
     },
     likert2: {
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: bmOrange,
+        borderColor: swOrange,
     },
     likert2s: {
-        backgroundColor: bmOrange,
+        backgroundColor: swOrange,
+        borderWidth: 0,
     },
     likert3: {
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: '#FFD39F',
+        borderColor: "#F6BC77",
     },
     likert3s: {
-        backgroundColor: "#FFD39F",
+        backgroundColor: "#F6BC77",
+        borderWidth: 0,
     },
     likert4: {
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: bmYellow,
+        borderColor: swYellow,
     },
     likert4s: {
-        backgroundColor: bmYellow,
+        backgroundColor: swYellow,
+        borderWidth: 0,
     },
     likert5: {
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: '#D9F3A3',
+        borderColor: "#D9F3A3",
     },
     likert5s: {
         backgroundColor: "#D9F3A3",
+        borderWidth: 0,
     },
     likert6: {
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: bmGreen,
+        borderColor: swGreen,
     },
     likert6s: {
-        backgroundColor: bmGreen,
+        backgroundColor: swGreen,
+        borderWidth: 0,
     },
     likert7: {
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: bmTeal,
+        borderColor: swTeal,
     },
     likert7s: {
-        backgroundColor: bmTeal,
+        backgroundColor: swTeal,
+        borderWidth: 0,
     },
 }
 
@@ -76,86 +77,93 @@ export default LikertButtons = (props) => {
                 flexDirection: "row",
                 marginBottom: 10,
                 alignItems: "flex-start",
-                justifyContent: "space-evenly"
+                justifyContent: "space-evenly",
             }}
         >
             <View>
-                <TouchableOpacity
+                <TouchableHighlight
                     style={
                         props.active == 1
                             ? [styles.likertButton, styles.likert1s, {alignSelf: "center"}]
                             : [styles.likertButton, styles.likert1, {alignSelf: "center"}]
                     }
                     onPress={() => props.setActive(1)}
+                    underlayColor={"#FCC6C6"}
                 >
-                    <Text style={{ margin: "auto", textAlign: "center" }}>1</Text>
-                </TouchableOpacity>
+                    <Text style={ styles.likertText }>1</Text>
+                </TouchableHighlight>
                 <Text style={{ textAlign: "center" }}>Terrible</Text>
             </View>
-            <TouchableOpacity
+            <TouchableHighlight
                 style={
                     props.active == 2
                         ? [styles.likertButton, styles.likert2s]
                         : [styles.likertButton, styles.likert2]
                 }
                 onPress={() => props.setActive(2)}
+                underlayColor={"#FFDBC6"}
             >
-                <Text style={{ margin: "auto", textAlign: "center" }}>2</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+                <Text style={ styles.likertText }>2</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
                 style={
                     props.active == 3
                         ? [styles.likertButton, styles.likert3s]
                         : [styles.likertButton, styles.likert3]
                 }
                 onPress={() => props.setActive(3)}
+                underlayColor={"#FCDEBB"}
             >
-                <Text style={{ margin: "auto", textAlign: "center" }}>3</Text>
-            </TouchableOpacity>
+                <Text style={ styles.likertText }>3</Text>
+            </TouchableHighlight>
             <View>
-                <TouchableOpacity
+                <TouchableHighlight
                     style={
                         props.active == 4
                             ? [styles.likertButton, styles.likert4s, {alignSelf: "center"}]
                             : [styles.likertButton, styles.likert4, {alignSelf: "center"}]
                     }
                     onPress={() => props.setActive(4)}
+                    underlayColor={"#FCF5CF"}
                 >
-                    <Text style={{ margin: "auto", textAlign: "center" }}>4</Text>
-                </TouchableOpacity>
+                    <Text style={ styles.likertText }>4</Text>
+                </TouchableHighlight>
                 <Text style={{ textAlign: "center" }}>Alright</Text>
             </View>
-            <TouchableOpacity
+            <TouchableHighlight
                 style={
                     props.active == 5
                         ? [styles.likertButton, styles.likert5s]
                         : [styles.likertButton, styles.likert5]
                 }
                 onPress={() => props.setActive(5)}
+                underlayColor={"#EEFCD2"}
             >
-                <Text style={{ margin: "auto", textAlign: "center" }}>5</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+                <Text style={ styles.likertText }>5</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
                 style={
                     props.active == 6
                         ? [styles.likertButton, styles.likert6s]
                         : [styles.likertButton, styles.likert6]
                 }
                 onPress={() => props.setActive(6)}
+                underlayColor={"#AFF0D1"}
             >
-                <Text style={{ margin: "auto", textAlign: "center" }}>6</Text>
-            </TouchableOpacity>
+                <Text style={ styles.likertText }>6</Text>
+            </TouchableHighlight>
             <View>
-                    <TouchableOpacity
+                    <TouchableHighlight
                         style={
                             props.active == 7
                                 ? [styles.likertButton, styles.likert7s, {alignSelf: "center"}]
                                 : [styles.likertButton, styles.likert7, {alignSelf: "center"}]
                         }
                         onPress={() => props.setActive(7)}
+                        underlayColor={"#BEF3F0"}
                     >
-                        <Text style={{ margin: "auto", textAlign: "center" }}>7</Text>
-                    </TouchableOpacity>
+                        <Text style={ styles.likertText }>7</Text>
+                    </TouchableHighlight>
                     <Text style={{ textAlign: "center" }}>Great</Text>
                 </View>
             </View>
