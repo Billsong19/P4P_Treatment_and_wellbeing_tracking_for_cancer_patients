@@ -1,15 +1,15 @@
 {
-    "expo": {
-        "name": "B&M Health",
-        "slug": "cancer-app",
-        "owner": "mrdugong",
-        "version": "1.0.0",
-        "assetBundlePatterns": ["**/*"],
-        "extra": {
-            "eas": {
-                "projectId": "b9f85f5b-a9f6-4d31-9642-7078b8555647"
-            }
-        }
-    },
-    "name": "frontend"
+  "expo": {
+    "name": "B&M Health",
+    "slug": "cancer-app",
+    "owner": "mrdugong",
+    "version": "1.0.0",
+    "assetBundlePatterns": ["**/*"],
+    "extra": {
+      "eas": {
+        "projectId": "b9f85f5b-a9f6-4d31-9642-7078b8555647"
+      }
+    }
+  },
+  "name": "SongWard"
 }
