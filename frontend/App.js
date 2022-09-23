@@ -52,7 +52,7 @@ function HomeScreens() {
                                 name="person-sharp"
                                 size={24}
                                 style={{
-                                    margin: 5
+                                    margin: 5,
                                 }}
                             />
                         </TouchableOpacity>

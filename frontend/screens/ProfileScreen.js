@@ -6,6 +6,7 @@ import {
   View,
   Button,
   Linking,
+  ScrollView,
 } from "react-native";
 import styles from "../styles";
 import { UserContext } from "../components/UserContext.js";
