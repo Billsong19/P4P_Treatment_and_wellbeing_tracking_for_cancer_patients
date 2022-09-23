@@ -11,7 +11,7 @@ router.get("/userJournal/:id", userController.getUserJournal);
 
 router.get("/cancerInfo", userController.getCancerInfo);
 
-router.get("/get", async (req, res) => {
+router.get("/", async (req, res) => {
     res.send("Hello World!");
 });
 
