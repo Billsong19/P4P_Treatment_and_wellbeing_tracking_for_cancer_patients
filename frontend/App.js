@@ -36,6 +36,18 @@ const navTheme = {
     },
 };
 
+const config = {
+    animation: 'spring',
+    config: {
+      stiffness: 1000,
+      damping: 500,
+      mass: 3,
+      overshootClamping: true,
+      restDisplacementThreshold: 0.01,
+      restSpeedThreshold: 0.01,
+    },
+};
+
 function HomeScreens() {
     const Stack = createNativeStackNavigator();
     return (
@@ -87,7 +99,14 @@ function RemindersScreens() {
 function InfoLibScreens() {
     const Stack = createNativeStackNavigator();
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                transitionSpec: {
+                    open: config,
+                    close: config,
+                },
+            }}
+        >
             <Stack.Screen name="Info Library" component={LibraryScreen} />
             <Stack.Screen name="Condition" component={ConditionScreen} />
             <Stack.Screen name="Details" component={DetailsScreen} />
@@ -98,7 +117,11 @@ function InfoLibScreens() {
 export default function App() {
     return (
         <NavigationContainer theme={navTheme}>
-            <BottomTab.Navigator initialRouteName="Home">
+            <BottomTab.Navigator
+                initialRouteName="Home"
+                backBehavior="initialRoute"
+                lazy="false"
+            >
                 <BottomTab.Screen
                     name="Information Library"
                     component={InfoLibScreens}

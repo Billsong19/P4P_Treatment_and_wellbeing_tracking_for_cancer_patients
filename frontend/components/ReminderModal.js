@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   Pressable,
+  Alert,
 } from "react-native";
 import styles, { swGreen, swOrange } from "../styles.js";
 import { CheckBox } from "expo-checkbox";
@@ -42,7 +43,7 @@ export default ReminderModal = (props) => {
     setProcessing(false);
   };
 
-  const saveReminder = async (data, setData) => {
+  const saveReminder = (data, setData) => {
     setProcessing(true);
     let tempRems = (props.data == null) ? [] : [...props.data];
     if (props.isEdit) {
@@ -75,6 +76,20 @@ export default ReminderModal = (props) => {
     saveData(tempRems);
     clearModal();
   };
+
+  const deleteReminder = (delId) => {
+    let tempRems = [...props.data];
+    let index = tempRems.findIndex(
+      (reminder) => reminder.id === delId
+    );
+    if (index !== -1) tempRems.splice(index, 1);
+    props.setData(tempRems);
+    clearModal();
+    const saveData = async (data) => {
+      storeData(data);
+    };
+    saveData(tempRems);
+  }
 
   const onPickerChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -116,9 +131,7 @@ export default ReminderModal = (props) => {
       animationType="slide"
       transparent={true}
       visible={props.isModalVisible}
-      onRequestClose={() => {
-        setModalVisible(!props.isModalVisible);
-      }}
+      onRequestClose={() => props.setModalVisible(false)}
     >
       <ScrollView style={styles.modalBase}>
         <Text style={[styles.mainHeader, { marginBottom: "4%" }]}>
@@ -270,19 +283,16 @@ export default ReminderModal = (props) => {
                 borderColor: "#CF3028",
               },
             ]}
-            onPress={async () => {
-              let tempRems = [...props.data];
-              let index = tempRems.findIndex(
-                (reminder) => reminder.id === props.editId
-              );
-              if (index !== -1) tempRems.splice(index, 1);
-              props.setData(tempRems);
-              clearModal();
-              const saveData = async (data) => {
-                storeData(data);
-              };
-              saveData(tempRems);
-            }}
+            onPress={async () => 
+              Alert.alert("Delete Reminder", `Are you sure you want to delete your reminder: ${props.newTitle}?`, [
+                {
+                  text: "Cancel",
+                  onPress: () => null,
+                  style: "cancel"
+                },
+                { text: "YES", onPress: () => deleteReminder(props.editId) }
+              ])
+            }
           >
             <Text
               style={[

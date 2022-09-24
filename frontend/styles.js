@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
         backgroundColor: swOrange,
     },
     libraryButton: {
-        marginHorizontal: "2%",
         padding: 20,
         height: 65,
         borderBottomWidth: 1,

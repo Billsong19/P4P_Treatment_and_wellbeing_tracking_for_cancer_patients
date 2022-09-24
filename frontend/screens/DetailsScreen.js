@@ -1,3 +1,4 @@
+import { stepLabelClasses } from "@mui/material";
 import * as React from "react";
 import { Text, ScrollView, Button, View } from "react-native";
 import styles, { swBlue, swTeal, swGreen, swYellow, swOrange } from "../styles";
@@ -60,56 +61,38 @@ export const DetailsScreen = ({ navigation, route }) => {
     }
 
     return (
-        <ScrollView
-            style={{
-                backgroundColor: pageColor,
-                height: "100%",
-                width: "100%",
-            }}
-        >
-            <Text style={{ fontSize: 20, marginHorizontal: 20, marginTop: 20 }}>
-                {route.params.condition}
-            </Text>
-            <Text
-                style={{ fontSize: 20, marginHorizontal: 20, marginBottom: 20 }}
-            >
-                {page}
-            </Text>
-            <View
-                style={{
-                    backgroundColor: "#FFF",
-                    marginLeft: "1%",
-                    width: "98%",
-                }}
-            >
-                {contents.map((section, index) => {
-                    return (
-                        <View
-                            key={index}
-                            style={{ margin: 10, marginBottom: 20 }}
-                        >
-                            <Text>{section[0]}</Text>
-                            <View
-                                style={{
-                                    width: "92%",
-                                    borderBottomColor: "pageColor",
-                                    borderBottomWidth: 1,
-                                }}
-                            />
-                            <Text>{section[1]}</Text>
-                            <View
-                                style={{
-                                    width: "50%",
-                                    minHeight: 10,
-                                    backgroundColor: pageColor,
-                                    marginLeft: 0,
-                                }}
-                            >
-                            </View>
-                        </View>
-                    );
-                })}
+        <ScrollView>
+            <View style={{backgroundColor: pageColor}}>
+                <View style={{margin: 20}}>
+                    <Text style={styles.mainHeader}>
+                        {route.params.condition}
+                    </Text>
+                    <Text
+                        style={styles.subHeader}
+                    >
+                        {page}
+                    </Text>
+                </View>
             </View>
+            {contents.map((section, index) => {
+                return (
+                    <View
+                        key={index}
+                        style={{ margin: 10 }}
+                    >
+                        <Text style={styles.subHeader}>{section[0]}</Text>
+                        <Text style={{fontSize: 18}}>{section[1]}</Text>
+                        <View
+                            style={{
+                                width: "92%",
+                                borderBottomColor: "#999",
+                                borderBottomWidth: 1,
+                                marginTop: 20
+                            }}
+                        />
+                    </View>
+                );
+            })}   
             <Text>{pageNo}</Text>
             <Button
                 title="Previous"

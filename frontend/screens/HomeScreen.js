@@ -71,14 +71,14 @@ export const HomeScreen = ({ navigation }) => {
                     flex: 1,
                 }}
             >
-                <View style={{margin: '2%'}}>
+                <View style={[styles.wideTile, styles.blueDivider]}>
                     <Text>Welcome back %user%</Text>
                     <Text style={{ fontSize: 20.0, marginVertical: 10 }}>
                         %current-treatment-period%
                     </Text>
                     <TouchableHighlight
                         underlayColor={"#8AB6DF"}
-                        style={[styles.wideButton, styles.blueBackground]}
+                        style={[styles.wideButton, styles.blueBackground, {marginBottom: "1%"}]}
                         onPress={() => navigation.navigate("Wellbeing Journal")}
                     >
                         <Text

@@ -109,7 +109,7 @@ export const LibraryScreen = ({ navigation }) => {
                             maxHeight: 160,
                         }}
                     />
-                    <Text style={{fontSize: 18}}>Bowel Cancer</Text>
+                    <Text style={styles.subHeader}>Bowel Cancer</Text>
                 </View>
             </TouchableOpacity>
             {filteredData.map((cancer, index) => {
@@ -124,13 +124,15 @@ export const LibraryScreen = ({ navigation }) => {
                             })
                         }
                     >
-                        <Text
-                            style={[
-                                styles.subHeader,
-                            ]}
-                        >
+                        <View style={{flexDirection: "row"}}>
+                        <Text style={[styles.subHeader, {flex: 25}]}>
                             {cancer.type}
                         </Text>
+                        <Ionicons
+                            name="chevron-forward"
+                            style={{ fontSize: 20, marginEnd: 10, flex: 1, color: "#999" }}
+                        />
+                        </View>
                     </TouchableHighlight>
                 );
             })}
