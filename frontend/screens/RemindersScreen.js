@@ -17,8 +17,13 @@ import 'react-native-get-random-values';
 import { v4 as uuidv4 } from "uuid";
 import Reminder from "../components/Reminder";
 import ReminderModal from "../components/ReminderModal.js";
+import { Frequencies } from "../public/Frequencies.js"
+import { DaysOfWeek } from "../public/DaysOfWeek.js"
 import dayjs from "dayjs";
 import Ionicons from "@expo/vector-icons/Ionicons";
+
+var weekday = require('dayjs/plugin/weekday')
+dayjs.extend(weekday)
 
 const DATA = [
     {
@@ -134,7 +139,10 @@ export const RemindersScreen = ({ navigation }) => {
         fetchData();
         if (data !== null) {
             let tempData = [...data]
-            tempData.sort((a,b) => dayjs((a.frequency === 2 ? "2022-01-01" : a.date) + a.time) - dayjs((b.frequency === 2 ? "2022-01-01" : b.date) + b.time));
+            tempData.sort((a,b) => 
+                dayjs((a.frequency === Frequencies.Daily ? "2022-01-01" : (a.frequency === Frequencies.Weekly) ? dayjs().weekday(DaysOfWeek[dayjs(a.date).format('dddd')]).format("YYYY-MM-DD") : a.date) + a.time) 
+                - dayjs((b.frequency === Frequencies.Daily ? "2022-01-01" : (b.frequency === Frequencies.Weekly) ? dayjs().weekday(DaysOfWeek[dayjs(b.date).format('dddd')]).format("YYYY-MM-DD") : b.date) + b.time)
+                );
             setData(tempData);
         }
     }, []);
@@ -167,7 +175,7 @@ export const RemindersScreen = ({ navigation }) => {
 
     const renderDates = ({ item }) => (
         <View style={{ marginBottom: "2%" }}>
-            <Text>{dayjs(item.date).isValid() ? dayjs(item.date).format("DD MMMM YYYY") : `${item.date}`}</Text>
+            <Text>{dayjs(item.date).isValid() ? dayjs(item.date).format("dddd DD MMMM YYYY") : `${item.date}`}</Text>
             <View style={{
                 width: "100%",
                 borderBottomColor: "#EEE",
@@ -183,10 +191,19 @@ export const RemindersScreen = ({ navigation }) => {
 
     if (data !== null) {
         data.map((reminder) => {
-            if (reminder.frequency === 2) {
+            if (reminder.frequency === Frequencies.Daily) {
                 dailyRems.push(reminder);
+            } else if (reminder.frequency === Frequencies.Weekly) {
+                let dayOfWeek = dayjs().weekday(DaysOfWeek[dayjs(reminder.date).format('dddd')]).format("YYYY-MM-DD");
+                let dateIndex = datedRems.findIndex(
+                    (obj) => obj.date === dayOfWeek
+                )
+                if (dateIndex === -1) {
+                    datedRems.push({ date: dayOfWeek, rems: [reminder] });
+                } else {
+                    datedRems[dateIndex].rems.push(reminder);
+                }
             } else {
-                //TODO implement date sorting since this functionality is entirely FE and users can add reminders
                 let dateIndex = datedRems.findIndex(
                     (obj) => obj.date === reminder.date
                 );
