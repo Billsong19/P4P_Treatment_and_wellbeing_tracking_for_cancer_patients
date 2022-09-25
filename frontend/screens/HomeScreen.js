@@ -11,38 +11,16 @@ import {
 } from "react-native";
 import styles from "../styles";
 import dayjs from "dayjs";
-import { UserContext } from "../components/UserContext.js";
+import { getUserContext } from "../components/UserContext.js";
+import { useState } from "react";
 
 export const HomeScreen = ({ navigation }) => {
-  const reminders = [
-    {
-      id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-      title: "Take medicine",
-      complete: true,
-      frequency: 2,
-      date: "",
-      time: "10:00",
-      details: "two 50mg tablets",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d72",
-      title: "Clinic appointment",
-      complete: false,
-      frequency: 0,
-      date: "2022-5-22",
-      time: "16:30",
-      details: "Clinic name, address, meeting with Dr. Name",
-    },
-    {
-      id: "58694a0f-3da1-471f-bd96-145571e29d73",
-      title: "Surgery prep appointment",
-      complete: false,
-      frequency: 0,
-      date: "2022-5-28",
-      time: "12:30",
-      details: "Clinic name, address, meeting with Dr. Name",
-    },
-  ];
+  // console.log("blah");
+  // console.log(getUserContext());
+  // console.log(user);
+  const context = getUserContext();
+  const user = context.user;
+  // console.log(user);
 
   const renderSimpleReminder = ({ item }) => (
     <TouchableOpacity
@@ -76,9 +54,9 @@ export const HomeScreen = ({ navigation }) => {
         }}
       >
         <View style={{ margin: "2%" }}>
-          <Text>Welcome back %user%</Text>
+          <Text>Welcome back {user == null ? "..." : user.first_name}</Text>
           <Text style={{ fontSize: 20.0, marginVertical: 10 }}>
-            %current-treatment-period%
+            {user == null ? "..." : user.treatment_period} weeks since diagnosis
           </Text>
           <TouchableHighlight
             underlayColor={"#8AB6DF"}
@@ -119,7 +97,7 @@ export const HomeScreen = ({ navigation }) => {
             </TouchableHighlight>
           </View>
           <FlatList
-            data={reminders}
+            data={user}
             renderItem={renderSimpleReminder}
             keyExtractor={(item) => item.id}
           />
