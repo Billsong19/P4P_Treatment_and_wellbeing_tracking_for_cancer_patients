@@ -266,6 +266,12 @@ const styles = StyleSheet.create({
     saveNoteButton: {
         borderRadius: 8,
         padding: 4,
+    },
+    pageNavButton: {
+        height: "100%",
+        position: "absolute",
+        width: "10%",
+        justifyContent: "center"
     }
 });
 

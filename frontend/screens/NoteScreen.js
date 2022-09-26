@@ -31,25 +31,12 @@ const getData = async () => {
 
 const storeData = async (value) => {
     try {
-      const jsonValue = JSON.stringify(value);
-      await AsyncStorage.setItem("@notes", jsonValue);
+        const jsonValue = JSON.stringify(value);
+        await AsyncStorage.setItem("@notes", jsonValue);
     } catch (e) {
-      console.log(e);
+        console.log(e);
     }
-  };
-
-  const DATA = [
-    {
-        id: "91273d1e",
-        title: "Stomach Cancer",
-        contents: "stomach.jpg",
-    },
-    {
-        id: "12321aed9",
-        title: "Liver Cancer",
-        contents: "liver.jpg",
-    },
-    ];
+};
 
 export const NoteScreen = ({ navigation }) => {
     const [notes, setNotes] = React.useState([]);
