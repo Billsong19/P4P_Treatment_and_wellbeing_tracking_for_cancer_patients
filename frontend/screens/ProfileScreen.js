@@ -62,7 +62,9 @@ export const ProfileScreen = ({ navigation }) => {
         </View>
 
         <View style={{ flexDirection: "row", margin: 6 }}>
-          <Text style={styles.subHeader}>{user.stage} </Text>
+          <Text style={styles.subHeader}>
+            {userIsNull() ? "..." : user.stage}{" "}
+          </Text>
           <Text style={{ marginLeft: "auto" }}>
             as of:
             {userIsNull()

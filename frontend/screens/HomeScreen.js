@@ -15,12 +15,8 @@ import { getUserContext } from "../components/UserContext.js";
 import { useState } from "react";
 
 export const HomeScreen = ({ navigation }) => {
-  // console.log("blah");
-  // console.log(getUserContext());
-  // console.log(user);
   const context = getUserContext();
   const user = context.user;
-  // console.log(user);
 
   const renderSimpleReminder = ({ item }) => (
     <TouchableOpacity
@@ -56,7 +52,8 @@ export const HomeScreen = ({ navigation }) => {
         <View style={[styles.wideTile, styles.blueDivider]}>
           <Text>Welcome back {user == null ? "..." : user.first_name}</Text>
           <Text style={{ fontSize: 20.0, marginVertical: 10 }}>
-            {user == null ? "..." : user.treatment_period} weeks since diagnosis
+            {user == null ? "..." : `${user.condition.treatment_period}`} weeks
+            since diagnosis
           </Text>
           <TouchableHighlight
             underlayColor={"#8AB6DF"}
