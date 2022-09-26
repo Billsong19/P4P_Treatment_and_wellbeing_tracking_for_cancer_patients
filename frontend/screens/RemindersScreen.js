@@ -111,6 +111,7 @@ export const RemindersScreen = ({ navigation }) => {
     const [newDate, setNewDate] = React.useState("");
     const [isEdit, setEdit] = React.useState(false);
     const [editId, setEditId] = React.useState(-1);
+    const [loading, setLoading] = React.useState(true);
 
     const dailyRems = []; //an array of reminders for storing 'daily' reminders
     const datedRems = []; //an array that stores [key: date, value: [array of relevant reminders]] pairs
@@ -122,6 +123,7 @@ export const RemindersScreen = ({ navigation }) => {
                 onPress={() => {
                     setModalVisible(!isModalVisible);
                 }}
+                disabled={loading}
             >
                 <Ionicons
                     name="add"
@@ -130,13 +132,14 @@ export const RemindersScreen = ({ navigation }) => {
             </TouchableOpacity>
           ),
         });
-      }, [navigation]);
+      }, [navigation, loading]);
 
     React.useEffect(() => {
+        setLoading(true);
         const fetchData = async () => {
             setData(await getData());
         };
-        fetchData();
+        fetchData().then(() => setLoading(false));
         if (data !== null) {
             let tempData = [...data]
             tempData.sort((a,b) => 
@@ -244,7 +247,7 @@ export const RemindersScreen = ({ navigation }) => {
                     { display: isModalVisible ? "flex" : "none" },
                 ]}
             />
-            <View style={[styles.wideTile, styles.blueBackground, {marginTop: 5}]}>
+            <View style={[styles.wideTile, styles.blueBackground, {marginTop: 5, maxHeight: 250}]}>
                 <Text style={[styles.subHeader, { color: "#FFF" }]}>
                     Daily Reminders
                 </Text>
@@ -254,6 +257,7 @@ export const RemindersScreen = ({ navigation }) => {
                     keyExtractor={(item) => item.id}
                 />
             </View>
+            { loading ? <Text style={{alignSelf: "center", margin: 20}}>loading...</Text> : null }
             <FlatList
                 style={styles.wideTile}
                 data={datedRems}

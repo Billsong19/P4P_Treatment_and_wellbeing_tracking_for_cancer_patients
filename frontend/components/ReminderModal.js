@@ -36,7 +36,7 @@ export default ReminderModal = (props) => {
   const [pickerMode, setPickerMode] = React.useState("date");
   const [pickerVisible, setPickerVisible] = React.useState(false);
   const [processing, setProcessing] = React.useState(false);
-  const [weeklyDay, setWeeklyDay] = React.useState(DaysOfWeek.Monday)
+  const [weeklyDay, setWeeklyDay] = React.useState(DaysOfWeek.Monday);
 
   const clearModal = () => {
     props.setNewTitle("");
@@ -55,15 +55,19 @@ export default ReminderModal = (props) => {
     let tempRems = (props.data == null) ? [] : [...props.data];
     if (props.isEdit) {
       const index = data.findIndex((reminder) => reminder.id === props.editId);
-      tempRems[index] = {
-        id: props.editId,
-        title: props.newTitle,
-        complete: false,
-        frequency: props.newFrequency,
-        date: (props.newFrequency === Frequencies.Daily) ? dayjs().format("YYYY-MM-DD") : (props.newFrequency === Frequencies.Weekly) ? dayjs().weekday(weeklyDay).format("YYYY-MM-DD") : dayjs(dateTime).format("YYYY-MM-DD"),
-        time: dayjs(dateTime).format("HH:mm"),
-        details: props.newDescription,
-      };
+      if (index >= 0) {
+        tempRems[index] = {
+          id: props.editId,
+          title: props.newTitle,
+          complete: false,
+          frequency: props.newFrequency,
+          date: (props.newFrequency === Frequencies.Daily) ? dayjs().format("YYYY-MM-DD") : (props.newFrequency === Frequencies.Weekly) ? dayjs().weekday(weeklyDay).format("YYYY-MM-DD") : dayjs(dateTime).format("YYYY-MM-DD"),
+          time: dayjs(dateTime).format("HH:mm"),
+          details: props.newDescription,
+        };
+      } else {
+        Alert.alert("An error occurred while saving the reminder")
+      }
     } else {
       tempRems.push({
         id: uuidv4(),

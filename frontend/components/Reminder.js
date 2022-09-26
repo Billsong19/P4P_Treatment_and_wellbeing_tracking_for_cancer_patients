@@ -12,7 +12,7 @@ import {
     Pressable,
 } from "react-native";
 import styles from "../styles.js";
-import IonIcons from "@expo/vector-icons/Ionicons";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import CheckBox from 'expo-checkbox';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { setUpEditModal } from "./ReminderModal.js";
@@ -156,7 +156,7 @@ export default Reminder = ({ id, title, time, details, complete, frequency, date
                         }}
                         onPress={() => setUpEditModal({title, details, date, time, frequency, id})}
                     >
-                        <IonIcons name="ellipsis-horizontal" size={20} />
+                        <Ionicons name="ellipsis-horizontal" size={20} />
                     </TouchableOpacity>
                 </Animated.View>
             </Animated.View>

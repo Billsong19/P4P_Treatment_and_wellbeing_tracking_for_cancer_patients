@@ -24,6 +24,7 @@ import { DetailsScreen } from "./screens/DetailsScreen";
 import { HCPContactScreen } from "./screens/HCPContactScreen.js";
 import { MoreHelpScreen } from "./screens/MoreHelpScreen.js";
 import { ProfileScreen } from "./screens/ProfileScreen.js";
+import { NoteScreen } from "./screens/NoteScreen";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 const BottomTab = createBottomTabNavigator();
@@ -100,16 +101,34 @@ function InfoLibScreens() {
     const Stack = createNativeStackNavigator();
     return (
         <Stack.Navigator
-            screenOptions={{
+            screenOptions={({ navigation }) => ({
+                headerRight: () => {
+                    return (
+                        <TouchableOpacity
+                            onPress={() => {
+                                navigation.navigate("Notes");
+                            }}
+                        >
+                            <Ionicons
+                                name="reader"
+                                size={24}
+                                style={{
+                                    margin: 5
+                                }}
+                            />
+                        </TouchableOpacity>
+                    );
+                },
                 transitionSpec: {
                     open: config,
                     close: config,
                 },
-            }}
+            })}
         >
             <Stack.Screen name="Info Library" component={LibraryScreen} />
             <Stack.Screen name="Condition" component={ConditionScreen} />
             <Stack.Screen name="Details" component={DetailsScreen} />
+            <Stack.Screen name="Notes" component={NoteScreen} />
         </Stack.Navigator>
     );
 }

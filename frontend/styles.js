@@ -254,6 +254,18 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderStyle: "solid",
         borderColor: "#DDD",
+    },
+    note: {
+        borderRadius: 8,
+        borderWidth: 1,
+        borderStyle: "solid",
+        borderColor: "#DDD",
+        padding: 8,
+        margin: "1%",
+    },
+    saveNoteButton: {
+        borderRadius: 8,
+        padding: 4,
     }
 });
 
