@@ -66,7 +66,6 @@ const styles = StyleSheet.create({
         backgroundColor: swOrange,
     },
     libraryButton: {
-        marginHorizontal: "2%",
         padding: 20,
         height: 65,
         borderBottomWidth: 1,
@@ -255,6 +254,24 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderStyle: "solid",
         borderColor: "#DDD",
+    },
+    note: {
+        borderRadius: 8,
+        borderWidth: 1,
+        borderStyle: "solid",
+        borderColor: "#DDD",
+        padding: 8,
+        margin: "1%",
+    },
+    saveNoteButton: {
+        borderRadius: 8,
+        padding: 4,
+    },
+    pageNavButton: {
+        height: "100%",
+        position: "absolute",
+        width: "10%",
+        justifyContent: "center"
     }
 });
 

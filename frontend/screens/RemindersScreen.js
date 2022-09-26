@@ -17,8 +17,13 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import Reminder from "../components/Reminder";
 import ReminderModal from "../components/ReminderModal.js";
+import { Frequencies } from "../public/Frequencies.js";
+import { DaysOfWeek } from "../public/DaysOfWeek.js";
 import dayjs from "dayjs";
 import Ionicons from "@expo/vector-icons/Ionicons";
+
+var weekday = require("dayjs/plugin/weekday");
+dayjs.extend(weekday);
 
 const DATA = [
   {
@@ -105,6 +110,7 @@ export const RemindersScreen = ({ navigation }) => {
   const [newDate, setNewDate] = React.useState("");
   const [isEdit, setEdit] = React.useState(false);
   const [editId, setEditId] = React.useState(-1);
+  const [loading, setLoading] = React.useState(true);
 
   const dailyRems = []; //an array of reminders for storing 'daily' reminders
   const datedRems = []; //an array that stores [key: date, value: [array of relevant reminders]] pairs
@@ -116,24 +122,42 @@ export const RemindersScreen = ({ navigation }) => {
           onPress={() => {
             setModalVisible(!isModalVisible);
           }}
+          disabled={loading}
         >
           <Ionicons name="add" size={36} />
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, [navigation, loading]);
 
   React.useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       setData(await getData());
     };
-    fetchData();
+    fetchData().then(() => setLoading(false));
     if (data !== null) {
       let tempData = [...data];
       tempData.sort(
         (a, b) =>
-          dayjs((a.frequency === 2 ? "2022-01-01" : a.date) + a.time) -
-          dayjs((b.frequency === 2 ? "2022-01-01" : b.date) + b.time)
+          dayjs(
+            (a.frequency === Frequencies.Daily
+              ? "2022-01-01"
+              : a.frequency === Frequencies.Weekly
+              ? dayjs()
+                  .weekday(DaysOfWeek[dayjs(a.date).format("dddd")])
+                  .format("YYYY-MM-DD")
+              : a.date) + a.time
+          ) -
+          dayjs(
+            (b.frequency === Frequencies.Daily
+              ? "2022-01-01"
+              : b.frequency === Frequencies.Weekly
+              ? dayjs()
+                  .weekday(DaysOfWeek[dayjs(b.date).format("dddd")])
+                  .format("YYYY-MM-DD")
+              : b.date) + b.time
+          )
       );
       setData(tempData);
     }
@@ -169,7 +193,7 @@ export const RemindersScreen = ({ navigation }) => {
     <View style={{ marginBottom: "2%" }}>
       <Text>
         {dayjs(item.date).isValid()
-          ? dayjs(item.date).format("DD MMMM YYYY")
+          ? dayjs(item.date).format("dddd DD MMMM YYYY")
           : `${item.date}`}
       </Text>
       <View
@@ -189,10 +213,19 @@ export const RemindersScreen = ({ navigation }) => {
 
   if (data !== null) {
     data.map((reminder) => {
-      if (reminder.frequency === 2) {
+      if (reminder.frequency === Frequencies.Daily) {
         dailyRems.push(reminder);
+      } else if (reminder.frequency === Frequencies.Weekly) {
+        let dayOfWeek = dayjs()
+          .weekday(DaysOfWeek[dayjs(reminder.date).format("dddd")])
+          .format("YYYY-MM-DD");
+        let dateIndex = datedRems.findIndex((obj) => obj.date === dayOfWeek);
+        if (dateIndex === -1) {
+          datedRems.push({ date: dayOfWeek, rems: [reminder] });
+        } else {
+          datedRems[dateIndex].rems.push(reminder);
+        }
       } else {
-        //TODO implement date sorting since this functionality is entirely FE and users can add reminders
         let dateIndex = datedRems.findIndex(
           (obj) => obj.date === reminder.date
         );
@@ -233,7 +266,13 @@ export const RemindersScreen = ({ navigation }) => {
           { display: isModalVisible ? "flex" : "none" },
         ]}
       />
-      <View style={[styles.wideTile, styles.blueBackground, { marginTop: 5 }]}>
+      <View
+        style={[
+          styles.wideTile,
+          styles.blueBackground,
+          { marginTop: 5, maxHeight: 250 },
+        ]}
+      >
         <Text style={[styles.subHeader, { color: "#FFF" }]}>
           Daily Reminders
         </Text>
@@ -243,6 +282,9 @@ export const RemindersScreen = ({ navigation }) => {
           keyExtractor={(item) => item.id}
         />
       </View>
+      {loading ? (
+        <Text style={{ alignSelf: "center", margin: 20 }}>loading...</Text>
+      ) : null}
       <FlatList
         style={styles.wideTile}
         data={datedRems}
