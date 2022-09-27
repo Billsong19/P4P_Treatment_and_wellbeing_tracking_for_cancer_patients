@@ -1,20 +1,13 @@
 import * as React from "react";
 import {
     FlatList,
-    Animated,
     Text,
     View,
-    ScrollView,
-    Modal,
-    Image,
     TouchableOpacity,
-    TextInput,
-    Pressable,
 } from "react-native";
 import styles from "../styles.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import 'react-native-get-random-values';
-import { v4 as uuidv4 } from "uuid";
 import Reminder from "../components/Reminder";
 import ReminderModal from "../components/ReminderModal.js";
 import { Frequencies } from "../public/Frequencies.js"

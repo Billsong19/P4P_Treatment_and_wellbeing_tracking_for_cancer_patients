@@ -1,20 +1,12 @@
 import * as React from "react";
 import {
     TouchableOpacity,
-    Image,
     Text,
     View,
-    Pressable,
-    StyleSheet,
-    ScrollView,
-    TouchableHighlight,
-    TextInput,
     Alert,
 } from "react-native";
-import styles from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { style } from "@mui/system";
 import { FlatList } from "react-native-gesture-handler";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";

@@ -2,8 +2,6 @@ import * as React from "react";
 import {
     Text,
     View,
-    Button,
-    Pressable,
     TouchableHighlight,
     ImageBackground,
     TouchableOpacity,

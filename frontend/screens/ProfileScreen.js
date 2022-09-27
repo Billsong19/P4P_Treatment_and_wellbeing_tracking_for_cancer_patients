@@ -1,10 +1,8 @@
 import * as React from "react";
 import {
     Pressable,
-    StyleSheet,
     Text,
     View,
-    Button,
     ScrollView,
 } from "react-native";
 import styles from "../styles";
