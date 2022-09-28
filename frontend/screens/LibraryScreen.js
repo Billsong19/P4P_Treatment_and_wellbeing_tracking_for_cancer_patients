@@ -46,7 +46,7 @@ export const LibraryScreen = ({ navigation }) => {
 
     return (
         <ScrollView
-            style={{ backgroundColor: "white", flex: 1}}
+            style={{ backgroundColor: "#FFF", flex: 1}}
             contentContainerStyle={{ flexGrow: 1 }}
             alwaysBounceVertical={true}
         >
@@ -72,7 +72,7 @@ export const LibraryScreen = ({ navigation }) => {
                     }}
                 />
             </View>
-            { bookmarkedCond && !search ?
+            { (bookmarkedCond && !search) &&
                 <TouchableOpacity
                     onPress={() =>
                         navigation.navigate("Condition", {
@@ -97,7 +97,7 @@ export const LibraryScreen = ({ navigation }) => {
                         <Text style={styles.subHeader}>{bookmarkedCond.condition}</Text>
                     </View>
                 </TouchableOpacity>
-            : null }
+            }
             {filteredData?.map((data, index) => {
                 return (
                     <TouchableHighlight

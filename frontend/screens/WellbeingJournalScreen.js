@@ -19,7 +19,7 @@ export const WellbeingJournalScreen = ({ navigation }) => {
 
     return (
         <ScrollView
-            style={[styles.page, { backgroundColor: "rgba(255,255,255,0.8)" }]}
+            style={[styles.page, { backgroundColor: "#FFF" }]}
         >
             <View style={styles.blueDivider}>
                 <Text style={{ fontSize: 20, marginVertical: 10 }}>
@@ -50,7 +50,7 @@ export const WellbeingJournalScreen = ({ navigation }) => {
                         value={inputSymptom}
                         style={{
                             marginBottom: 10,
-                            width: "50%",
+                            width: "45%",
                             position: "relative",
                             top: 2,
                         }}
@@ -168,7 +168,7 @@ export const WellbeingJournalScreen = ({ navigation }) => {
                         ? [styles.wideButton, { backgroundColor: "#CCC" }]
                         : [styles.wideButton, styles.blueBackground]
                 }
-                onPress={() => navigation.navigate("B M Health")}
+                onPress={() => navigation.navigate("Songward")}
                 disabled={phys == -1 || ment == -1}
             >
                 <Text

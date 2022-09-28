@@ -8,6 +8,7 @@ import {
   TextInput,
   Pressable,
   Alert,
+  Platform,
 } from "react-native";
 import styles, { swGreen, swOrange } from "../styles.js";
 import { CheckBox } from "expo-checkbox";
@@ -36,7 +37,7 @@ export default ReminderModal = (props) => {
   const [pickerMode, setPickerMode] = React.useState("date");
   const [pickerVisible, setPickerVisible] = React.useState(false);
   const [processing, setProcessing] = React.useState(false);
-  const [weeklyDay, setWeeklyDay] = React.useState(DaysOfWeek.Monday);
+  const [weeklyDay, setWeeklyDay] = React.useState(DaysOfWeek.Sunday);
 
   const clearModal = () => {
     props.setNewTitle("");
@@ -127,9 +128,9 @@ export default ReminderModal = (props) => {
                   style={[styles.emptyRadioButton, styles.blueBorder]}
                   onPress={() => setWeeklyDay(DaysOfWeek[dayOfWeek])}
                 >
-                  {weeklyDay == DaysOfWeek[dayOfWeek] ? (
+                  {weeklyDay == DaysOfWeek[dayOfWeek] && 
                     <View style={styles.radioFill} />
-                  ) : null}
+                  }
                 </Pressable>
                 <Text style={{ alignSelf: "center" }}>{dayOfWeek.substring(0,2)}</Text>
               </View>
@@ -193,45 +194,62 @@ export default ReminderModal = (props) => {
             justifyContent: "center" 
         }}
         >
-          <TouchableOpacity
-            onPress={() => {showPicker("time")}}
-            style={styles.dateButton}
-          >
-            <Text style={styles.subHeader}>
-              {dayjs(dateTime).format("HH:mm")}
-            </Text>
-          </TouchableOpacity>
-          {props.newFrequency === Frequencies.Once && 
-          <TouchableOpacity
-            onPress={() => {showPicker("date")}}
-            style={styles.dateButton}
-          >
-            <Text style={styles.subHeader}>
-              {dayjs(dateTime).format("ddd D MMM YYYY")}
-            </Text>
-          </TouchableOpacity>
+          { Platform.OS === 'android' && 
+            <View>
+              <TouchableOpacity
+                onPress={() => {showPicker("time")}}
+                style={styles.dateButton}
+              >
+                <Text style={styles.subHeader}>
+                  {dayjs(dateTime).format("HH:mm")}
+                </Text>
+              </TouchableOpacity>
+              {props.newFrequency === Frequencies.Once && 
+              <TouchableOpacity
+                onPress={() => {showPicker("date")}}
+                style={styles.dateButton}
+              >
+                <Text style={styles.subHeader}>
+                  {dayjs(dateTime).format("ddd D MMM YYYY")}
+                </Text>
+              </TouchableOpacity>
+              }
+              {pickerVisible && 
+              <DateTimePicker
+                style={
+                  props.newFrequency === Frequencies.Weekly
+                    ? { alignSelf: "flex-start" }
+                    : { alignSelf: "center" }
+                }
+                value={dateTime}
+                mode={pickerMode}
+                onChange={onPickerChange}
+              />
+              }
+            </View>
           }
-          {pickerVisible && 
-          <DateTimePicker
-            style={
-              props.newFrequency === Frequencies.Weekly
-                ? { alignSelf: "flex-start" }
-                : { alignSelf: "center" }
-            }
-            value={dateTime}
-            mode={pickerMode}
-            onChange={onPickerChange}
-          />
+          { Platform.OS === 'ios' && 
+            <View>
+              <DateTimePicker
+                style={
+                  props.newFrequency === Frequencies.Once ? 
+                  { width:  215 } : { width: 94, alignSelf: "center" }
+                 }
+                value={dateTime}
+                mode={props.newFrequency === Frequencies.Once ? "datetime" : "time" }
+                onChange={onPickerChange}
+              />
+            </View>
           }
-          {props.newFrequency === Frequencies.Weekly
-            ? <View style={{ display: "flex", flexDirection: "row" }}>
+          {props.newFrequency === Frequencies.Weekly &&
+            <View style={{ display: "flex", flexDirection: "row" }}>
               {Object.keys(DaysOfWeek).map((day) => {
                 return (
                   renderRadioDOW(day)
                 );
               })}
             </View>
-            : null}
+            }
         </View>
         <Text style={styles.subHeader}>Frequency</Text>
         <View style={{ display: "flex", flexDirection: "row" }}>
@@ -240,9 +258,9 @@ export default ReminderModal = (props) => {
               style={[styles.emptyRadioButton, styles.blueBorder]}
               onPress={() => props.setNewFrequency(Frequencies.Once)}
             >
-              {props.newFrequency == Frequencies.Once ? (
+              {props.newFrequency == Frequencies.Once && 
                 <View style={styles.radioFill} />
-              ) : null}
+              }
             </Pressable>
             <Text style={{ alignSelf: "center" }}>Once</Text>
           </View>
@@ -251,9 +269,9 @@ export default ReminderModal = (props) => {
               style={[styles.emptyRadioButton, styles.blueBorder]}
               onPress={() => props.setNewFrequency(Frequencies.Weekly)}
             >
-              {props.newFrequency == Frequencies.Weekly ? (
+              {props.newFrequency == Frequencies.Weekly &&
                 <View style={styles.radioFill} />
-              ) : null}
+              }
             </Pressable>
             <Text style={{ alignSelf: "center" }}>Weekly</Text>
           </View>
@@ -262,9 +280,9 @@ export default ReminderModal = (props) => {
               style={[styles.emptyRadioButton, styles.blueBorder]}
               onPress={() => props.setNewFrequency(Frequencies.Daily)}
             >
-              {props.newFrequency == Frequencies.Daily ? (
+              {props.newFrequency == Frequencies.Daily &&
                 <View style={styles.radioFill} />
-              ) : null}
+              }
             </Pressable>
             <Text style={{ alignSelf: "center" }}>Daily</Text>
           </View>
@@ -301,7 +319,7 @@ export default ReminderModal = (props) => {
             Cancel
           </Text>
         </Pressable>
-        {props.isEdit ? (
+        {props.isEdit &&
           <Pressable
             style={[
               styles.wideButton,
@@ -339,7 +357,7 @@ export default ReminderModal = (props) => {
               Delete
             </Text>
           </Pressable>
-        ) : null}
+        }
       </ScrollView>
     </Modal>
   );

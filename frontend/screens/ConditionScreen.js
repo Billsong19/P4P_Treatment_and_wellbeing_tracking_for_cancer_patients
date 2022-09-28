@@ -15,7 +15,7 @@ export const ConditionScreen = ({ navigation, route }) => {
     return (
         <ScrollView
             style={{
-                backgroundColor: "rgba(255,255,255,1)",
+                backgroundColor: "#FFF",
             }}
             contentContainerStyle={{ flexGrow: 1 }}
         >
@@ -24,13 +24,13 @@ export const ConditionScreen = ({ navigation, route }) => {
                 {route.params.condition}
             </Text>
             <View style={{maxHeight: 200}}>
-                { img ?
+                { img &&
                 <Image
                     source={img}
                     resizeMode="cover"
                     style={{ width: "100%", maxHeight: 200 }}
                 /> 
-                : null }
+                }
             </View>
             <TouchableHighlight
                 underlayColor={"#EEE"}

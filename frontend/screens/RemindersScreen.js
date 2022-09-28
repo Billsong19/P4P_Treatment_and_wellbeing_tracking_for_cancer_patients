@@ -121,6 +121,7 @@ export const RemindersScreen = ({ navigation }) => {
                 <Ionicons
                     name="add"
                     size={36}
+                    color={loading ? "#666" : "#000"}
                 />
             </TouchableOpacity>
           ),
@@ -213,7 +214,7 @@ export const RemindersScreen = ({ navigation }) => {
     }
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, backgroundColor: "#FFF" }}>
             <ReminderModal 
                 isModalVisible={isModalVisible}
                 setModalVisible={setModalVisible}
@@ -250,7 +251,9 @@ export const RemindersScreen = ({ navigation }) => {
                     keyExtractor={(item) => item.id}
                 />
             </View>
-            { loading ? <Text style={{alignSelf: "center", margin: 20}}>loading...</Text> : null }
+            { loading && 
+                <Text style={{alignSelf: "center", margin: 20}}>loading...</Text>
+            }
             <FlatList
                 style={styles.wideTile}
                 data={datedRems}

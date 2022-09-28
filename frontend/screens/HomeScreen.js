@@ -61,7 +61,7 @@ export const HomeScreen = ({ navigation }) => {
     );
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, backgroundColor: "#FFF" }}>
             <ImageBackground
                 source={require("../public/bmbgHome.png")}
                 resizeMode="cover"

@@ -22,7 +22,7 @@ export const ProfileScreen = ({ navigation }) => {
         ],
     };
     return (
-        <ScrollView>
+        <ScrollView style={{backgroundColor: "#FFF"}}>
             <View
                 style={[
                     styles.wideTile,

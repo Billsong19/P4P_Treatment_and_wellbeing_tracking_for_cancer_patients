@@ -48,7 +48,7 @@ export const DetailsScreen = ({ navigation, route }) => {
     const contents = infoData.find(data => data.condition === route.params.condition);
 
     return (
-        <View style={{height: "100%"}}>  
+        <View style={{height: "100%", backgroundColor: "#FFF"}}>  
             <ScrollView>
                 <View style={{backgroundColor: pageColor}}>
                     <View style={{margin: 20}}>
