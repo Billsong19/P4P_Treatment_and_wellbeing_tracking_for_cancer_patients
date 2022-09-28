@@ -27,6 +27,11 @@ const storeData = async (value) => {
     }
 };
 
+/*
+    Reminder is a component used to display a reminder in the reminders screen. It starts off in a
+    collapsed view and when tapped (anywhere other than the checkbox), expands to show details as well a
+    button which opens the ReminderModal to edit the selected reminder through the setUpEditModal prop.
+*/
 export default Reminder = ({ id, title, time, details, complete, frequency, date, data, setData, setUpEditModal }) => {
     const startingHeight = 35;
     const [isExpanded, setExpanded] = React.useState(false);

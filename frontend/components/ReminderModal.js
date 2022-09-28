@@ -32,6 +32,13 @@ const storeData = async (value) => {
   }
 };
 
+/*
+  ReminderModal is a component for use in the RemindersScreen, it can be used to create new reminders
+  as well as to edit pre-existing ones configurable throught the status of props.isEdit.
+  The date picker will default to current time upon opening to create a new reminder, or if the provided
+  date time for the edit request is invalid. ReminderModal is highly dependent on being passed a 
+  set of data from RemindersScreen as props.
+*/
 export default ReminderModal = (props) => {
   const [dateTime, setDateTime] = React.useState(new Date());
   const [pickerMode, setPickerMode] = React.useState("date");
@@ -80,6 +87,7 @@ export default ReminderModal = (props) => {
         details: props.newDescription,
       });
     }
+    // Sorts all reminders in the data by date and time, weekly reminders use the date of their next occurence, daily use an old date as they only need to be sorted by time
     tempRems.sort((a,b) => 
     dayjs((a.frequency === Frequencies.Daily ? "2022-01-01" : (a.frequency === Frequencies.Weekly) ? dayjs().weekday(DaysOfWeek[dayjs(a.date).format('dddd')]).format("YYYY-MM-DD") : a.date) + a.time) 
     - dayjs((b.frequency === Frequencies.Daily ? "2022-01-01" : (b.frequency === Frequencies.Weekly) ? dayjs().weekday(DaysOfWeek[dayjs(b.date).format('dddd')]).format("YYYY-MM-DD") : b.date) + b.time)
@@ -115,7 +123,6 @@ export default ReminderModal = (props) => {
   const showPicker = (mode) => {
     if (Platform.OS === 'android') {
       setPickerVisible(false);
-      // for iOS, add a button that closes the picker
     }
     setPickerMode(mode);
     setPickerVisible(true);
@@ -229,7 +236,7 @@ export default ReminderModal = (props) => {
             </View>
           }
           { Platform.OS === 'ios' && 
-            <View>
+            <View style={{margin: 5}}>
               <DateTimePicker
                 style={
                   props.newFrequency === Frequencies.Once ? 

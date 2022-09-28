@@ -69,6 +69,14 @@ const styles = {
     },
 }
 
+/*
+    LikertButtons is a set of seven buttons of varying colours of which 
+    only on may be selected at a time. Intended for use in the WellbeingJournalScreen.
+    Props allow external use of the state of the buttons.
+    props:
+    active: currently selected button
+    setActive: function to set the currently selected button
+*/
 export default LikertButtons = (props) => {
     return (
         <View
