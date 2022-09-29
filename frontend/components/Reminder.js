@@ -7,7 +7,7 @@ import {
     ScrollView,
     Modal,
     Image,
-    TouchableOpacity,
+    TouchableHighlight,
     TextInput,
     Pressable,
 } from "react-native";
@@ -83,6 +83,10 @@ export default Reminder = ({ id, title, time, details, complete, frequency, date
         }
     }, [isComplete]);
 
+    React.useEffect(() => {
+        setExpanded(false);
+    }, [id, title, time, details, complete, frequency,date])
+
     const onTextLayout = (e) => {
         let { x, y, width, height } = e.nativeEvent.layout;
         height = Math.floor(height) + startingHeight + 15;
@@ -109,7 +113,7 @@ export default Reminder = ({ id, title, time, details, complete, frequency, date
 
     return (
         <Pressable
-            onLongPress={() => toggleComplete()}
+            onLongPress={() => setUpEditModal({title, details, date, time, frequency, id})}
             onPress={() => setExpanded(!isExpanded)}
         >
             <Animated.View
@@ -153,16 +157,18 @@ export default Reminder = ({ id, title, time, details, complete, frequency, date
                     >
                         {details}
                     </Text>
-                    <TouchableOpacity
+                    <TouchableHighlight
                         style={{
                             position: "absolute",
-                            right: "1%",
-                            bottom: -4,
+                            right: 2,
+                            padding: 4,
+                            borderRadius: 15,
                         }}
                         onPress={() => setUpEditModal({title, details, date, time, frequency, id})}
+                        underlayColor={"rgba(0,0,0,0.1)"}
                     >
-                        <Ionicons name="ellipsis-horizontal" size={20} />
-                    </TouchableOpacity>
+                        <Ionicons name="ellipsis-horizontal" size={24} />
+                    </TouchableHighlight>
                 </Animated.View>
             </Animated.View>
         </Pressable>
