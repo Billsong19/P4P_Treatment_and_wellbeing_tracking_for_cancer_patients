@@ -33,7 +33,9 @@ const storeData = async (value) => {
     button which opens the ReminderModal to edit the selected reminder through the setUpEditModal prop.
 */
 export default Reminder = ({ id, title, time, details, complete, frequency, date, data, setData, setUpEditModal }) => {
-    const startingHeight = 35;
+    const startingHeight = 35
+    const [key, setKey] = React.useState(0);
+    const [titleHeight, setTitleHeight] = React.useState(35);
     const [isExpanded, setExpanded] = React.useState(false);
     const [isComplete, setComplete] = React.useState(complete);
     const [fullHeight, setFullHeight] = React.useState(startingHeight);
@@ -49,7 +51,7 @@ export default Reminder = ({ id, title, time, details, complete, frequency, date
             toValue: isExpanded ? fullHeight : startingHeight,
             useNativeDriver: false,
         }).start();
-    }, [isExpanded]);
+    }, [isExpanded, fullHeight]);
 
     React.useEffect(() => {
         if (isExpanded) {
@@ -85,11 +87,16 @@ export default Reminder = ({ id, title, time, details, complete, frequency, date
 
     React.useEffect(() => {
         setExpanded(false);
+        setFullHeight(startingHeight);
     }, [id, title, time, details, complete, frequency,date])
 
-    const onTextLayout = (e) => {
+    React.useEffect(() => {
+        setKey(key+1)
+    }, [fullHeight])
+
+    const onLayout = (e) => {
         let { x, y, width, height } = e.nativeEvent.layout;
-        height = Math.floor(height) + startingHeight + 15;
+        height = Math.floor(height) + 17;
         if (height > fullHeight) {
             setFullHeight(height);
         }
@@ -134,42 +141,43 @@ export default Reminder = ({ id, title, time, details, complete, frequency, date
                           ]
                 }
             >
-                <View style={{ flexDirection: "row" }}>
-                    <Text style={{ flex: 3, fontSize: 18 }}>{title}</Text>
-                    <Text style={{ flex: 1, fontSize: 18 }}>{time}</Text>
-                    <CheckBox
-                        value={isComplete}
-                        style={styles.remindersCheck}
-                        onValueChange={() => {
-                            toggleComplete();
-                            setExpanded(isExpanded);
-                        }}
-                    />
+                <View onLayout={onLayout} key={key}>
+                    <View style={{ flexDirection: "row" }}>
+                        <Text style={{ flex: 3, fontSize: 18 }} numberOfLines={isExpanded ? 0 : 1}>{title}</Text>
+                        <Text style={{ flex: 1, fontSize: 18 }}>{time}</Text>
+                        <CheckBox
+                            value={isComplete}
+                            style={styles.remindersCheck}
+                            onValueChange={() => {
+                                toggleComplete();
+                                setExpanded(isExpanded);
+                            }}
+                        />
+                    </View>
+                    <Animated.View style={{ opacity: fadeAnim }}>
+                        <ScrollView style={{height: 0}}>
+                            <Text>{details}</Text>
+                        </ScrollView>
+                        <Text
+                            style={{ marginBottom: 2, maxWidth: '90%', marginTop: 4 }}
+                        >
+                            {details}
+                        </Text>
+                        <TouchableHighlight
+                            style={{
+                                position: "absolute",
+                                right: 2,
+                                padding: 4,
+                                borderRadius: 15,
+                                bottom: -12,
+                            }}
+                            onPress={() => setUpEditModal({title, details, date, time, frequency, id})}
+                            underlayColor={"rgba(0,0,0,0.1)"}
+                        >
+                            <Ionicons name="ellipsis-horizontal" size={24} />
+                        </TouchableHighlight>
+                    </Animated.View>
                 </View>
-                <Animated.View style={{ opacity: fadeAnim }}>
-                    <ScrollView style={{height: 0}}>
-                        <Text onLayout={(e) => {
-                            onTextLayout(e);
-                        }}>{details}</Text>
-                    </ScrollView>
-                    <Text
-                        style={{ marginBottom: 2, maxWidth: '90%', marginTop: 4 }}
-                    >
-                        {details}
-                    </Text>
-                    <TouchableHighlight
-                        style={{
-                            position: "absolute",
-                            right: 2,
-                            padding: 4,
-                            borderRadius: 15,
-                        }}
-                        onPress={() => setUpEditModal({title, details, date, time, frequency, id})}
-                        underlayColor={"rgba(0,0,0,0.1)"}
-                    >
-                        <Ionicons name="ellipsis-horizontal" size={24} />
-                    </TouchableHighlight>
-                </Animated.View>
             </Animated.View>
         </Pressable>
     );

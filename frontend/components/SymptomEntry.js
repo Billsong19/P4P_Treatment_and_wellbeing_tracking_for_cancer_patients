@@ -65,7 +65,7 @@ export default SymptomEntry = ({symptoms, setSymptoms}) => {
                         Same as yesterday: {yesterday.map((entry) => {return (entry[0] + " " + entry[1] + ", ")})}
                     </Text>
                 </TouchableOpacity>
-                <View style={{ display: "flex", flexDirection: "row" }}>
+                <View style={[ styles.blueBackground50 ,{ flexDirection: "row", paddingLeft: 10, paddingBottom: 5, borderRadius: 8 }]}>
                     <View style={{
                         marginBottom: 10,
                         width: "45%",

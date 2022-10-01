@@ -285,6 +285,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         borderWidth: 1,
         height: 35,
+        backgroundColor: "#FFF"
     }
 });
 
