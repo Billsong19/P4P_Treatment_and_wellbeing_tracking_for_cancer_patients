@@ -286,6 +286,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         height: 35,
         backgroundColor: "#FFF"
+    },
+    supportView: {
+        padding: 4,
+        margin: 4,
+        flexDirection: "row",
     }
 });
 

@@ -77,7 +77,7 @@ export default SymptomEntry = ({symptoms, setSymptoms}) => {
                         </Text>
                         <TextInput
                             id="symptomInput"
-                            placeholder="symptom"
+                            placeholder="Enter symptom"
                             value={inputSymptom}
                             style={styles.symptomEntry}
                             onChangeText={setInputSymptom}
@@ -114,7 +114,7 @@ export default SymptomEntry = ({symptoms, setSymptoms}) => {
                             ] : [styles.smallButton,
                             { 
                                 marginRight: 18,
-                                backgroundColor: "#CCC",
+                                backgroundColor: "rgba(0,0,0,0.15)",
                                 top: 4,
                                 justifyContent: "center",
                             }
@@ -125,6 +125,7 @@ export default SymptomEntry = ({symptoms, setSymptoms}) => {
                             name="add"
                             size={24}
                             style={{left: 6}}
+                            color={inputSymptom && inputSeverity ? "#000" : "#666"}
                         />
                     </TouchableOpacity>
                 </View>
