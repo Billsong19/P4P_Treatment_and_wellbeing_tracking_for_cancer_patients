@@ -44,7 +44,7 @@ export default Note = ({ id, title, contents, onEdit, onDelete }) => {
     }, [nTitle, nContents])
 
     return (
-        <View style={styles.note}>
+        <View style={[styles.note, styles.smallShadow]}>
             <View style={{flexDirection: "row"}}>
                 <TextInput
                     style={[styles.subHeader, {flex: 15}]}

@@ -11,6 +11,8 @@ import styles from "../styles";
 import dayjs from "dayjs";
 
 export const HomeScreen = ({ navigation }) => {
+    const user = "Edward";
+    const treatment_period = "Early-middle treatment period"
     const reminders = [
         {
             id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
@@ -70,13 +72,13 @@ export const HomeScreen = ({ navigation }) => {
                 }}
             >
                 <View style={[styles.wideTile, styles.blueDivider]}>
-                    <Text>Welcome back %user%</Text>
+                    <Text>Welcome back {user}</Text>
                     <Text style={{ fontSize: 20.0, marginVertical: 10 }}>
-                        %current-treatment-period%
+                        {treatment_period}
                     </Text>
                     <TouchableHighlight
                         underlayColor={"#8AB6DF"}
-                        style={[styles.wideButton, styles.blueBackground, {marginBottom: "1%"}]}
+                        style={[styles.smallShadow, styles.wideButton, styles.blueBackground, {marginBottom: "1%"}]}
                         onPress={() => navigation.navigate("Wellbeing Journal")}
                     >
                         <Text
@@ -130,7 +132,7 @@ export const HomeScreen = ({ navigation }) => {
                     <View style={{ display: "flex" }}>
                         <TouchableHighlight
                             underlayColor={"#8ADFB6"}
-                            style={[styles.wideButton, styles.greenBackground, {marginBottom: "2%"}]}
+                            style={[styles.smallShadow, styles.wideButton, styles.greenBackground, {marginBottom: "2%"}]}
                             onPress={() =>
                                 navigation.navigate(
                                     "Contact Healthcare Provider"
@@ -149,7 +151,7 @@ export const HomeScreen = ({ navigation }) => {
                         </TouchableHighlight>
                         <TouchableHighlight
                             underlayColor={"#8ADFB6"}
-                            style={[styles.wideButton, styles.greenBackground]}
+                            style={[styles.smallShadow, styles.wideButton, styles.greenBackground]}
                             onPress={() => navigation.navigate("More Help")}
                         >
                             <Text
