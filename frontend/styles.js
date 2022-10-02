@@ -65,6 +65,12 @@ const styles = StyleSheet.create({
     orangeBackground: {
         backgroundColor: swOrange,
     },
+    greyBackGround: {
+        backgroundColor: "#666",
+    },
+    lightGreyBackGround: {
+        backgroundColor: "#999",
+    },
     libraryButton: {
         padding: 20,
         height: 65,
@@ -172,10 +178,10 @@ const styles = StyleSheet.create({
         backgroundColor: "#FFF",
     },
     smallButton: {
-        width: 30,
-        height: 30,
+        width: 35,
+        height: 35,
         alignSelf: "center",
-        borderRadius: 4,
+        borderRadius: 17,
     },
     dot: {
         height: 12,
@@ -215,7 +221,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderStyle: "solid",
         borderColor: "#999",
-        marginTop: "2%",
+        marginTop: "5%",
         marginHorizontal: "4%",
         backgroundColor: "#FFF",
         height: "95%",
@@ -272,6 +278,19 @@ const styles = StyleSheet.create({
         position: "absolute",
         width: "10%",
         justifyContent: "center"
+    },
+    symptomEntry: {
+        padding: 2,
+        borderColor: "#999",
+        borderRadius: 4,
+        borderWidth: 1,
+        height: 35,
+        backgroundColor: "#FFF"
+    },
+    supportView: {
+        padding: 4,
+        margin: 4,
+        flexDirection: "row",
     }
 });
 

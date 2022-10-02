@@ -12,57 +12,43 @@ import {
 } from "react-native";
 import styles from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { style } from "@mui/system";
+import infoData from "../public/infoData";
+
+const userCond = "Bowel Cancer";
 
 export const LibraryScreen = ({ navigation }) => {
-  const DATA = [
-    {
-      type: "Stomach Cancer",
-      img: "stomach.jpg",
-    },
-    {
-      type: "Liver Cancer",
-      img: "liver.jpg",
-    },
-    {
-      type: "Prostate Cancer",
-      img: "prostate.jpg",
-    },
-    {
-      type: "Breast Cancer",
-      img: "breast.jpg",
-    },
-    {
-      type: "Leukemia",
-      img: "leukemia.jpg",
-    },
-    {
-      type: "Skin Cancer",
-      img: "Melanoma.jpg",
-    },
-    {
-      type: "Lung Cancer",
-      img: "lung.jpg",
-    },
-    {
-      type: "Brain Tumor",
-      img: "brain.jpg",
-    },
-  ];
   const [search, setSearch] = React.useState("");
-  const [filteredData, setFilteredData] = React.useState(DATA);
+
+  // Identifies bookmarked condition and removes it so it doesn't show twice
+  const altInfoData = [...infoData];
+  const index = altInfoData.findIndex((data) => data.condition === userCond);
+  let bookmarkedCond = null;
+  if (index !== -1) {
+    bookmarkedCond = altInfoData.splice(index, 1)[0];
+  }
+
+  const [filteredData, setFilteredData] = React.useState(altInfoData);
 
   React.useEffect(() => {
-    setFilteredData(
-      DATA.filter((data) =>
-        data.type.toLowerCase().includes(search.toLowerCase())
-      )
-    );
+    if (search) {
+      // on search return bookmarked condition back to regular list
+      setFilteredData(
+        infoData.filter((data) =>
+          data.condition.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    } else {
+      setFilteredData(
+        altInfoData.filter((data) =>
+          data.condition.toLowerCase().includes(search.toLowerCase())
+        )
+      );
+    }
   }, [search]);
 
   return (
     <ScrollView
-      style={{ backgroundColor: "white", flex: 1 }}
+      style={{ backgroundColor: "#FFF", flex: 1 }}
       contentContainerStyle={{ flexGrow: 1 }}
       alwaysBounceVertical={true}
     >
@@ -79,42 +65,44 @@ export const LibraryScreen = ({ navigation }) => {
           name="close"
           color="#999"
           onPress={() => setSearch("")}
+          size={24}
           style={{
             display: search.length > 0 ? "flex" : "none",
-            fontSize: 20,
           }}
         />
       </View>
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("Condition", {
-            condition: "Bowel Cancer",
-          })
-        }
-        style={[
-          styles.wideTile,
-          styles.blueDivider,
-          {
-            marginTop: "2%",
-            alignSelf: "flex-start",
-            width: "96%",
-            maxHeight: 200,
-          },
-        ]}
-      >
-        <View style={{ width: "100%" }}>
-          <Image
-            source={require("../public/bowel.jpg")}
-            resizeMode="cover"
-            style={{
-              width: "100%",
-              maxHeight: 160,
-            }}
-          />
-          <Text style={styles.subHeader}>Bowel Cancer</Text>
-        </View>
-      </TouchableOpacity>
-      {filteredData.map((cancer, index) => {
+      {bookmarkedCond && !search && (
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate("Condition", {
+              condition: bookmarkedCond.condition,
+            })
+          }
+          style={[
+            styles.wideTile,
+            styles.blueDivider,
+            {
+              marginTop: "2%",
+              alignSelf: "flex-start",
+              width: "96%",
+              maxHeight: 200,
+            },
+          ]}
+        >
+          <View style={{ width: "100%" }}>
+            <Image
+              source={bookmarkedCond.img}
+              resizeMode="cover"
+              style={{
+                width: "100%",
+                maxHeight: 160,
+              }}
+            />
+            <Text style={styles.subHeader}>{bookmarkedCond.condition}</Text>
+          </View>
+        </TouchableOpacity>
+      )}
+      {filteredData?.map((data, index) => {
         return (
           <TouchableHighlight
             key={index}
@@ -122,13 +110,13 @@ export const LibraryScreen = ({ navigation }) => {
             underlayColor={"#EEE"}
             onPress={() =>
               navigation.navigate("Condition", {
-                condition: cancer.type,
+                condition: data.condition,
               })
             }
           >
             <View style={{ flexDirection: "row" }}>
               <Text style={[styles.subHeader, { flex: 25 }]}>
-                {cancer.type}
+                {data.condition}
               </Text>
               <Ionicons
                 name="chevron-forward"

@@ -9,6 +9,12 @@ import {
 import styles from "../styles.js";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
+/*
+Note is a component used to represent a note within the NoteScreen.
+It needs to be passed onEdit and onDelete functions to communicate
+updates of individual notes back to the stored note data available
+within NotePage.
+*/
 export default Note = ({ id, title, contents, onEdit, onDelete }) => {
     const [nTitle, setTitle] = React.useState(title);
     const [nContents, setContents] = React.useState(contents);
@@ -47,6 +53,11 @@ export default Note = ({ id, title, contents, onEdit, onDelete }) => {
                     onEndEditing={saveNote}
                 />
                 { isEdit ? 
+                    /*  
+                        This button doesn't actually do anything, instead it acts as a
+                        ground for users to press causing the lowering of the keyboard
+                        and deselection of the text inputs, which triggers data saving
+                    */
                     <TouchableOpacity
                         onPress={() => setIsEdit(false)}
                         style={[styles.greenBackground, styles.saveNoteButton]}

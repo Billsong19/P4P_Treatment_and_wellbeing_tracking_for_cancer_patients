@@ -1,21 +1,21 @@
-import { maxHeight } from "@mui/system";
 import * as React from "react";
 import {
     Text,
     ScrollView,
     View,
-    Pressable,
     Image,
     TouchableHighlight,
-    StyleSheet,
 } from "react-native";
 import styles from "../styles";
+import infoData from "../public/infoData";
 
 export const ConditionScreen = ({ navigation, route }) => {
+    const img = infoData.find(data => data.condition === route.params.condition)?.img;
+
     return (
         <ScrollView
             style={{
-                backgroundColor: "rgba(255,255,255,1)",
+                backgroundColor: "#FFF",
             }}
             contentContainerStyle={{ flexGrow: 1 }}
         >
@@ -24,11 +24,13 @@ export const ConditionScreen = ({ navigation, route }) => {
                 {route.params.condition}
             </Text>
             <View style={{maxHeight: 200}}>
+                { img &&
                 <Image
-                    source={require("../public/bowel.jpg")}
+                    source={img}
                     resizeMode="cover"
                     style={{ width: "100%", maxHeight: 200 }}
-                />
+                /> 
+                }
             </View>
             <TouchableHighlight
                 underlayColor={"#EEE"}

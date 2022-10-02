@@ -1,16 +1,5 @@
 import * as React from "react";
-import {
-  FlatList,
-  Animated,
-  Text,
-  View,
-  ScrollView,
-  Modal,
-  Image,
-  TouchableOpacity,
-  TextInput,
-  Pressable,
-} from "react-native";
+import { FlatList, Text, View, TouchableOpacity } from "react-native";
 import styles from "../styles.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import "react-native-get-random-values";
@@ -124,7 +113,7 @@ export const RemindersScreen = ({ navigation }) => {
           }}
           disabled={loading}
         >
-          <Ionicons name="add" size={36} />
+          <Ionicons name="add" size={36} color={loading ? "#666" : "#000"} />
         </TouchableOpacity>
       ),
     });
@@ -239,7 +228,7 @@ export const RemindersScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: "#FFF" }}>
       <ReminderModal
         isModalVisible={isModalVisible}
         setModalVisible={setModalVisible}
@@ -282,9 +271,9 @@ export const RemindersScreen = ({ navigation }) => {
           keyExtractor={(item) => item.id}
         />
       </View>
-      {loading ? (
+      {loading && (
         <Text style={{ alignSelf: "center", margin: 20 }}>loading...</Text>
-      ) : null}
+      )}
       <FlatList
         style={styles.wideTile}
         data={datedRems}

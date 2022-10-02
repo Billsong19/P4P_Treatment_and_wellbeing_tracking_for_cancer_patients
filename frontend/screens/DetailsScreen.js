@@ -1,54 +1,13 @@
-import { stepLabelClasses } from "@mui/material";
 import * as React from "react";
-import { Text, ScrollView, Button, View, TouchableHighlight } from "react-native";
+import { Text, ScrollView, View, TouchableHighlight } from "react-native";
 import styles, { swBlue, swTeal, swGreen, swYellow, swOrange } from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import infoData from "../public/infoData";
 
 const MAX_PAGES = 6;
 
 export const DetailsScreen = ({ navigation, route }) => {
     const [pageNo, setPageNo] = React.useState(route.params.section);
-    let contents = [];
-    contents = [
-        ...contents,
-        [{
-            header: "Overview",
-            content: "Stomach cancer, also known as gastric cancer, is a cancer that develops from the lining of the stomach. Most of the time, stomach cancer develops in stages over years.",
-        },
-        {
-            header: "Diagnosis",
-            content: "Early symptoms may include heartburn, upper abdominal pain, nausea, and loss of appetite. Diagnosis usually involves one or more of the proceedures: Gastroscopic exam is the diagnostic method of choice. This involves insertion of a fibre optic camera into the stomach to visualise it. Upper GI series invloves swallowing liquids which show up during an X-ray. CT scans.",
-        },
-        {
-            header: "Potential Causes",
-            content: "The most common cause is infection by the bacterium Helicobacter pylori, which accounts for more than 60% of cases. Smoking, dietary factors such as pickled vegetables and obesity are other risk factors. About 10% of cases run in families, and between 1% and 3% of cases are due to genetic syndromes inherited from a person's parents such as hereditary diffuse gastric cancer.",
-        }],
-        [{
-            header: "Chance of Recovery",
-            content: "Chance of recovery body"
-        }],
-        [{
-            header: "Course of Disease",
-            content: "Course of disease body"
-        }],
-        [{
-            header: "Early stages",
-            content: "Early stages body"
-        }],
-        [{
-            header: "Development and complciations",
-            content: "D A C body"
-        }],
-        [{
-            header: "Treatments",
-            content: "Treatments body"
-        }],
-        [{
-            header: "Risks and long-term implications",
-            content: "RALTI body"
-        }],
-        
-    ];
 
     let page = "";
     let pageColor = swBlue;
@@ -86,8 +45,10 @@ export const DetailsScreen = ({ navigation, route }) => {
             break;
     }
 
+    const contents = infoData.find(data => data.condition === route.params.condition);
+
     return (
-        <View style={{height: "100%"}}>  
+        <View style={{height: "100%", backgroundColor: "#FFF"}}>  
             <ScrollView>
                 <View style={{backgroundColor: pageColor}}>
                     <View style={{margin: 20}}>
@@ -101,7 +62,7 @@ export const DetailsScreen = ({ navigation, route }) => {
                         </Text>
                     </View>
                 </View>
-                {contents[pageNo].map((section, index) => {
+                {contents.details[pageNo].map((section, index) => {
                     return (
                         <View
                             key={index}

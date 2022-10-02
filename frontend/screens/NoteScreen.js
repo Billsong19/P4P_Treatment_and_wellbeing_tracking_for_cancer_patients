@@ -1,20 +1,12 @@
 import * as React from "react";
 import {
     TouchableOpacity,
-    Image,
     Text,
     View,
-    Pressable,
-    StyleSheet,
-    ScrollView,
-    TouchableHighlight,
-    TextInput,
     Alert,
 } from "react-native";
-import styles from "../styles";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { style } from "@mui/system";
 import { FlatList } from "react-native-gesture-handler";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
@@ -112,6 +104,7 @@ export const NoteScreen = ({ navigation }) => {
                 <Ionicons
                     name="add"
                     size={36}
+                    color={loading ? "#666" : "#000"}
                 />
             </TouchableOpacity>
           ),
@@ -127,13 +120,15 @@ export const NoteScreen = ({ navigation }) => {
     }, [navigation]);
 
     return (
-        <View>
+        <View style={{ backgroundColor: "#FFF", height: "100%" }}>
             <FlatList
             data={notes}
             renderItem={renderNote}
             keyExtractor={(note) => note.id}
             />
-            {loading ? <Text style={{alignSelf: "center", margin: 20}}>loading...</Text> : null}
+            {loading &&
+                <Text style={{alignSelf: "center", margin: 20}}>loading...</Text>
+            }
         </View>
         
     );
