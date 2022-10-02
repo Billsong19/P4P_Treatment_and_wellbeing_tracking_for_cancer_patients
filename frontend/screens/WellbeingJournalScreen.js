@@ -18,20 +18,24 @@ export const WellbeingJournalScreen = ({ navigation }) => {
                 <Text style={{ fontSize: 20, marginVertical: 10 }}>
                     Wellbeing Journal
                 </Text>
+            </View> 
+            <View style={[styles.smallShadow, {margin: 4, padding: 4, borderRadius: 8, elevation: 4}]}>
+                <Text style={[styles.subHeader2, { marginVertical: 10 }]}>
+                    How are you physically feeling today?
+                </Text>
+                <LikertButtons active={phys} setActive={setPhys}/>
             </View>
-            <Text style={[styles.subHeader2, { marginVertical: 10 }]}>
-                How are you physically feeling today?
-            </Text>
-            <LikertButtons active={phys} setActive={setPhys}/>
             <View style={styles.tealDivider}>
                 <SymptomEntry symptoms={symptoms} setSymptoms={setSymptoms}/>
             </View>
-            <Text
-                style={[styles.subHeader2, { marginBottom: 10, marginTop: 30 }]}
-            >
-                How are you mentally feeling today?
-            </Text>
-            <LikertButtons active={ment} setActive={setMental}/>
+            <View style={[styles.smallShadow, {margin: 4, padding: 4, borderRadius: 8, elevation: 4, marginTop: 30 }]}>
+                <Text
+                    style={[styles.subHeader2, { marginBottom: 10 }]}
+                >
+                    How are you mentally feeling today?
+                </Text>
+                <LikertButtons active={ment} setActive={setMental}/>
+            </View>
             <Text style={[styles.subHeader2, { marginVertical: 10 }]}>
                 Anything else of note?
             </Text>

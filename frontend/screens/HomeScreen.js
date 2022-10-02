@@ -127,10 +127,10 @@ export const HomeScreen = ({ navigation }) => {
                     <Text style={[styles.mainHeader, { marginVertical: 10 }]}>
                         Patient Support
                     </Text>
-                    <View style={{ display: "flex", flexDirection: "row" }}>
+                    <View style={{ display: "flex" }}>
                         <TouchableHighlight
                             underlayColor={"#8ADFB6"}
-                            style={[styles.halfButton, styles.greenBackground]}
+                            style={[styles.wideButton, styles.greenBackground, {marginBottom: "2%"}]}
                             onPress={() =>
                                 navigation.navigate(
                                     "Contact Healthcare Provider"
@@ -149,7 +149,7 @@ export const HomeScreen = ({ navigation }) => {
                         </TouchableHighlight>
                         <TouchableHighlight
                             underlayColor={"#8ADFB6"}
-                            style={[styles.halfButton, styles.greenBackground]}
+                            style={[styles.wideButton, styles.greenBackground]}
                             onPress={() => navigation.navigate("More Help")}
                         >
                             <Text
@@ -159,7 +159,7 @@ export const HomeScreen = ({ navigation }) => {
                                     textAlign: "center",
                                 }}
                             >
-                                More Help
+                                Patient Support
                             </Text>
                         </TouchableHighlight>
                     </View>

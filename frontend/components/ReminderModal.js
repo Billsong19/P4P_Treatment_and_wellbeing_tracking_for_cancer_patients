@@ -195,14 +195,9 @@ export default ReminderModal = (props) => {
         />
         <Text style={styles.subHeader}>When</Text>
         <View
-          style={{ 
-            display: "flex", 
-            flexDirection: props.newFrequency === Frequencies.Weekly ? "column" : "row", 
-            justifyContent: "center" 
-        }}
         >
           { Platform.OS === 'android' && 
-            <View>
+            <View style={{flexDirection: "row", justifyContent: "center" }}>
               <TouchableOpacity
                 onPress={() => {showPicker("time")}}
                 style={styles.dateButton}
@@ -231,6 +226,7 @@ export default ReminderModal = (props) => {
                 value={dateTime}
                 mode={pickerMode}
                 onChange={onPickerChange}
+                minimumDate={props.newFrequency === Frequencies.Once && new Date()}
               />
               }
             </View>
@@ -245,6 +241,7 @@ export default ReminderModal = (props) => {
                 value={dateTime}
                 mode={props.newFrequency === Frequencies.Once ? "datetime" : "time" }
                 onChange={onPickerChange}
+                minimumDate={props.newFrequency === Frequencies.Once && new Date()}
               />
             </View>
           }

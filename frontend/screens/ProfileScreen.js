@@ -5,6 +5,7 @@ import {
     View,
     ScrollView,
 } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import styles from "../styles";
 
 export const ProfileScreen = ({ navigation }) => {
@@ -17,8 +18,10 @@ export const ProfileScreen = ({ navigation }) => {
         last_stage_update: "01/01/2020",
         treatment_period: "Early-middle",
         treatment_staff: [
-            { title: "GP", phone: "123-456-7890", name: "Dennis Rodman" },
-            { title: "Nurse", phone: "123-456-7890", name: "Phil Jackson" },
+            { title: "General Practitioner", name: "Dr. Angus Smith", phone: "123-456-7890", email: "aSmith@email.co.nz" },
+            { title: "Cancer Specialist", name: "Dr. Erica Lin", phone: "123-456-7890", email: "eLin@email.co.nz" },
+            { title: "Clinician", name: "Dr. Zonal Ali", phone: "123-456-7890", email: "zAli@email.co.nz" },
+            { title: "Nurse", name: "Norman Ware", phone: "123-456-7890", email: "nWare@email.co.nz" },
         ],
     };
     return (
@@ -27,7 +30,9 @@ export const ProfileScreen = ({ navigation }) => {
                 style={[
                     styles.wideTile,
                     styles.blueDivider,
-                    { flexDirection: "row" },
+                    styles.smallShadow,
+                    { flexDirection: "row",
+                    marginTop: 5 },
                 ]}
             >
                 <View style={{ flex: 1, padding: 10 }}>
@@ -47,6 +52,7 @@ export const ProfileScreen = ({ navigation }) => {
                             fontSize: 20,
                             marginHorizontal: "auto",
                             textAlign: "center",
+                            color: "#FFF"
                         }}
                     >
                         View wellbeing journal
@@ -54,7 +60,7 @@ export const ProfileScreen = ({ navigation }) => {
                 </Pressable>
             </View>
 
-            <View style={[styles.wideTile, styles.tealDivider]}>
+            <View style={[styles.wideTile, styles.tealDivider, styles.smallShadow]}>
                 <Text style={styles.mainHeader}>Condition Information</Text>
                 <View style={{ flexDirection: "row", margin: 6 }}>
                     <Text style={styles.subHeader}>{DATA.cancer_type} </Text>
@@ -76,7 +82,7 @@ export const ProfileScreen = ({ navigation }) => {
                     </Text>
                 </View>
                 <Pressable
-                    style={[styles.conditionButton, styles.tealSide]}
+                    style={[styles.conditionButton, styles.tealSide, styles.tealBorder]}
                     onPress={() =>
                         navigation.navigate("Details", {
                             condition: `${DATA.cancer_type}`,
@@ -87,7 +93,7 @@ export const ProfileScreen = ({ navigation }) => {
                     <Text>Chance of Recovery</Text>
                 </Pressable>
                 <Pressable
-                    style={[styles.conditionButton, styles.greenSide]}
+                    style={[styles.conditionButton, styles.greenSide, styles.greenBorder]}
                     onPress={() =>
                         navigation.navigate("Details", {
                             condition: `${DATA.cancer_type}`,
@@ -99,30 +105,23 @@ export const ProfileScreen = ({ navigation }) => {
                 </Pressable>
             </View>
 
-            <View style={[styles.wideTile, styles.greenDivider]}>
+            <View style={[styles.wideTile, styles.greenDivider, styles.smallShadow]}>
                 <Text style={styles.mainHeader}>Treatment Staff</Text>
                 {DATA.treatment_staff.map((staff_member, index) => {
                     return (
-                        <View
-                            style={[
-                                styles.yellowDivider,
-                                { paddingVertical: 5 },
-                            ]}
+                        <TouchableOpacity
+                            style={[styles.greenDivider, styles.smallShadow, {marginTop: 5, padding: 5}]}
+                            onPress={() => navigation.navigate("Contact Healthcare Provider")}
                             key={index}
                         >
                             <Text>{staff_member.title}</Text>
-                            <Text>{staff_member.name}</Text>
+                            <Text style={styles.subHeader}>{staff_member.name}</Text>
                             <Text
                                 style={{ color: "blue" }}
-                                onPress={() => {
-                                    Linking.openURL(
-                                        `tel:${staff_member.phone}`
-                                    );
-                                }}
                             >
                                 {staff_member.phone}
                             </Text>
-                        </View>
+                        </TouchableOpacity>
                     );
                 })}
             </View>
