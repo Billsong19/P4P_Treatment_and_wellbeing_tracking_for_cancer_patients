@@ -13,6 +13,7 @@ import styles from "../styles";
 import dayjs from "dayjs";
 import { getUserContext } from "../components/UserContext.js";
 import { useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
 
 export const HomeScreen = ({ navigation }) => {
   const context = getUserContext();
@@ -65,14 +66,16 @@ export const HomeScreen = ({ navigation }) => {
             ]}
             onPress={() => navigation.navigate("Wellbeing Journal")}
           >
-            <Text
-              style={[
-                styles.subHeader,
-                { marginHorizontal: "auto", color: "#fff" },
-              ]}
-            >
-              How are you feeling today?
-            </Text>
+            <View style={{ flexDirection: "row" }}>
+              <Text
+                style={[
+                  styles.subHeader,
+                  { marginHorizontal: "auto", color: "#fff" },
+                ]}
+              >
+                Add to Wellbeing Journal
+              </Text>
+            </View>
           </TouchableHighlight>
         </View>
         <View style={[styles.wideTile, styles.tealDivider]}>
