@@ -14,15 +14,16 @@ const contact = new Schema({
 });
 
 const reminder = new Schema({
+  id: ObjectId,
   title: { type: String, required: true },
-  start_date: { type: Date, required: true },
   frequency: {
     type: String,
     required: true,
     enum: ["once", "daily", "weekly", "monthly"],
   },
-  description: String,
-  completed: { type: Boolean, default: false },
+  date_time: { type: Date, required: true },
+  details: String,
+  complete: { require: true, type: Boolean, default: false },
 });
 
 const symptomEntry = new Schema({
