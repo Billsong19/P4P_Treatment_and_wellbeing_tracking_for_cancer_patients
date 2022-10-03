@@ -53,41 +53,39 @@ const config = {
 function HomeScreens() {
   const Stack = createNativeStackNavigator();
   return (
-    <UserContextProvider>
-      <Stack.Navigator
-        screenOptions={({ navigation }) => ({
-          headerRight: () => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("Profile");
+    <Stack.Navigator
+      screenOptions={({ navigation }) => ({
+        headerRight: () => {
+          return (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Profile");
+              }}
+            >
+              <Ionicons
+                name="person-sharp"
+                size={24}
+                style={{
+                  margin: 5,
                 }}
-              >
-                <Ionicons
-                  name="person-sharp"
-                  size={24}
-                  style={{
-                    margin: 5,
-                  }}
-                />
-              </TouchableOpacity>
-            );
-          },
-        })}
-      >
-        <Stack.Screen name="Songward" component={HomeScreen} />
-        <Stack.Screen
-          name="Wellbeing Journal"
-          component={WellbeingJournalScreen}
-        />
-        <Stack.Screen
-          name="Contact Healthcare Provider"
-          component={HCPContactScreen}
-        />
-        <Stack.Screen name="More Help" component={MoreHelpScreen} />
-        <Stack.Screen name="Profile" component={ProfileScreen} />
-      </Stack.Navigator>
-    </UserContextProvider>
+              />
+            </TouchableOpacity>
+          );
+        },
+      })}
+    >
+      <Stack.Screen name="Songward" component={HomeScreen} />
+      <Stack.Screen
+        name="Wellbeing Journal"
+        component={WellbeingJournalScreen}
+      />
+      <Stack.Screen
+        name="Contact Healthcare Provider"
+        component={HCPContactScreen}
+      />
+      <Stack.Screen name="More Help" component={MoreHelpScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+    </Stack.Navigator>
   );
 }
 
@@ -138,60 +136,61 @@ function InfoLibScreens() {
 
 export default function App() {
   return (
-    <NavigationContainer theme={navTheme}>
-      <BottomTab.Navigator
-        initialRouteName="Home"
-        backBehavior="initialRoute"
-        lazy="false"
-      >
-        <BottomTab.Screen
-          name="Information Library"
-          component={InfoLibScreens}
-          options={{
-            headerShown: false,
-            tabBarActiveTintColor: "#75A9D9",
-            tabBarIcon: (tabInfo) => (
-              <Ionicons
-                name="library"
-                size={24}
-                color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
-              />
-            ),
-          }}
-        />
-        <BottomTab.Screen
-          name="Home"
-          component={HomeScreens}
-          options={{
-            headerShown: false,
-            tabBarActiveTintColor: "#75A9D9",
-            tabBarIcon: (tabInfo) => (
-              <Ionicons
-                name="home-sharp"
-                size={24}
-                color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
-              />
-            ),
-          }}
-        />
-        <BottomTab.Screen
-          name="Reminders"
-          component={RemindersScreens}
-          options={{
-            headerShown: false,
-            tabBarActiveTintColor: "#75A9D9",
-            tabBarIcon: (tabInfo) => (
-              <Ionicons
-                name="list"
-                size={24}
-                color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
-              />
-            ),
-          }}
-        />
-      </BottomTab.Navigator>
-    </NavigationContainer>
-    // </ImageBackground>
+    <UserContextProvider>
+      <NavigationContainer theme={navTheme}>
+        <BottomTab.Navigator
+          initialRouteName="Home"
+          backBehavior="initialRoute"
+          lazy="false"
+        >
+          <BottomTab.Screen
+            name="Information Library"
+            component={InfoLibScreens}
+            options={{
+              headerShown: false,
+              tabBarActiveTintColor: "#75A9D9",
+              tabBarIcon: (tabInfo) => (
+                <Ionicons
+                  name="library"
+                  size={24}
+                  color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
+                />
+              ),
+            }}
+          />
+          <BottomTab.Screen
+            name="Home"
+            component={HomeScreens}
+            options={{
+              headerShown: false,
+              tabBarActiveTintColor: "#75A9D9",
+              tabBarIcon: (tabInfo) => (
+                <Ionicons
+                  name="home-sharp"
+                  size={24}
+                  color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
+                />
+              ),
+            }}
+          />
+          <BottomTab.Screen
+            name="Reminders"
+            component={RemindersScreens}
+            options={{
+              headerShown: false,
+              tabBarActiveTintColor: "#75A9D9",
+              tabBarIcon: (tabInfo) => (
+                <Ionicons
+                  name="list"
+                  size={24}
+                  color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
+                />
+              ),
+            }}
+          />
+        </BottomTab.Navigator>
+      </NavigationContainer>
+    </UserContextProvider>
   );
 }
 

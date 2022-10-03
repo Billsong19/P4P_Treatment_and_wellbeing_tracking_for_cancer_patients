@@ -10,75 +10,22 @@ import { Frequencies } from "../public/Frequencies.js";
 import { DaysOfWeek } from "../public/DaysOfWeek.js";
 import dayjs from "dayjs";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { getUserContext } from "../components/UserContext.js";
+import SelectInput from "@mui/material/Select/SelectInput.js";
 
 var weekday = require("dayjs/plugin/weekday");
 dayjs.extend(weekday);
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "Take a walk",
-    complete: true,
-    frequency: 2,
-    date: "",
-    time: "",
-    details: "Aim for above 15 mins duration",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Take medicine",
-    complete: true,
-    frequency: 2,
-    date: "",
-    time: "10:00",
-    details: "two 50mg tablets",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f64",
-    title: "Take medicine",
-    complete: false,
-    frequency: 2,
-    date: "",
-    time: "15:00",
-    details: "two 50mg tablets",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Clinic appointment",
-    complete: false,
-    frequency: 0,
-    date: "2022-5-22",
-    time: "16:30",
-    details: "Clinic name, address, meeting with Dr. Name",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d73",
-    title: "Clinic appointment",
-    complete: false,
-    frequency: 0,
-    date: "2022-5-28",
-    time: "12:30",
-    details: "Clinic name, address, meeting with Dr. Name",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d74",
-    title: "idk",
-    complete: false,
-    frequency: 0,
-    date: "2022-7-1",
-    time: "17:30",
-    details: "Clinic name, address, meeting with Dr. Name",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d75",
-    title: "Reminder",
-    complete: false,
-    frequency: 1,
-    date: "2022-8-2",
-    time: "",
-    details: "",
-  },
-];
+// const DATA = [
+//   {
+//     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
+//     title: "Take a walk",
+//     complete: true,
+//     frequency: 2,
+//     date: "",
+//     time: "",
+//     details: "Aim for above 15 mins duration",
+//   }]
 
 const getData = async () => {
   try {
@@ -95,14 +42,19 @@ export const RemindersScreen = ({ navigation }) => {
   const [newFrequency, setNewFrequency] = React.useState(0);
   const [newTitle, setNewTitle] = React.useState("");
   const [newDescription, setNewDescription] = React.useState("");
-  const [newTime, setNewTime] = React.useState("");
-  const [newDate, setNewDate] = React.useState("");
+  const [newDateTime, setNewDateTime] = React.useState(new Date());
   const [isEdit, setEdit] = React.useState(false);
   const [editId, setEditId] = React.useState(-1);
   const [loading, setLoading] = React.useState(true);
 
   const dailyRems = []; //an array of reminders for storing 'daily' reminders
   const datedRems = []; //an array that stores [key: date, value: [array of relevant reminders]] pairs
+
+  const { user } = getUserContext();
+
+  function userIsNull() {
+    return user == null;
+  }
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -124,41 +76,25 @@ export const RemindersScreen = ({ navigation }) => {
     const fetchData = async () => {
       setData(await getData());
     };
-    fetchData().then(() => setLoading(false));
-    if (data !== null) {
-      let tempData = [...data];
-      tempData.sort(
-        (a, b) =>
-          dayjs(
-            (a.frequency === Frequencies.Daily
-              ? "2022-01-01"
-              : a.frequency === Frequencies.Weekly
-              ? dayjs()
-                  .weekday(DaysOfWeek[dayjs(a.date).format("dddd")])
-                  .format("YYYY-MM-DD")
-              : a.date) + a.time
-          ) -
-          dayjs(
-            (b.frequency === Frequencies.Daily
-              ? "2022-01-01"
-              : b.frequency === Frequencies.Weekly
-              ? dayjs()
-                  .weekday(DaysOfWeek[dayjs(b.date).format("dddd")])
-                  .format("YYYY-MM-DD")
-              : b.date) + b.time
-          )
-      );
-      setData(tempData);
+
+    console.log("checking userisnull");
+    if (userIsNull()) {
+      fetchData().then(() => setLoading(false));
+    } else {
+      console.log("user is not null");
+      console.log(user.reminders);
+      setData(sortDataByDateTime(user.reminders));
+      console.log(data);
+      setLoading(false);
     }
   }, []);
 
-  const setUpEditModal = ({ title, details, date, time, frequency, id }) => {
+  const setUpEditModal = ({ title, details, date_time, frequency, id }) => {
     setEdit(true);
     setNewTitle(title);
     setNewDescription(details);
     setNewFrequency(frequency);
-    setNewDate(date);
-    setNewTime(time);
+    setNewDateTime(date_time);
     setEditId(id);
     setModalVisible(!isModalVisible);
   };
@@ -167,11 +103,10 @@ export const RemindersScreen = ({ navigation }) => {
     <Reminder
       id={item.id}
       title={item.title}
-      time={item.time}
       complete={item.complete}
       details={item.details}
       frequency={item.frequency}
-      date={item.date}
+      date_time={item.date_time}
       data={data}
       setData={setData}
       setUpEditModal={setUpEditModal}
@@ -180,11 +115,7 @@ export const RemindersScreen = ({ navigation }) => {
 
   const renderDates = ({ item }) => (
     <View style={{ marginBottom: "2%" }}>
-      <Text>
-        {dayjs(item.date).isValid()
-          ? dayjs(item.date).format("dddd DD MMMM YYYY")
-          : `${item.date}`}
-      </Text>
+      <Text>{item.date}</Text>
       <View
         style={{
           width: "100%",
@@ -204,22 +135,16 @@ export const RemindersScreen = ({ navigation }) => {
     data.map((reminder) => {
       if (reminder.frequency === Frequencies.Daily) {
         dailyRems.push(reminder);
-      } else if (reminder.frequency === Frequencies.Weekly) {
-        let dayOfWeek = dayjs()
-          .weekday(DaysOfWeek[dayjs(reminder.date).format("dddd")])
-          .format("YYYY-MM-DD");
-        let dateIndex = datedRems.findIndex((obj) => obj.date === dayOfWeek);
-        if (dateIndex === -1) {
-          datedRems.push({ date: dayOfWeek, rems: [reminder] });
-        } else {
-          datedRems[dateIndex].rems.push(reminder);
-        }
       } else {
         let dateIndex = datedRems.findIndex(
-          (obj) => obj.date === reminder.date
+          (obj) =>
+            obj.date === dayjs(reminder.date_time).format("dddd DD MMMM YYYY")
         );
         if (dateIndex === -1) {
-          datedRems.push({ date: reminder.date, rems: [reminder] });
+          datedRems.push({
+            date: dayjs(reminder.date_time).format("dddd DD MMMM YYYY"),
+            rems: [reminder],
+          });
         } else {
           datedRems[dateIndex].rems.push(reminder);
         }
@@ -236,10 +161,8 @@ export const RemindersScreen = ({ navigation }) => {
         setNewTitle={setNewTitle}
         newDescription={newDescription}
         setNewDescription={setNewDescription}
-        newDate={newDate}
-        setNewDate={setNewDate}
-        newTime={newTime}
-        setNewTime={setNewTime}
+        newDateTime={newDateTime}
+        setNewDateTime={setNewDateTime}
         newFrequency={newFrequency}
         setNewFrequency={setNewFrequency}
         isEdit={isEdit}
@@ -292,3 +215,29 @@ export const RemindersScreen = ({ navigation }) => {
     </View>
   );
 };
+
+// Sorts all reminders in the data by date and time, daily reminders use an old date as they only need to be sorted by time
+export function sortDataByDateTime(data) {
+  let tempData = [];
+  if (!data) {
+    throw new Error("data is null");
+  } else {
+    tempData = [...data];
+    tempData.sort((a, b) =>
+      dayjs(
+        (a.frequency === Frequencies.Daily
+          ? dayjs(a.date_time).set("year", 2020).set("month", 1).set("date", 1)
+          : dayjs(a.date_time)) -
+          dayjs(
+            b.frequency === Frequencies.Daily
+              ? dayjs(b.date_time)
+                  .set("year", 2020)
+                  .set("month", 1)
+                  .set("date", 1)
+              : dayjs(b.date_time)
+          )
+      )
+    );
+  }
+  return tempData;
+}

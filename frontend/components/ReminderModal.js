@@ -17,11 +17,12 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from "uuid";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
-import { Frequencies } from "../public/Frequencies.js"
-import { DaysOfWeek } from "../public/DaysOfWeek.js"
+import { Frequencies } from "../public/Frequencies.js";
+import { DaysOfWeek } from "../public/DaysOfWeek.js";
+import { sortDataByDateTime } from "../screens/RemindersScreen.js";
 
-var weekday = require('dayjs/plugin/weekday')
-dayjs.extend(weekday)
+var weekday = require("dayjs/plugin/weekday");
+dayjs.extend(weekday);
 
 const storeData = async (value) => {
   try {
@@ -60,7 +61,7 @@ export default ReminderModal = (props) => {
 
   const saveReminder = (data, setData) => {
     setProcessing(true);
-    let tempRems = (props.data == null) ? [] : [...props.data];
+    let tempRems = props.data == null ? [] : [...props.data];
     if (props.isEdit) {
       const index = data.findIndex((reminder) => reminder.id === props.editId);
       if (index >= 0) {
@@ -69,12 +70,16 @@ export default ReminderModal = (props) => {
           title: props.newTitle,
           complete: false,
           frequency: props.newFrequency,
-          date: (props.newFrequency === Frequencies.Daily) ? dayjs().format("YYYY-MM-DD") : (props.newFrequency === Frequencies.Weekly) ? dayjs().weekday(weeklyDay).format("YYYY-MM-DD") : dayjs(dateTime).format("YYYY-MM-DD"),
-          time: dayjs(dateTime).format("HH:mm"),
+          date_time:
+            props.newFrequency === Frequencies.Daily
+              ? dayjs()
+              : props.newFrequency === Frequencies.Weekly
+              ? dayjs().weekday(weeklyDay)
+              : dayjs(dateTime),
           details: props.newDescription,
         };
       } else {
-        Alert.alert("An error occurred while saving the reminder")
+        Alert.alert("An error occurred while saving the reminder");
       }
     } else {
       tempRems.push({
@@ -82,17 +87,17 @@ export default ReminderModal = (props) => {
         title: props.newTitle,
         complete: false,
         frequency: props.newFrequency,
-        date: (props.newFrequency === Frequencies.Daily) ? dayjs().format("YYYY-MM-DD") : (props.newFrequency === Frequencies.Weekly) ? dayjs().weekday(weeklyDay).format("YYYY-MM-DD") : dayjs(dateTime).format("YYYY-MM-DD"),
-        time: dayjs(dateTime).format("HH:mm"),
+        date_time:
+          props.newFrequency === Frequencies.Daily
+            ? dayjs()
+            : props.newFrequency === Frequencies.Weekly
+            ? dayjs().weekday(weeklyDay)
+            : dayjs(dateTime),
         details: props.newDescription,
       });
     }
-    // Sorts all reminders in the data by date and time, weekly reminders use the date of their next occurence, daily use an old date as they only need to be sorted by time
-    tempRems.sort((a,b) => 
-    dayjs((a.frequency === Frequencies.Daily ? "2022-01-01" : (a.frequency === Frequencies.Weekly) ? dayjs().weekday(DaysOfWeek[dayjs(a.date).format('dddd')]).format("YYYY-MM-DD") : a.date) + a.time) 
-    - dayjs((b.frequency === Frequencies.Daily ? "2022-01-01" : (b.frequency === Frequencies.Weekly) ? dayjs().weekday(DaysOfWeek[dayjs(b.date).format('dddd')]).format("YYYY-MM-DD") : b.date) + b.time)
-        );
-    setData(tempRems);
+
+    setData(sortDataByDateTime(tempRems));
     const saveData = async (data) => {
       storeData(data);
     };
@@ -102,9 +107,7 @@ export default ReminderModal = (props) => {
 
   const deleteReminder = (delId) => {
     let tempRems = [...props.data];
-    let index = tempRems.findIndex(
-      (reminder) => reminder.id === delId
-    );
+    let index = tempRems.findIndex((reminder) => reminder.id === delId);
     if (index !== -1) tempRems.splice(index, 1);
     props.setData(tempRems);
     clearModal();
@@ -112,7 +115,7 @@ export default ReminderModal = (props) => {
       storeData(data);
     };
     saveData(tempRems);
-  }
+  };
 
   const onPickerChange = (event, selectedDate) => {
     const currentDate = selectedDate;
@@ -121,7 +124,7 @@ export default ReminderModal = (props) => {
   };
 
   const showPicker = (mode) => {
-    if (Platform.OS === 'android') {
+    if (Platform.OS === "android") {
       setPickerVisible(false);
     }
     setPickerMode(mode);
@@ -131,18 +134,18 @@ export default ReminderModal = (props) => {
   const renderRadioDOW = (dayOfWeek) => {
     return (
       <View style={{ flex: 1, margin: 10 }} key={dayOfWeek}>
-                <Pressable
-                  style={[styles.emptyRadioButton, styles.blueBorder]}
-                  onPress={() => setWeeklyDay(DaysOfWeek[dayOfWeek])}
-                >
-                  {weeklyDay == DaysOfWeek[dayOfWeek] && 
-                    <View style={styles.radioFill} />
-                  }
-                </Pressable>
-                <Text style={{ alignSelf: "center" }}>{dayOfWeek.substring(0,2)}</Text>
-              </View>
-    )
-  }
+        <Pressable
+          style={[styles.emptyRadioButton, styles.blueBorder]}
+          onPress={() => setWeeklyDay(DaysOfWeek[dayOfWeek])}
+        >
+          {weeklyDay == DaysOfWeek[dayOfWeek] && (
+            <View style={styles.radioFill} />
+          )}
+        </Pressable>
+        <Text style={{ alignSelf: "center" }}>{dayOfWeek.substring(0, 2)}</Text>
+      </View>
+    );
+  };
 
   React.useEffect(() => {
     if (props.editId == -1) {
@@ -155,15 +158,14 @@ export default ReminderModal = (props) => {
       setDateTime(new Date(dayjs(props.newDate + " " + props.newTime)));
     } else if (
       props.newTime !== "" &&
-      dayjs(dayjs().format("YYYY-MM-DD") + " " + props.newTime).isValid()
+      dayjs(dayjs() + " " + props.newTime).isValid()
     ) {
-      setDateTime(
-        new Date(dayjs(dayjs().format("YYYY-MM-DD") + " " + props.newTime))
-      );
+      setDateTime(new Date(dayjs(dayjs() + " " + props.newTime)));
     } else {
       setDateTime(new Date());
-    } if (props.newFrequency === Frequencies.Weekly) {
-      setWeeklyDay(DaysOfWeek[dayjs(props.newDate).format('dddd')])
+    }
+    if (props.newFrequency === Frequencies.Weekly) {
+      setWeeklyDay(DaysOfWeek[dayjs(props.newDate).format("dddd")]);
     }
   }, [props.editId]);
 
@@ -195,68 +197,74 @@ export default ReminderModal = (props) => {
         />
         <Text style={styles.subHeader}>When</Text>
         <View
-          style={{ 
-            display: "flex", 
-            flexDirection: props.newFrequency === Frequencies.Weekly ? "column" : "row", 
-            justifyContent: "center" 
-        }}
+          style={{
+            display: "flex",
+            flexDirection:
+              props.newFrequency === Frequencies.Weekly ? "column" : "row",
+            justifyContent: "center",
+          }}
         >
-          { Platform.OS === 'android' && 
+          {Platform.OS === "android" && (
             <View>
               <TouchableOpacity
-                onPress={() => {showPicker("time")}}
+                onPress={() => {
+                  showPicker("time");
+                }}
                 style={styles.dateButton}
               >
                 <Text style={styles.subHeader}>
                   {dayjs(dateTime).format("HH:mm")}
                 </Text>
               </TouchableOpacity>
-              {props.newFrequency === Frequencies.Once && 
-              <TouchableOpacity
-                onPress={() => {showPicker("date")}}
-                style={styles.dateButton}
-              >
-                <Text style={styles.subHeader}>
-                  {dayjs(dateTime).format("ddd D MMM YYYY")}
-                </Text>
-              </TouchableOpacity>
-              }
-              {pickerVisible && 
+              {props.newFrequency === Frequencies.Once && (
+                <TouchableOpacity
+                  onPress={() => {
+                    showPicker("date");
+                  }}
+                  style={styles.dateButton}
+                >
+                  <Text style={styles.subHeader}>
+                    {dayjs(dateTime).format("ddd D MMM YYYY")}
+                  </Text>
+                </TouchableOpacity>
+              )}
+              {pickerVisible && (
+                <DateTimePicker
+                  style={
+                    props.newFrequency === Frequencies.Weekly
+                      ? { alignSelf: "flex-start" }
+                      : { alignSelf: "center" }
+                  }
+                  value={dateTime}
+                  mode={pickerMode}
+                  onChange={onPickerChange}
+                />
+              )}
+            </View>
+          )}
+          {Platform.OS === "ios" && (
+            <View style={{ margin: 5 }}>
               <DateTimePicker
                 style={
-                  props.newFrequency === Frequencies.Weekly
-                    ? { alignSelf: "flex-start" }
-                    : { alignSelf: "center" }
+                  props.newFrequency === Frequencies.Once
+                    ? { width: 215 }
+                    : { width: 94, alignSelf: "center" }
                 }
                 value={dateTime}
-                mode={pickerMode}
-                onChange={onPickerChange}
-              />
-              }
-            </View>
-          }
-          { Platform.OS === 'ios' && 
-            <View style={{margin: 5}}>
-              <DateTimePicker
-                style={
-                  props.newFrequency === Frequencies.Once ? 
-                  { width:  215 } : { width: 94, alignSelf: "center" }
-                 }
-                value={dateTime}
-                mode={props.newFrequency === Frequencies.Once ? "datetime" : "time" }
+                mode={
+                  props.newFrequency === Frequencies.Once ? "datetime" : "time"
+                }
                 onChange={onPickerChange}
               />
             </View>
-          }
-          {props.newFrequency === Frequencies.Weekly &&
+          )}
+          {props.newFrequency === Frequencies.Weekly && (
             <View style={{ display: "flex", flexDirection: "row" }}>
               {Object.keys(DaysOfWeek).map((day) => {
-                return (
-                  renderRadioDOW(day)
-                );
+                return renderRadioDOW(day);
               })}
             </View>
-            }
+          )}
         </View>
         <Text style={styles.subHeader}>Frequency</Text>
         <View style={{ display: "flex", flexDirection: "row" }}>
@@ -265,9 +273,9 @@ export default ReminderModal = (props) => {
               style={[styles.emptyRadioButton, styles.blueBorder]}
               onPress={() => props.setNewFrequency(Frequencies.Once)}
             >
-              {props.newFrequency == Frequencies.Once && 
+              {props.newFrequency == Frequencies.Once && (
                 <View style={styles.radioFill} />
-              }
+              )}
             </Pressable>
             <Text style={{ alignSelf: "center" }}>Once</Text>
           </View>
@@ -276,9 +284,9 @@ export default ReminderModal = (props) => {
               style={[styles.emptyRadioButton, styles.blueBorder]}
               onPress={() => props.setNewFrequency(Frequencies.Weekly)}
             >
-              {props.newFrequency == Frequencies.Weekly &&
+              {props.newFrequency == Frequencies.Weekly && (
                 <View style={styles.radioFill} />
-              }
+              )}
             </Pressable>
             <Text style={{ alignSelf: "center" }}>Weekly</Text>
           </View>
@@ -287,9 +295,9 @@ export default ReminderModal = (props) => {
               style={[styles.emptyRadioButton, styles.blueBorder]}
               onPress={() => props.setNewFrequency(Frequencies.Daily)}
             >
-              {props.newFrequency == Frequencies.Daily &&
+              {props.newFrequency == Frequencies.Daily && (
                 <View style={styles.radioFill} />
-              }
+              )}
             </Pressable>
             <Text style={{ alignSelf: "center" }}>Daily</Text>
           </View>
@@ -298,22 +306,26 @@ export default ReminderModal = (props) => {
           disabled={processing}
           style={[
             styles.wideButton,
-            { margin: 10,
+            {
+              margin: 10,
               marginHorizontal: "30%",
-              backgroundColor: processing ? "#CCC" : swGreen },
+              backgroundColor: processing ? "#CCC" : swGreen,
+            },
           ]}
           onPress={() => saveReminder(props.data, props.setData)}
         >
           <Text style={[styles.mainHeader, { alignSelf: "center" }]}>
-            { processing ? "Saving" : props.isEdit ? "Save" : "Add" }
+            {processing ? "Saving" : props.isEdit ? "Save" : "Add"}
           </Text>
         </Pressable>
         <Pressable
           style={[
             styles.wideButton,
-            { margin: 10,
+            {
+              margin: 10,
               marginHorizontal: "30%",
-              backgroundColor: processing ? "#CCC" : swOrange },
+              backgroundColor: processing ? "#CCC" : swOrange,
+            },
           ]}
           onPress={() => clearModal()}
         >
@@ -326,7 +338,7 @@ export default ReminderModal = (props) => {
             Cancel
           </Text>
         </Pressable>
-        {props.isEdit &&
+        {props.isEdit && (
           <Pressable
             style={[
               styles.wideButton,
@@ -340,15 +352,19 @@ export default ReminderModal = (props) => {
                 borderColor: "#CF3028",
               },
             ]}
-            onPress={async () => 
-              Alert.alert("Delete Reminder", `Are you sure you want to delete your reminder: ${props.newTitle}?`, [
-                {
-                  text: "Cancel",
-                  onPress: () => null,
-                  style: "cancel"
-                },
-                { text: "YES", onPress: () => deleteReminder(props.editId) }
-              ])
+            onPress={async () =>
+              Alert.alert(
+                "Delete Reminder",
+                `Are you sure you want to delete your reminder: ${props.newTitle}?`,
+                [
+                  {
+                    text: "Cancel",
+                    onPress: () => null,
+                    style: "cancel",
+                  },
+                  { text: "YES", onPress: () => deleteReminder(props.editId) },
+                ]
+              )
             }
           >
             <Text
@@ -364,7 +380,7 @@ export default ReminderModal = (props) => {
               Delete
             </Text>
           </Pressable>
-        }
+        )}
       </ScrollView>
     </Modal>
   );
