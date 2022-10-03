@@ -8,6 +8,7 @@ export const swOrange = "#FFA978";
 
 const swBlueRGB = "37, 150, 190";
 const swTealRGB = "117, 217, 211";
+const swOrangeRGB = "255, 169, 120";
 
 const styles = StyleSheet.create({
     page: {
@@ -64,6 +65,9 @@ const styles = StyleSheet.create({
     },
     orangeBackground: {
         backgroundColor: swOrange,
+    },
+    orangeBackground50: {
+        backgroundColor: `rgba(${swOrangeRGB}, 0.5)`,
     },
     greyBackGround: {
         backgroundColor: "#666",
@@ -167,6 +171,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         marginVertical: 10,
         padding: 2,
+        paddingStart: 8,
         backgroundColor: "#FFF",
     },
     largeTextEntry: {

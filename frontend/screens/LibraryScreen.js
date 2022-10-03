@@ -115,7 +115,7 @@ export const LibraryScreen = ({ navigation }) => {
             }
           >
             <View style={{ flexDirection: "row" }}>
-              <Text style={[styles.subHeader, { flex: 25 }]}>
+              <Text style={[styles.subHeader, { flex: 20 }]}>
                 {data.condition}
               </Text>
               <Ionicons

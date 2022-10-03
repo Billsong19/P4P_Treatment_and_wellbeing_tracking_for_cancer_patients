@@ -2,7 +2,7 @@ import * as React from "react";
 import { Text, View, Pressable } from "react-native";
 import styles from "../styles";
 import { Linking } from "react-native";
-import { getUserContext } from "../components/UserContext";
+import { getUserContext } from "../userContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 export const HCPContactScreen = ({ navigation }) => {
@@ -12,7 +12,7 @@ export const HCPContactScreen = ({ navigation }) => {
     return user == null;
   }
 
-  const listItems = DATA.map((item, index) => (
+  const listItems = user.contacts.map((item, index) => (
     <View
       style={[styles.contactView, { backgroundColor: item.color }]}
       key={index}

@@ -26,7 +26,7 @@ import { MoreHelpScreen } from "./screens/MoreHelpScreen.js";
 import { ProfileScreen } from "./screens/ProfileScreen.js";
 import { NoteScreen } from "./screens/NoteScreen";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { UserContextProvider } from "./components/UserContext.js";
+import { UserContextProvider } from "./userContext";
 
 const BottomTab = createBottomTabNavigator();
 

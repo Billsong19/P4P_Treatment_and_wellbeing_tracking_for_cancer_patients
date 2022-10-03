@@ -19,7 +19,6 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import { Frequencies } from "../public/Frequencies.js";
 import { DaysOfWeek } from "../public/DaysOfWeek.js";
-import { sortDataByDateTime } from "../screens/RemindersScreen.js";
 
 var weekday = require("dayjs/plugin/weekday");
 dayjs.extend(weekday);
@@ -32,6 +31,33 @@ const storeData = async (value) => {
     console.log(e);
   }
 };
+
+
+// Sorts all reminders in the data by date and time, daily reminders use an old date as they only need to be sorted by time
+export function sortDataByDateTime(data) {
+  let tempData = [];
+  if (!data) {
+    throw new Error("data is null");
+  } else {
+    tempData = [...data];
+    tempData.sort((a, b) =>
+      dayjs(
+        (a.frequency === Frequencies.Daily
+          ? dayjs(a.date_time).set("year", 2020).set("month", 1).set("date", 1)
+          : dayjs(a.date_time)) -
+          dayjs(
+            b.frequency === Frequencies.Daily
+              ? dayjs(b.date_time)
+                  .set("year", 2020)
+                  .set("month", 1)
+                  .set("date", 1)
+              : dayjs(b.date_time)
+          )
+      )
+    );
+  }
+  return tempData;
+}
 
 /*
   ReminderModal is a component for use in the RemindersScreen, it can be used to create new reminders
@@ -71,11 +97,9 @@ export default ReminderModal = (props) => {
           complete: false,
           frequency: props.newFrequency,
           date_time:
-            props.newFrequency === Frequencies.Daily
-              ? dayjs()
-              : props.newFrequency === Frequencies.Weekly
-              ? dayjs().weekday(weeklyDay)
-              : dayjs(dateTime),
+            props.newFrequency === Frequencies.Weekly
+            ? dayjs().weekday(weeklyDay).set("h", dateTime.getHours()).set("m", dateTime.getMinutes())
+            : dayjs(dateTime),
           details: props.newDescription,
         };
       } else {
@@ -88,10 +112,8 @@ export default ReminderModal = (props) => {
         complete: false,
         frequency: props.newFrequency,
         date_time:
-          props.newFrequency === Frequencies.Daily
-            ? dayjs()
-            : props.newFrequency === Frequencies.Weekly
-            ? dayjs().weekday(weeklyDay)
+            props.newFrequency === Frequencies.Weekly
+            ? dayjs().weekday(weeklyDay).set("h", dateTime.getHours()).set("m", dateTime.getMinutes())
             : dayjs(dateTime),
         details: props.newDescription,
       });
@@ -150,22 +172,8 @@ export default ReminderModal = (props) => {
   React.useEffect(() => {
     if (props.editId == -1) {
       setDateTime(new Date());
-    } else if (
-      props.newDate !== "" &&
-      props.newFrequency === Frequencies.Once &&
-      dayjs(props.newDate + " " + props.newTime).isValid()
-    ) {
-      setDateTime(new Date(dayjs(props.newDate + " " + props.newTime)));
-    } else if (
-      props.newTime !== "" &&
-      dayjs(dayjs() + " " + props.newTime).isValid()
-    ) {
-      setDateTime(new Date(dayjs(dayjs() + " " + props.newTime)));
     } else {
-      setDateTime(new Date());
-    }
-    if (props.newFrequency === Frequencies.Weekly) {
-      setWeeklyDay(DaysOfWeek[dayjs(props.newDate).format("dddd")]);
+      setDateTime(props.newDateTime)
     }
   }, [props.editId]);
 
@@ -196,79 +204,74 @@ export default ReminderModal = (props) => {
           onChangeText={props.setNewDescription}
         />
         <Text style={styles.subHeader}>When</Text>
-        <View
-          style={{
-            display: "flex",
+        {Platform.OS === "android" && (
+          <View style={{
             flexDirection:
               props.newFrequency === Frequencies.Weekly ? "column" : "row",
             justifyContent: "center",
-          }}
-        >
-          {Platform.OS === "android" && (
-            <View>
+          }}>
+            <TouchableOpacity
+              onPress={() => {
+                showPicker("time");
+              }}
+              style={styles.dateButton}
+            >
+              <Text style={styles.subHeader}>
+                {dayjs(dateTime).format("HH:mm")}
+              </Text>
+            </TouchableOpacity>
+            {props.newFrequency === Frequencies.Once && (
               <TouchableOpacity
                 onPress={() => {
-                  showPicker("time");
+                  showPicker("date");
                 }}
                 style={styles.dateButton}
               >
                 <Text style={styles.subHeader}>
-                  {dayjs(dateTime).format("HH:mm")}
+                  {dayjs(dateTime).format("ddd D MMM YYYY")}
                 </Text>
               </TouchableOpacity>
-              {props.newFrequency === Frequencies.Once && (
-                <TouchableOpacity
-                  onPress={() => {
-                    showPicker("date");
-                  }}
-                  style={styles.dateButton}
-                >
-                  <Text style={styles.subHeader}>
-                    {dayjs(dateTime).format("ddd D MMM YYYY")}
-                  </Text>
-                </TouchableOpacity>
-              )}
-              {pickerVisible && (
-                <DateTimePicker
-                  style={
-                    props.newFrequency === Frequencies.Weekly
-                      ? { alignSelf: "flex-start" }
-                      : { alignSelf: "center" }
-                  }
-                  value={dateTime}
-                  mode={pickerMode}
-                  onChange={onPickerChange}
-                />
-              )}
-            </View>
-          )}
-          {Platform.OS === "ios" && (
-            <View style={{ margin: 5 }}>
+            )}
+            {pickerVisible && (
               <DateTimePicker
                 style={
-                  props.newFrequency === Frequencies.Once
-                    ? { width: 215 }
-                    : { width: 94, alignSelf: "center" }
+                  props.newFrequency === Frequencies.Weekly
+                    ? { alignSelf: "flex-start" }
+                    : { alignSelf: "center" }
                 }
                 value={dateTime}
-                mode={
-                  props.newFrequency === Frequencies.Once ? "datetime" : "time"
-                }
+                mode={pickerMode}
                 onChange={onPickerChange}
-                minimumDate={
-                  props.newFrequency === Frequencies.Once && new Date()
-                }
               />
-            </View>
-          )}
-          {props.newFrequency === Frequencies.Weekly && (
-            <View style={{ display: "flex", flexDirection: "row" }}>
-              {Object.keys(DaysOfWeek).map((day) => {
-                return renderRadioDOW(day);
-              })}
-            </View>
-          )}
-        </View>
+            )}
+          </View>
+        )}
+        {Platform.OS === "ios" && (
+          <View style={{ margin: 5 }}>
+            <DateTimePicker
+              style={
+                props.newFrequency === Frequencies.Once
+                  ? { width: 215 }
+                  : { width: 94, alignSelf: "center" }
+              }
+              value={dateTime}
+              mode={
+                props.newFrequency === Frequencies.Once ? "datetime" : "time"
+              }
+              onChange={onPickerChange}
+              minimumDate={
+                props.newFrequency === Frequencies.Once && new Date()
+              }
+            />
+          </View>
+        )}
+        {props.newFrequency === Frequencies.Weekly && (
+          <View style={{ display: "flex", flexDirection: "row" }}>
+            {Object.keys(DaysOfWeek).map((day) => {
+              return renderRadioDOW(day);
+            })}
+          </View>
+        )}
         <Text style={styles.subHeader}>Frequency</Text>
         <View style={{ display: "flex", flexDirection: "row" }}>
           <View style={{ flex: 1, margin: 10 }}>

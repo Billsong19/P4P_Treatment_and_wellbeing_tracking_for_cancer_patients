@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import styles from "../styles";
-import { getUserContext } from "../components/UserContext.js";
+import { getUserContext } from "../userContext.js";
 import { useContext, useState, useEffect } from "react";
 
 export const ProfileScreen = ({ navigation }) => {
@@ -69,9 +69,9 @@ export const ProfileScreen = ({ navigation }) => {
         </View>
 
         <View style={{ flexDirection: "row", margin: 6 }}>
-          {/* <Text style={styles.subHeader}>
-            {userIsNull() ? "..." : user.stage}{" "}
-          </Text> */}
+          <Text style={styles.subHeader}>
+            Stage {userIsNull() ? "..." : user.stage}
+          </Text>
           <Text style={{ marginLeft: "auto" }}>
             as of:
             {userIsNull()

@@ -1,14 +1,11 @@
 import * as React from "react";
 import {
-  FlatList,
   Animated,
   Text,
   View,
   ScrollView,
-  Modal,
-  Image,
   TouchableHighlight,
-  TextInput,
+  Alert,
   Pressable,
 } from "react-native";
 import styles from "../styles.js";
@@ -115,7 +112,7 @@ export default Reminder = ({
     }
   };
 
-  const toggleComplete = async () => {
+  const toggleComplete = async (toggleTo = true) => {
     const index = data.findIndex((reminder) => reminder.id === id);
     data[index] = {
       id: id,
@@ -126,9 +123,11 @@ export default Reminder = ({
       details: details,
     };
     setData(data);
-    setComplete(!isComplete);
+    setComplete(toggleTo);
     await storeData(data);
   };
+
+  const isMissed = dayjs().isAfter(date_time);
 
   return (
     <Pressable
@@ -145,6 +144,13 @@ export default Reminder = ({
                 styles.dailyReminder,
                 { height: animatedHeight, opacity: semiFadeAnim },
               ]
+            : isMissed ?
+            [
+              styles.orangeBorder,
+              styles.orangeBackground50,
+              styles.datedReminder,
+              { height: animatedHeight, opacity: semiFadeAnim },
+            ]
             : [
                 styles.tealBorder,
                 styles.tealBackground50,
@@ -164,14 +170,37 @@ export default Reminder = ({
             <Text style={{ flex: 1, fontSize: 18 }}>
               {dayjs(date_time).format("HH:mm")}
             </Text>
-            <CheckBox
-              value={isComplete}
-              style={styles.remindersCheck}
-              onValueChange={() => {
-                toggleComplete();
-                setExpanded(isExpanded);
-              }}
-            />
+            { isMissed ?
+              <TouchableHighlight
+                style={{
+                  borderRadius: 15,
+                }}
+                onPress={() =>
+                  Alert.alert(
+                    "Reminder missed",
+                    `You missed you reminder: ${title}.\nFor your own benefit try to avoid missing these.`,
+                    [
+                      { text: "Understood", onPress: () => toggleComplete() },
+                    ]
+                  )
+                }
+                underlayColor={"rgba(0,0,0,0.1)"}
+              >
+                <Ionicons
+                  name="alert"
+                  size={24}
+                  />
+              </TouchableHighlight>
+              :
+              <CheckBox
+                value={isComplete}
+                style={styles.remindersCheck}
+                onValueChange={() => {
+                  toggleComplete(!isComplete);
+                  setExpanded(isExpanded);
+                }}
+              />
+            }
           </View>
           <Animated.View style={{ opacity: fadeAnim }}>
             <ScrollView style={{ height: 0 }}>
@@ -180,21 +209,23 @@ export default Reminder = ({
             <Text style={{ marginBottom: 2, maxWidth: "90%", marginTop: 4 }}>
               {details}
             </Text>
-            <TouchableHighlight
-              style={{
-                position: "absolute",
-                right: 2,
-                padding: 4,
-                borderRadius: 15,
-                bottom: -12,
-              }}
-              onPress={() =>
-                setUpEditModal({ title, details, date_time, frequency, id })
-              }
-              underlayColor={"rgba(0,0,0,0.1)"}
-            >
-              <Ionicons name="ellipsis-horizontal" size={24} />
-            </TouchableHighlight>
+            { !isMissed && 
+              <TouchableHighlight
+                style={{
+                  position: "absolute",
+                  right: 2,
+                  padding: 4,
+                  borderRadius: 15,
+                  bottom: -12,
+                }}
+                onPress={() =>
+                  setUpEditModal({ title, details, date_time, frequency, id })
+                }
+                underlayColor={"rgba(0,0,0,0.1)"}
+              >
+                <Ionicons name="ellipsis-horizontal" size={24} />
+              </TouchableHighlight>
+            }
           </Animated.View>
         </View>
       </Animated.View>

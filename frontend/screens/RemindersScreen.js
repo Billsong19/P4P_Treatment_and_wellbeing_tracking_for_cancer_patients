@@ -10,8 +10,8 @@ import { Frequencies } from "../public/Frequencies.js";
 import { DaysOfWeek } from "../public/DaysOfWeek.js";
 import dayjs from "dayjs";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { getUserContext } from "../components/UserContext.js";
-import SelectInput from "@mui/material/Select/SelectInput.js";
+import { getUserContext } from "../userContext.js";
+import { sortDataByDateTime } from "../components/ReminderModal.js";
 
 var weekday = require("dayjs/plugin/weekday");
 dayjs.extend(weekday);
@@ -74,19 +74,18 @@ export const RemindersScreen = ({ navigation }) => {
   React.useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      setData(await getData());
+      return await getData();
     };
 
-    console.log("checking userisnull");
+    let tempData = null;
     if (userIsNull()) {
-      fetchData().then(() => setLoading(false));
+      fetchData().then((fetch) => tempData = fetch);
     } else {
-      console.log("user is not null");
-      console.log(user.reminders);
-      setData(sortDataByDateTime(user.reminders));
-      console.log(data);
+      tempData = user.reminders;
       setLoading(false);
     }
+    setData(sortDataByDateTime(cleanUpReminders(tempData)));
+    categoriseReminders(data);
   }, []);
 
   const setUpEditModal = ({ title, details, date_time, frequency, id }) => {
@@ -94,7 +93,7 @@ export const RemindersScreen = ({ navigation }) => {
     setNewTitle(title);
     setNewDescription(details);
     setNewFrequency(frequency);
-    setNewDateTime(date_time);
+    setNewDateTime(new Date(date_time));
     setEditId(id);
     setModalVisible(!isModalVisible);
   };
@@ -131,26 +130,55 @@ export const RemindersScreen = ({ navigation }) => {
     </View>
   );
 
-  if (data !== null) {
-    data.map((reminder) => {
-      if (reminder.frequency === Frequencies.Daily) {
-        dailyRems.push(reminder);
-      } else {
-        let dateIndex = datedRems.findIndex(
-          (obj) =>
-            obj.date === dayjs(reminder.date_time).format("dddd DD MMMM YYYY")
-        );
-        if (dateIndex === -1) {
-          datedRems.push({
-            date: dayjs(reminder.date_time).format("dddd DD MMMM YYYY"),
-            rems: [reminder],
-          });
+  const cleanUpReminders = (data) => {
+    if (data !== null) {
+      let tempData = [...data];
+      data.map((reminder, index) => {
+        if (reminder.frequency !== Frequencies.Daily) {
+          //reset daily
         } else {
-          datedRems[dateIndex].rems.push(reminder);
+          // clean up old reminders, delete them if complete, set missed if not complete, and repeat if weekly frequency
+          if (dayjs().isAfter(reminder.date_time)) {
+            if (reminder.frequency === Frequencies.Weekly) {
+              const nextWeekRem = reminder
+              nextWeekRem.date_time = dayjs(nextWeekRem.date_time).add(7, 'd')
+              tempData.push(nextWeekRem)
+            }
+            if (reminder.complete) {
+              tempData.splice(index, 1)
+            }
+          }
         }
-      }
-    });
+      });
+      return tempData;
+    }
   }
+
+  // sort reminders into daily, and dated, with dated being further sorted into dates
+  const categoriseReminders = (data) => {
+    if (data !== null) {
+      data.map((reminder) => {
+        if (reminder.frequency === Frequencies.Daily) {
+          dailyRems.push(reminder);
+        } else {
+          let dateIndex = datedRems.findIndex(
+            (obj) =>
+              obj.date === dayjs(reminder.date_time).format("dddd DD MMMM YYYY")
+          );
+          if (dateIndex === -1) {
+            datedRems.push({
+              date: dayjs(reminder.date_time).format("dddd DD MMMM YYYY"),
+              rems: [reminder],
+            });
+          } else {
+            datedRems[dateIndex].rems.push(reminder);
+          }
+        }
+      });
+    }
+  }
+
+  categoriseReminders(data);
 
   return (
     <View style={{ flex: 1, backgroundColor: "#FFF" }}>
@@ -188,21 +216,27 @@ export const RemindersScreen = ({ navigation }) => {
         <Text style={[styles.subHeader, { color: "#FFF" }]}>
           Daily Reminders
         </Text>
+        { dailyRems.length > 0 ? 
         <FlatList
           data={dailyRems}
           renderItem={renderReminder}
           keyExtractor={(item) => item.id}
         />
+        : <Text style={[styles.subHeader2, {alignSelf: "center", margin: 10, color: "#FFF"}]}>No Daily Reminders</Text>
+        }
       </View>
       {loading && (
         <Text style={{ alignSelf: "center", margin: 20 }}>loading...</Text>
       )}
+      { datedRems.length > 0 ?
       <FlatList
         style={styles.wideTile}
         data={datedRems}
         renderItem={renderDates}
         keyExtractor={(item) => item.date}
       />
+      : <Text style={{alignSelf: "center", margin: 20}}>No Upcoming Reminders</Text>
+        }
       <View
         style={{
           position: "absolute",
@@ -211,33 +245,7 @@ export const RemindersScreen = ({ navigation }) => {
           marginBottom: 10,
           marginRight: 10,
         }}
-      ></View>
+      />
     </View>
   );
 };
-
-// Sorts all reminders in the data by date and time, daily reminders use an old date as they only need to be sorted by time
-export function sortDataByDateTime(data) {
-  let tempData = [];
-  if (!data) {
-    throw new Error("data is null");
-  } else {
-    tempData = [...data];
-    tempData.sort((a, b) =>
-      dayjs(
-        (a.frequency === Frequencies.Daily
-          ? dayjs(a.date_time).set("year", 2020).set("month", 1).set("date", 1)
-          : dayjs(a.date_time)) -
-          dayjs(
-            b.frequency === Frequencies.Daily
-              ? dayjs(b.date_time)
-                  .set("year", 2020)
-                  .set("month", 1)
-                  .set("date", 1)
-              : dayjs(b.date_time)
-          )
-      )
-    );
-  }
-  return tempData;
-}

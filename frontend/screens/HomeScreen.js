@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import styles from "../styles";
 import dayjs from "dayjs";
-import { getUserContext } from "../components/UserContext.js";
+import { getUserContext } from "../userContext.js";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 
