@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderStyle: "solid",
         borderColor: "#888",
+        borderRadius: 4,
         marginVertical: 10,
         padding: 2,
         backgroundColor: "#FFF",
@@ -172,6 +173,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderStyle: "solid",
         borderColor: "#888",
+        borderRadius: 4,
         marginVertical: 10,
         height: 60,
         padding: 4,
@@ -268,6 +270,7 @@ const styles = StyleSheet.create({
         borderColor: "#DDD",
         padding: 8,
         margin: "1%",
+        backgroundColor: "#FFF",
     },
     saveNoteButton: {
         borderRadius: 8,
@@ -291,7 +294,22 @@ const styles = StyleSheet.create({
         padding: 4,
         margin: 4,
         flexDirection: "row",
-    }
+    },
+    contactView: {
+        padding: 4,
+        margin: 4,
+        borderColor: swGreen,
+        borderWidth: 2,
+        borderRadius: 8,
+    },
+    smallShadow: {
+        elevation: 2,
+        backgroundColor: "#FFF",
+        shadowOffset: {
+            width: 0,
+            height: 1,
+        },
+    },
 });
 
 export default styles;

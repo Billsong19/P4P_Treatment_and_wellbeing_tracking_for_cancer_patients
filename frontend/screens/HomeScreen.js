@@ -58,6 +58,7 @@ export const HomeScreen = ({ navigation }) => {
           <TouchableHighlight
             underlayColor={"#8AB6DF"}
             style={[
+              styles.smallShadow,
               styles.wideButton,
               styles.blueBackground,
               { marginBottom: "1%" },

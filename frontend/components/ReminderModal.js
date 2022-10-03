@@ -255,6 +255,9 @@ export default ReminderModal = (props) => {
                   props.newFrequency === Frequencies.Once ? "datetime" : "time"
                 }
                 onChange={onPickerChange}
+                minimumDate={
+                  props.newFrequency === Frequencies.Once && new Date()
+                }
               />
             </View>
           )}
