@@ -73,6 +73,7 @@ const postNewReminder = async (req, res) => {
       );
     res.status(200).json(updatedUser.result);
   } catch (err) {
+    console.error(err.stack);
     res.status(500).json({ message: err });
   }
 };
