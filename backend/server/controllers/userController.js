@@ -72,7 +72,7 @@ const postNewReminder = async (req, res) => {
       );
     res.status(200).json(updatedUser.result);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err });
   }
 };
 
@@ -84,19 +84,17 @@ const updateReminder = async (req, res) => {
       .collection("User")
       .findOne({ _id: ObjectId(params.user_id) });
     const updatedReminder = req.body;
-    const updatedUser = await dbConnect
-      .collection("User")
-      .updateOne(
-        {
-          $and: [
-            { _id: ObjectId(params.user_id) },
-            {
-              reminders: { $elemMatch: { _id: ObjectId(params.reminder_id) } },
-            },
-          ],
-        },
-        [{ $set: { updatedReminder } }]
-      );
+    const updatedUser = await dbConnect.collection("User").updateOne(
+      {
+        $and: [
+          { _id: ObjectId(params.user_id) },
+          {
+            reminders: { $elemMatch: { _id: ObjectId(params.reminder_id) } },
+          },
+        ],
+      },
+      [{ $set: { updatedReminder } }]
+    );
     console.log(updatedReminder);
     res.status(200).json(updatedUser.result);
   } catch (err) {
