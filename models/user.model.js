@@ -14,7 +14,6 @@ const contact = new Schema({
 });
 
 const reminder = new Schema({
-  id: ObjectId,
   title: { type: String, required: true },
   frequency: {
     type: String,
