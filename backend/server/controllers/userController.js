@@ -56,6 +56,7 @@ const deleteUserReminder = async (req, res) => {
 
 const postNewReminder = async (req, res) => {
   try {
+    console.log("HI");
     const dbConnect = dbo.getDb();
     const { params } = req;
     const user = await dbConnect
