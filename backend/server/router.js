@@ -11,8 +11,22 @@ router.get("/userJournal/:id", userController.getUserJournal);
 
 router.get("/cancerInfo", userController.getCancerInfo);
 
+router.delete(
+  "/userReminders/:user_id/:reminder_id",
+  userController.deleteUserReminder
+);
+
+router.post("/userReminders/:id", userController.postNewReminder);
+
+router.put(
+  "/userReminders/:user_id/:reminder_id",
+  userController.updateReminder
+);
+
+router.post("/userJournal/:id", userController.postNewJournalEntry);
+
 router.get("/", async (req, res) => {
-    res.send("Hello World!");
+  res.send("Hello World!");
 });
 
 module.exports = router;
