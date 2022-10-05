@@ -45,6 +45,7 @@ const user = new Schema({
   first_name: { type: String, required: true },
   last_name: { type: String, required: true },
   date_of_birth: { type: Date, required: true },
+  last_updated: { type: Date, required: true },
   condition: {
     cancer_type: {
       type: String,
