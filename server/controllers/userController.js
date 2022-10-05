@@ -40,15 +40,17 @@ const deleteUserReminder = async (req, res) => {
     const user = await dbConnect
       .collection("User")
       .findOne({ _id: ObjectId(params.user_id) });
-    const reminders = user.findOne("reminders");
-    const updatedReminders = user.reminders.filter((r) => r !== reminder);
+    const updatedReminders = user.reminders.filter((r) => {
+      return r._id != params.reminder_id;
+    });
+    console.log(updatedReminders);
     const updatedUser = await dbConnect
       .collection("User")
       .updateOne(
         { _id: ObjectId(params.user_id) },
         { $set: { reminders: updatedReminders } }
       );
-    res.status(200).json(updatedUser);
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
