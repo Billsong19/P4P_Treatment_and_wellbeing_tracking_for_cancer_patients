@@ -35,4 +35,4 @@ There will be a link under 🤖Android app: Go to this link on the android devic
 Look for the new app "B&M Health" in the app drawer, and tap to open.
 
 Deploying backend server to heroku
-`git subtree push --prefix backend songward-api`
+`git subtree push --prefix backend origin heroku-songward-api`
