@@ -127,7 +127,12 @@ export default Reminder = ({
     await storeData(data);
   };
 
-  const isMissed = dayjs().isAfter(date_time);
+  let isMissed = false;
+  if (frequency === Frequencies.Daily) {
+    isMissed = dayjs().isAfter(dayjs().set('hour', dayjs(date_time).get('hour')).set('minute', dayjs(date_time).get('minute')))
+  } else {
+    isMissed = dayjs().isAfter(date_time)
+  }
 
   return (
     <Pressable

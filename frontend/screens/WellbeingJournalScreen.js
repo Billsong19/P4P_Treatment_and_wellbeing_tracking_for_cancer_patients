@@ -48,8 +48,8 @@ export const WellbeingJournalScreen = ({ navigation }) => {
             <TouchableOpacity
                 style={
                     phys == -1 || ment == -1
-                        ? [styles.wideButton, { backgroundColor: "#CCC" }]
-                        : [styles.wideButton, styles.blueBackground]
+                        ? [styles.wideButton, { backgroundColor: "#CCC", marginBottom: 20 }]
+                        : [styles.wideButton, styles.blueBackground, { marginBottom: 20 }]
                 }
                 onPress={() => navigation.navigate("Songward")}
                 disabled={phys == -1 || ment == -1}

@@ -36,9 +36,7 @@ const storeData = async (value) => {
 // Sorts all reminders in the data by date and time, daily reminders use an old date as they only need to be sorted by time
 export function sortDataByDateTime(data) {
   let tempData = [];
-  if (!data) {
-    throw new Error("data is null");
-  } else {
+  if (data) {
     tempData = [...data];
     tempData.sort((a, b) =>
       dayjs(
@@ -247,7 +245,12 @@ export default ReminderModal = (props) => {
           </View>
         )}
         {Platform.OS === "ios" && (
-          <View style={{ margin: 5 }}>
+          <View style={{
+              margin: 5,
+              flexDirection:
+                props.newFrequency === Frequencies.Weekly ? "column" : "row",
+              justifyContent: "center",
+             }}>
             <DateTimePicker
               style={
                 props.newFrequency === Frequencies.Once

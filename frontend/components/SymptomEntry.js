@@ -56,34 +56,26 @@ export default SymptomEntry = ({symptoms, setSymptoms}) => {
             <Text style={[styles.subHeader2, { marginVertical: 10 }]}>
                     Do you have any notable symptoms?
                 </Text>
-                <TouchableOpacity 
-                    style={[styles.wideTile, styles.blueBorder]}
-                    onPress={() => {
-                        setSymptoms(yesterday);
-                    }}>
-                    <Text style={{ color: swBlue }}>
-                        Same as yesterday: {yesterday.map((entry) => {return (entry[0] + " " + entry[1] + ", ")})}
-                    </Text>
-                </TouchableOpacity>
-                <View style={[ styles.blueBackground50 ,{ flexDirection: "row", paddingLeft: 10, paddingBottom: 5, borderRadius: 8 }]}>
+                <View style={[ styles.blueBackground50 ,{ flexDirection: "row", paddingLeft: 10, paddingBottom: 5, borderRadius: 8, paddingEnd: 10, marginBottom: 10 }]}>
                     <View style={{
                         marginBottom: 10,
                         width: "45%",
                         position: "relative",
                         marginEnd: 10,
+                        flex: 6,
                         }}>
                         <Text style={ (inputError && !inputSymptom) ? {color: "#CF3028", height: 20} : {color: "#CF3028", width: 0, height: 20}}>
                             Symptom required
                         </Text>
                         <TextInput
                             id="symptomInput"
-                            placeholder="Enter symptom"
+                            placeholder="Add symptom"
                             value={inputSymptom}
                             style={styles.symptomEntry}
                             onChangeText={setInputSymptom}
                         />
                     </View>
-                    <View>
+                    <View style={{flex: 6}}>
                         <Text style={ (inputError && !inputSeverity) ? {color: "#CF3028", height: 20} : {color: "#CF3028", width: 0, height: 20}}>
                             Severity required
                         </Text>
@@ -101,34 +93,45 @@ export default SymptomEntry = ({symptoms, setSymptoms}) => {
                         }}
                         />
                     </View>
-                    <TouchableOpacity
-                        style={ inputSymptom && inputSeverity ? 
-                            [
-                            styles.smallButton,
-                            styles.tealBackground,
-                            { 
-                                marginRight: 18,
-                                top: 4,
-                                justifyContent: "center",
-                            },
-                            ] : [styles.smallButton,
-                            { 
-                                marginRight: 18,
-                                backgroundColor: "rgba(0,0,0,0.15)",
-                                top: 4,
-                                justifyContent: "center",
-                            }
-                        ]}
-                        onPress={addSymptom}
-                    >
-                        <Ionicons
-                            name="add"
-                            size={24}
-                            style={{left: 6}}
-                            color={inputSymptom && inputSeverity ? "#000" : "#666"}
-                        />
-                    </TouchableOpacity>
+                    <View style={{flex: 2, justifyContent: "center"}}>
+                        <TouchableOpacity
+                            style={ inputSymptom && inputSeverity ? 
+                                [
+                                styles.smallButton,
+                                styles.tealBackground,
+                                { 
+                                    marginLeft: 20,
+                                    top: 4,
+                                    justifyContent: "center",
+                                },
+                                ] : [styles.smallButton,
+                                { 
+                                    marginLeft: 20,
+                                    backgroundColor: "rgba(0,0,0,0.15)",
+                                    top: 4,
+                                    justifyContent: "center",
+                                }
+                            ]}
+                            onPress={addSymptom}
+                        >
+                            <Ionicons
+                                name="add"
+                                size={24}
+                                style={{left: 6}}
+                                color={inputSymptom && inputSeverity ? "#000" : "#666"}
+                            />
+                        </TouchableOpacity>
+                    </View>
                 </View>
+                <TouchableOpacity 
+                    style={[styles.wideTile, styles.blueBorder]}
+                    onPress={() => {
+                        setSymptoms(yesterday);
+                    }}>
+                    <Text style={{ color: swBlue }}>
+                        Same as yesterday: {yesterday.map((entry) => {return (entry[0] + " " + entry[1] + ", ")})}
+                    </Text>
+                </TouchableOpacity>
                 <View style={{ marginBottom: 20, marginTop: 10 }}>
                     {symptoms.length < 1 ? (
                         <Text>None</Text>
