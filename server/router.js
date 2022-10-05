@@ -29,4 +29,8 @@ router.get("/", async (req, res) => {
   res.send("Hello World!");
 });
 
+router.get("*", (request, response) => {
+  response.sendFile(path.join(__dirname, "etsa2/build", "index.html"));
+});
+
 module.exports = router;
