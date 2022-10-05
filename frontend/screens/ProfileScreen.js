@@ -79,13 +79,12 @@ export const ProfileScreen = ({ navigation }) => {
               : ` ${user.condition.last_update_date.substring(0, 10)}`}
           </Text>
         </View>
-
         <View style={{ margin: 6 }}>
           <Text style={styles.subHeader}>
             {userIsNull() ? "..." : user.treatment_period} treatment period
           </Text>
         </View>
-        <Pressable
+        {/* <Pressable
           style={[styles.conditionButton, styles.tealSide, styles.tealBorder]}
           onPress={() =>
             navigation.navigate("Details", {
@@ -106,7 +105,7 @@ export const ProfileScreen = ({ navigation }) => {
           }
         >
           <Text>Course of Disease</Text>
-        </Pressable>
+        </Pressable> */}
       </View>
 
       <View style={[styles.wideTile, styles.greenDivider, styles.smallShadow]}>

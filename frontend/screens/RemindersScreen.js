@@ -16,17 +16,6 @@ import { sortDataByDateTime } from "../components/ReminderModal.js";
 var weekday = require("dayjs/plugin/weekday");
 dayjs.extend(weekday);
 
-// const DATA = [
-//   {
-//     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-//     title: "Take a walk",
-//     complete: true,
-//     frequency: 2,
-//     date: "",
-//     time: "",
-//     details: "Aim for above 15 mins duration",
-//   }]
-
 const getData = async () => {
   try {
     const jsonValue = await AsyncStorage.getItem("@reminders");

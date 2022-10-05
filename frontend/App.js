@@ -22,11 +22,12 @@ import { LibraryScreen } from "./screens/LibraryScreen";
 import { ConditionScreen } from "./screens/ConditionScreen";
 import { DetailsScreen } from "./screens/DetailsScreen";
 import { HCPContactScreen } from "./screens/HCPContactScreen.js";
-import { MoreHelpScreen } from "./screens/MoreHelpScreen.js";
+import { PatientSupportScreen } from "./screens/PatientSupportScreen.js";
 import { ProfileScreen } from "./screens/ProfileScreen.js";
 import { NoteScreen } from "./screens/NoteScreen";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { UserContextProvider } from "./userContext";
+import { fontSize } from "@mui/system";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -61,7 +62,9 @@ function HomeScreens() {
               onPress={() => {
                 navigation.navigate("Profile");
               }}
+              style={{flexDirection: "row"}}
             >
+              <Text style={{alignSelf: "center"}}>Profile</Text>
               <Ionicons
                 name="person-sharp"
                 size={24}
@@ -80,10 +83,10 @@ function HomeScreens() {
         component={WellbeingJournalScreen}
       />
       <Stack.Screen
-        name="Contact Healthcare Provider"
+        name="Contact Healthcare"
         component={HCPContactScreen}
       />
-      <Stack.Screen name="More Help" component={MoreHelpScreen} />
+      <Stack.Screen name="Patient Support" component={PatientSupportScreen} />
       <Stack.Screen name="Profile" component={ProfileScreen} />
     </Stack.Navigator>
   );
@@ -109,7 +112,9 @@ function InfoLibScreens() {
               onPress={() => {
                 navigation.navigate("Notes");
               }}
+              style={{flexDirection: "row"}}
             >
+              <Text style={{alignSelf: "center"}}>Notes</Text>
               <Ionicons
                 name="reader"
                 size={24}
@@ -149,6 +154,7 @@ export default function App() {
             options={{
               headerShown: false,
               tabBarActiveTintColor: "#75A9D9",
+              tabBarLabelStyle: {fontSize: 14},
               tabBarIcon: (tabInfo) => (
                 <Ionicons
                   name="library"
@@ -164,6 +170,7 @@ export default function App() {
             options={{
               headerShown: false,
               tabBarActiveTintColor: "#75A9D9",
+              tabBarLabelStyle: {fontSize: 14},
               tabBarIcon: (tabInfo) => (
                 <Ionicons
                   name="home-sharp"
@@ -179,6 +186,7 @@ export default function App() {
             options={{
               headerShown: false,
               tabBarActiveTintColor: "#75A9D9",
+              tabBarLabelStyle: {fontSize: 14},
               tabBarIcon: (tabInfo) => (
                 <Ionicons
                   name="list"

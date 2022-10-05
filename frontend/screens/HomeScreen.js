@@ -12,8 +12,7 @@ import {
 import styles from "../styles";
 import dayjs from "dayjs";
 import { getUserContext } from "../userContext.js";
-import { useState } from "react";
-import { Ionicons } from "@expo/vector-icons";
+import { Frequencies } from "../public/Frequencies";
 
 export const HomeScreen = ({ navigation }) => {
   const context = getUserContext();
@@ -28,14 +27,14 @@ export const HomeScreen = ({ navigation }) => {
         { flexDirection: "row" },
       ]}
       onPress={
-        () => navigation.navigate("Reminders") //, { reminderId: `${route.params.condition}`}
+        () => navigation.navigate("Reminders")
       }
     >
       <Text style={{ flex: 3, fontSize: 18, paddingEnd: 10 }}>
         {item.title}
       </Text>
       <Text style={{ flex: 1, fontSize: 18 }}>
-        {item.frequency === 2 ? "Daily" : dayjs(item.date).format("D MMM")}
+        {item.frequency === Frequencies.Daily ? "Daily" : dayjs(item.date).format("D MMM")}
       </Text>
       <Text style={{ flex: 1, fontSize: 18 }}>{item.time}</Text>
     </TouchableOpacity>
@@ -73,7 +72,7 @@ export const HomeScreen = ({ navigation }) => {
                   { marginHorizontal: "auto", color: "#fff" },
                 ]}
               >
-                Add to Wellbeing Journal
+                Add to Daily Wellbeing Journal
               </Text>
             </View>
           </TouchableHighlight>
@@ -101,11 +100,16 @@ export const HomeScreen = ({ navigation }) => {
               </Text>
             </TouchableHighlight>
           </View>
-          <FlatList
-            data={user}
-            renderItem={renderSimpleReminder}
-            keyExtractor={(item) => item.id}
-          />
+          { user?.reminders.length > 0 ? 
+            <FlatList
+              data={user?.reminders.slice(0,3)}
+              renderItem={renderSimpleReminder}
+              keyExtractor={(item, index) => index}
+            />
+            : <Text style={[styles.subHeader2, {alignSelf: "center", margin: 10, color: "#FFF"}]}>
+              No Reminders
+            </Text>
+          }
         </View>
         <View style={[styles.wideTile]}>
           <Text style={[styles.mainHeader, { marginVertical: 10 }]}>
@@ -115,7 +119,7 @@ export const HomeScreen = ({ navigation }) => {
             <TouchableHighlight
               underlayColor={"#8ADFB6"}
               style={[styles.halfButton, styles.greenBackground]}
-              onPress={() => navigation.navigate("Contact Healthcare Provider")}
+              onPress={() => navigation.navigate("Contact Healthcare")}
             >
               <Text
                 style={{
@@ -130,7 +134,7 @@ export const HomeScreen = ({ navigation }) => {
             <TouchableHighlight
               underlayColor={"#8ADFB6"}
               style={[styles.halfButton, styles.greenBackground]}
-              onPress={() => navigation.navigate("More Help")}
+              onPress={() => navigation.navigate("Patient Support")}
             >
               <Text
                 style={{
@@ -139,7 +143,7 @@ export const HomeScreen = ({ navigation }) => {
                   textAlign: "center",
                 }}
               >
-                More Help
+                Support Organisations
               </Text>
             </TouchableHighlight>
           </View>

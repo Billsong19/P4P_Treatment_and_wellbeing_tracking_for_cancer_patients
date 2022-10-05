@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
         width: "45%",
         marginRight: "5%",
         borderRadius: 4,
+        justifyContent: "center",
     },
     mainHeader: {
         fontWeight: "600",
