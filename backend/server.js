@@ -6,12 +6,15 @@ const express = require("express");
 const cors = require("cors");
 // get MongoDB driver connection
 const dbo = require("./db/conn");
+const morgan = require("morgan");
 
 const PORT = process.env.PORT || 5000;
 const app = express();
 
+//package middlewares
 app.use(cors());
 app.use(express.json());
+app.use(morgan("dev"));
 
 // Global error handling
 app.use(function (err, _req, res, next) {
