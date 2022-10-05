@@ -14,7 +14,7 @@ const app = express();
 //package middlewares
 app.use(cors());
 app.use(express.json());
-app.use(morgan("dev"));
+app.use(morgan("combined"));
 
 // Global error handling
 app.use(function (err, _req, res, next) {
