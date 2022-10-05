@@ -9,7 +9,7 @@ export function UserContextProvider({ children }) {
   const [loadingUser, setLoadingUser] = useState(true);
   useEffect(() => {
     console.log("fetching user");
-    fetch("https://songward-server.herokuapp.com/userDetails/" + USER_ID, {
+    fetch("https://songward-api.herokuapp.com/userDetails/" + USER_ID, {
       method: "GET",
     })
       .then((response) => response.json())
