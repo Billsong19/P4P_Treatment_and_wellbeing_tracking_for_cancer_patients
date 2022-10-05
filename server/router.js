@@ -5,7 +5,9 @@ const router = express.Router();
 
 router.get("/userDetails/:id", userController.getUserDetails);
 
-router.get("/userReminders/:id", userController.getUserReminders);
+router
+  .get("/userReminders/:id", userController.getUserReminders)
+  .post("/userReminders/:id", userController.postNewReminder);
 
 router.get("/userJournal/:id", userController.getUserJournal);
 
@@ -15,8 +17,6 @@ router.delete(
   "/userReminders/:user_id/:reminder_id",
   userController.deleteUserReminder
 );
-
-router.post("/userReminders/:id", userController.postNewReminder);
 
 router.put(
   "/userReminders/:user_id/:reminder_id",
