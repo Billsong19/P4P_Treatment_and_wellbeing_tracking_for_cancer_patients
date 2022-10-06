@@ -64,6 +64,10 @@ const postNewReminder = async (req, res) => {
     const user = await dbConnect
       .collection("User")
       .findOne({ _id: ObjectId(params.id) });
+
+    user.last_updated = new Date();
+    await dbConnect.collection("User").save(user);
+
     const newReminder = req.body;
     newReminder._id = new ObjectId();
     console.log(user.reminders);
@@ -103,6 +107,8 @@ const updateReminder = async (req, res) => {
     reminderToUpdate.date_time = newReminder.date_time;
     reminderToUpdate.frequency = newReminder.frequency;
 
+    updatedUser.last_updated = new Date();
+
     await dbConnect.collection("User").save(updatedUser);
 
     res.status(200).json(updatedUser);
@@ -132,6 +138,10 @@ const postNewJournalEntry = async (req, res) => {
     const user = await dbConnect
       .collection("User")
       .findOne({ _id: ObjectId(params.id) });
+
+    user.last_updated = new Date();
+    dbConnect.collection("User").save(user);
+
     const newJournalEntry = req.body;
     const updatedUser = await dbConnect
       .collection("User")
@@ -139,6 +149,7 @@ const postNewJournalEntry = async (req, res) => {
         { _id: ObjectId(params.id) },
         { $push: { journal: newJournalEntry } }
       );
+
     res.status(200).json(updatedUser.result);
   } catch (err) {
     res.status(500).json({ message: err.message });
