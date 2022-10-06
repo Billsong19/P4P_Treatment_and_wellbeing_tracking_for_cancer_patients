@@ -1,17 +1,13 @@
 import * as React from "react";
 import {
   Pressable,
-  StyleSheet,
   Text,
   View,
-  Button,
-  Linking,
   ScrollView,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import styles from "../styles";
 import { getUserContext } from "../userContext.js";
-import { useContext, useState, useEffect } from "react";
 
 export const ProfileScreen = ({ navigation }) => {
   const { user } = getUserContext();

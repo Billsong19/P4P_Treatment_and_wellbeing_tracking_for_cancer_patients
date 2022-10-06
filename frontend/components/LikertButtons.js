@@ -1,6 +1,6 @@
 import * as React from "react";
-import { TouchableHighlight, Text, TextInput, View, ScrollView } from "react-native";
-import { swBlue, swOrange, swYellow, swGreen, swTeal } from "../styles";
+import { TouchableHighlight, Text, View} from "react-native";
+import { swOrange, swYellow, swGreen, swTeal } from "../styles";
 
 const styles = {
     likertButton: {

@@ -1,5 +1,6 @@
 //context  for user data
 import { createContext, useEffect, useState, useContext } from "react";
+import { GetUserData } from "./songwardAPI";
 
 const UserContext = createContext();
 const USER_ID = "63031ef7deaf0892071eae0e";
@@ -8,14 +9,7 @@ export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
   useEffect(() => {
-    console.log("fetching user");
-    fetch("https://songward-api.herokuapp.com/userDetails/" + USER_ID, {
-      method: "GET",
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("data:");
-        console.log(user);
+      GetUserData(USER_ID).then((data) => {
         setUser(data);
         setLoadingUser(false);
       });

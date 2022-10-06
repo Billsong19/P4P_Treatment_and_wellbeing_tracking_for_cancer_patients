@@ -1,17 +1,12 @@
-import { StatusBar } from "expo-status-bar";
 import React from "react";
 import {
-  Image,
-  ImageBackground,
   StyleSheet,
   Text,
   TouchableOpacity,
-  View,
 } from "react-native";
 import {
   DefaultTheme,
   NavigationContainer,
-  StackActions,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -27,7 +22,7 @@ import { ProfileScreen } from "./screens/ProfileScreen.js";
 import { NoteScreen } from "./screens/NoteScreen";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { UserContextProvider } from "./userContext";
-import { fontSize } from "@mui/system";
+import { ReminderContextProvider } from "./reminderContextProvider";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -142,62 +137,64 @@ function InfoLibScreens() {
 export default function App() {
   return (
     <UserContextProvider>
-      <NavigationContainer theme={navTheme}>
-        <BottomTab.Navigator
-          initialRouteName="Home"
-          backBehavior="initialRoute"
-          lazy="false"
-        >
-          <BottomTab.Screen
-            name="Information Library"
-            component={InfoLibScreens}
-            options={{
-              headerShown: false,
-              tabBarActiveTintColor: "#75A9D9",
-              tabBarLabelStyle: {fontSize: 14},
-              tabBarIcon: (tabInfo) => (
-                <Ionicons
-                  name="library"
-                  size={24}
-                  color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
-                />
-              ),
-            }}
-          />
-          <BottomTab.Screen
-            name="Home"
-            component={HomeScreens}
-            options={{
-              headerShown: false,
-              tabBarActiveTintColor: "#75A9D9",
-              tabBarLabelStyle: {fontSize: 14},
-              tabBarIcon: (tabInfo) => (
-                <Ionicons
-                  name="home-sharp"
-                  size={24}
-                  color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
-                />
-              ),
-            }}
-          />
-          <BottomTab.Screen
-            name="Reminders"
-            component={RemindersScreens}
-            options={{
-              headerShown: false,
-              tabBarActiveTintColor: "#75A9D9",
-              tabBarLabelStyle: {fontSize: 14},
-              tabBarIcon: (tabInfo) => (
-                <Ionicons
-                  name="list"
-                  size={24}
-                  color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
-                />
-              ),
-            }}
-          />
-        </BottomTab.Navigator>
-      </NavigationContainer>
+      <ReminderContextProvider>
+        <NavigationContainer theme={navTheme}>
+          <BottomTab.Navigator
+            initialRouteName="Home"
+            backBehavior="initialRoute"
+            lazy="false"
+          >
+            <BottomTab.Screen
+              name="Information Library"
+              component={InfoLibScreens}
+              options={{
+                headerShown: false,
+                tabBarActiveTintColor: "#75A9D9",
+                tabBarLabelStyle: {fontSize: 14},
+                tabBarIcon: (tabInfo) => (
+                  <Ionicons
+                    name="library"
+                    size={24}
+                    color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
+                  />
+                ),
+              }}
+            />
+            <BottomTab.Screen
+              name="Home"
+              component={HomeScreens}
+              options={{
+                headerShown: false,
+                tabBarActiveTintColor: "#75A9D9",
+                tabBarLabelStyle: {fontSize: 14},
+                tabBarIcon: (tabInfo) => (
+                  <Ionicons
+                    name="home-sharp"
+                    size={24}
+                    color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
+                  />
+                ),
+              }}
+            />
+            <BottomTab.Screen
+              name="Reminders"
+              component={RemindersScreens}
+              options={{
+                headerShown: false,
+                tabBarActiveTintColor: "#75A9D9",
+                tabBarLabelStyle: {fontSize: 14},
+                tabBarIcon: (tabInfo) => (
+                  <Ionicons
+                    name="list"
+                    size={24}
+                    color={tabInfo.focused ? "#75A9D9" : "#8e8e8f"}
+                  />
+                ),
+              }}
+            />
+          </BottomTab.Navigator>
+        </NavigationContainer>
+      </ReminderContextProvider>
     </UserContextProvider>
   );
 }

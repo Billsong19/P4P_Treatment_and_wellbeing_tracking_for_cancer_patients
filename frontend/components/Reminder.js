@@ -11,41 +11,24 @@ import {
 import styles from "../styles.js";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import CheckBox from "expo-checkbox";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { setUpEditModal } from "./ReminderModal.js";
 import { Frequencies } from "../public/Frequencies.js";
+import { getReminderContext } from "../reminderContextProvider";
 import dayjs from "dayjs";
-
-const storeData = async (value) => {
-  try {
-    const jsonValue = JSON.stringify(value);
-    await AsyncStorage.setItem("@reminders", jsonValue);
-  } catch (e) {
-    console.log(e);
-  }
-};
 
 /*
     Reminder is a component used to display a reminder in the reminders screen. It starts off in a
     collapsed view and when tapped (anywhere other than the checkbox), expands to show details as well a
     button which opens the ReminderModal to edit the selected reminder through the setUpEditModal prop.
 */
-export default Reminder = ({
-  id,
-  title,
-  details,
-  complete,
-  frequency,
-  date_time,
-  data,
-  setData,
-  setUpEditModal,
-}) => {
+export default Reminder = ({ _id, setUpEditModal }) => {
+  const reminderContext = getReminderContext();
+  const reminder = reminderContext.getReminderById(_id);
+
   const startingHeight = 35;
   const [key, setKey] = React.useState(0);
   const [titleHeight, setTitleHeight] = React.useState(35);
   const [isExpanded, setExpanded] = React.useState(false);
-  const [isComplete, setComplete] = React.useState(complete);
+  const [isComplete, setComplete] = React.useState(reminder.isComplete);
   const [fullHeight, setFullHeight] = React.useState(startingHeight);
   const animatedHeight = React.useRef(
     new Animated.Value(startingHeight)
@@ -98,7 +81,7 @@ export default Reminder = ({
   React.useEffect(() => {
     setExpanded(false);
     setFullHeight(startingHeight);
-  }, [id, title, details, complete, frequency, date_time]);
+  }, [_id, reminder]);
 
   React.useEffect(() => {
     setKey(key + 1);
@@ -113,37 +96,35 @@ export default Reminder = ({
   };
 
   const toggleComplete = async (toggleTo = true) => {
-    const index = data.findIndex((reminder) => reminder.id === id);
-    data[index] = {
-      id: id,
-      title: title,
-      complete: !isComplete,
-      frequency: frequency,
-      date_time: date_time,
-      details: details,
-    };
-    setData(data);
     setComplete(toggleTo);
-    await storeData(data);
+    const updatedRem = {
+      _id: _id,
+      title: reminder.title,
+      complete: toggleTo,
+      frequency: reminder.frequency,
+      date_time: reminder.date_time,
+      details: reminder.details,
+    };
+    reminderContext.editReminder(updatedRem);
   };
 
   let isMissed = false;
-  if (frequency === Frequencies.Daily) {
-    isMissed = dayjs().isAfter(dayjs().set('hour', dayjs(date_time).get('hour')).set('minute', dayjs(date_time).get('minute')))
+  if (reminder?.frequency === Frequencies.Daily) {
+    isMissed = dayjs().isAfter(dayjs().set('hour', dayjs(reminder?.date_time).get('hour')).set('minute', dayjs(reminder?.date_time).get('minute')))
   } else {
-    isMissed = dayjs().isAfter(date_time)
+    isMissed = dayjs().isAfter(reminder?.date_time)
   }
 
   return (
     <Pressable
       onLongPress={() =>
-        setUpEditModal({ title, details, date_time, frequency, id })
+        setUpEditModal(_id)
       }
       onPress={() => setExpanded(!isExpanded)}
     >
       <Animated.View
         style={
-          frequency === Frequencies.Daily
+          reminder.frequency === Frequencies.Daily
             ? [
                 styles.blueBorder,
                 styles.dailyReminder,
@@ -170,10 +151,10 @@ export default Reminder = ({
               style={{ flex: 3, fontSize: 18 }}
               numberOfLines={isExpanded ? 0 : 1}
             >
-              {title}
+              {reminder.title}
             </Text>
             <Text style={{ flex: 1, fontSize: 18 }}>
-              {dayjs(date_time).format("HH:mm")}
+              {dayjs(reminder.date_time).format("HH:mm")}
             </Text>
             { isMissed ?
               <TouchableHighlight
@@ -183,7 +164,7 @@ export default Reminder = ({
                 onPress={() =>
                   Alert.alert(
                     "Reminder missed",
-                    `You missed you reminder: ${title}.\nFor your own benefit try to avoid missing these.`,
+                    `You missed you reminder: ${reminder.title}.\nFor your own benefit try to avoid missing these.`,
                     [
                       { text: "Understood", onPress: () => toggleComplete() },
                     ]
@@ -209,28 +190,26 @@ export default Reminder = ({
           </View>
           <Animated.View style={{ opacity: fadeAnim }}>
             <ScrollView style={{ height: 0 }}>
-              <Text>{details}</Text>
+              <Text>{reminder.details}</Text>
             </ScrollView>
             <Text style={{ marginBottom: 2, maxWidth: "90%", marginTop: 4 }}>
-              {details}
+              {reminder.details}
             </Text>
-            { !isMissed && 
-              <TouchableHighlight
-                style={{
-                  position: "absolute",
-                  right: 2,
-                  padding: 4,
-                  borderRadius: 15,
-                  bottom: -12,
-                }}
-                onPress={() =>
-                  setUpEditModal({ title, details, date_time, frequency, id })
-                }
-                underlayColor={"rgba(0,0,0,0.1)"}
-              >
-                <Ionicons name="ellipsis-horizontal" size={24} />
-              </TouchableHighlight>
-            }
+            <TouchableHighlight
+              style={{
+                position: "absolute",
+                right: 2,
+                padding: 4,
+                borderRadius: 15,
+                bottom: -12,
+              }}
+              onPress={() =>
+                setUpEditModal(_id)
+              }
+              underlayColor={"rgba(0,0,0,0.1)"}
+            >
+              <Ionicons name="ellipsis-horizontal" size={24} />
+            </TouchableHighlight>
           </Animated.View>
         </View>
       </Animated.View>

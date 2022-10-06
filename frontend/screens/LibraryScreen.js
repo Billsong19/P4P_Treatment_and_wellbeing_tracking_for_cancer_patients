@@ -4,8 +4,6 @@ import {
   Image,
   Text,
   View,
-  Pressable,
-  StyleSheet,
   ScrollView,
   TouchableHighlight,
   TextInput,

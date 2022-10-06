@@ -1,14 +1,31 @@
 import * as React from "react";
 import { TouchableOpacity, Text, TextInput, View, ScrollView } from "react-native";
-import { Dropdown } from "react-native-element-dropdown";
 import LikertButtons from "../components/LikertButtons";
 import SymptomEntry from "../components/SymptomEntry";
-import styles, { swBlue } from "../styles";
+import { AddJournalEntry } from "../songwardAPI";
+import { getUserContext } from "../userContext.js";
+import styles from "../styles";
 
 export const WellbeingJournalScreen = ({ navigation }) => {
     const [phys, setPhys] = React.useState(-1);
     const [ment, setMental] = React.useState(-1);
     const [symptoms, setSymptoms] = React.useState([]);
+    const [additional, setAdditional] = React.useState("");
+
+    const context = getUserContext();
+    const user = context.user;
+
+    const completeJournalEntry = () => {
+        const journalData = {
+            date: new Date(),
+            phys_wlbing_rating: phys,
+            ment_wlbing_rating: ment,
+            symptoms: symptoms,
+            additional: additional,
+        };
+        AddJournalEntry(user._id, journalData);
+        navigation.navigate("Songward");
+    }
 
     return (
         <ScrollView
@@ -42,6 +59,8 @@ export const WellbeingJournalScreen = ({ navigation }) => {
             <TextInput
                 style={styles.largeTextEntry}
                 placeholder="optional"
+                value={additional}
+                onChangeText={setAdditional}
                 multiline={true}
                 textAlignVertical="top"
             />
@@ -51,7 +70,7 @@ export const WellbeingJournalScreen = ({ navigation }) => {
                         ? [styles.wideButton, { backgroundColor: "#CCC", marginBottom: 20 }]
                         : [styles.wideButton, styles.blueBackground, { marginBottom: 20 }]
                 }
-                onPress={() => navigation.navigate("Songward")}
+                onPress={() => completeJournalEntry()}
                 disabled={phys == -1 || ment == -1}
             >
                 <Text

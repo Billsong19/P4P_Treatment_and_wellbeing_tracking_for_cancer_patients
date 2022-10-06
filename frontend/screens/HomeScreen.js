@@ -2,8 +2,6 @@ import * as React from "react";
 import {
   Text,
   View,
-  Button,
-  Pressable,
   TouchableHighlight,
   ImageBackground,
   TouchableOpacity,
@@ -13,10 +11,18 @@ import styles from "../styles";
 import dayjs from "dayjs";
 import { getUserContext } from "../userContext.js";
 import { Frequencies } from "../public/Frequencies";
+import { getReminderContext } from "../reminderContextProvider";
 
 export const HomeScreen = ({ navigation }) => {
   const context = getUserContext();
   const user = context.user;
+
+  function userIsNull() {
+    return user === null;
+  }
+
+  const reminderContext = getReminderContext();
+  const reminders = reminderContext.reminders;
 
   const renderSimpleReminder = ({ item }) => (
     <TouchableOpacity
@@ -36,7 +42,7 @@ export const HomeScreen = ({ navigation }) => {
       <Text style={{ flex: 1, fontSize: 18 }}>
         {item.frequency === Frequencies.Daily ? "Daily" : dayjs(item.date).format("D MMM")}
       </Text>
-      <Text style={{ flex: 1, fontSize: 18 }}>{item.time}</Text>
+      <Text style={{ flex: 1, fontSize: 18 }}>{dayjs(item.date_time).format("HH:mm")}</Text>
     </TouchableOpacity>
   );
 
@@ -52,7 +58,7 @@ export const HomeScreen = ({ navigation }) => {
         <View style={[styles.wideTile, styles.blueDivider]}>
           <Text>Welcome back {user == null ? "..." : user.first_name}</Text>
           <Text style={{ fontSize: 20.0, marginVertical: 10 }}>
-            {user == null ? "..." : `${user.condition.treatment_period}`} weeks
+            {userIsNull() ? "..." : `${user.condition.treatment_period}`} weeks
             since diagnosis
           </Text>
           <TouchableHighlight
@@ -100,9 +106,9 @@ export const HomeScreen = ({ navigation }) => {
               </Text>
             </TouchableHighlight>
           </View>
-          { user?.reminders.length > 0 ? 
+          { reminders?.length > 0 ? 
             <FlatList
-              data={user?.reminders.slice(0,3)}
+              data={reminders.slice(0,3)}
               renderItem={renderSimpleReminder}
               keyExtractor={(item, index) => index}
             />
