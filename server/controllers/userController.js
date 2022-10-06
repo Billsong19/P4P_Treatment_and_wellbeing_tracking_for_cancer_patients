@@ -83,24 +83,29 @@ const postNewReminder = async (req, res) => {
 const updateReminder = async (req, res) => {
   try {
     const dbConnect = dbo.getDb();
-    const { params } = req;
-    const user = await dbConnect
-      .collection("User")
-      .findOne({ _id: ObjectId(params.user_id) });
-    const updatedReminder = req.body;
-    const updatedUser = await dbConnect.collection("User").updateOne(
-      {
-        $and: [
-          { _id: ObjectId(params.user_id) },
-          {
-            reminders: { $elemMatch: { _id: ObjectId(params.reminder_id) } },
-          },
-        ],
-      },
-      [{ $set: { updatedReminder } }]
-    );
-    console.log(updatedReminder);
-    res.status(200).json(updatedUser.result);
+    const { params, body } = req;
+
+    newReminder = body;
+    newReminder._id = ObjectId(params.reminder_id);
+
+    const updatedUser = await dbConnect.collection("User").findOne({
+      _id: ObjectId(params.user_id),
+    });
+
+    const reminderToUpdate = await updatedUser.reminders.find((r) => {
+      return JSON.stringify(r._id) === JSON.stringify(params.reminder_id);
+    });
+
+    reminderToUpdate._id = ObjectId(params.reminder_id);
+    reminderToUpdate.title = newReminder.title;
+    reminderToUpdate.complete = newReminder.complete;
+    reminderToUpdate.details = newReminder.details;
+    reminderToUpdate.date_time = newReminder.date_time;
+    reminderToUpdate.frequency = newReminder.frequency;
+
+    await dbConnect.collection("User").save(updatedUser);
+
+    res.status(200).json(updatedUser);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
