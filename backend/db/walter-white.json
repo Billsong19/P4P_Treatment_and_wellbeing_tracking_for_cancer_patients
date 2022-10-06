@@ -1,0 +1,56 @@
+{
+  "_id": { "$oid": "63031ef7deaf0892071eae0e" },
+  "first_name": "Walter",
+  "last_name": "White",
+  "date_of_birth": { "$date": "1999-01-25T02:00:00.000Z" },
+  "last_updated": { "$date": "2022-10-05T22:39:56.000Z" },
+  "condition": {
+    "cancer_type": "Lung",
+    "cancer_stage": "Stage 4",
+    "last_update_date": { "$date": "2019-01-25T02:00:00.000Z" },
+    "treatment_period": 32
+  },
+  "contacts": [
+    {
+      "title": "GP",
+      "name": "Skyler",
+      "phone": "555-555-5555",
+      "email": "bestCharacter111@gmail.com"
+    },
+    {
+      "title": "Nurse",
+      "name": "Hank",
+      "phone": "556-555-5555",
+      "email": "minerals@gmail.com"
+    }
+  ],
+  "journal": [
+    {
+      "phys_wlbing_rating": 7,
+      "ment_wlbing_rating": 4,
+      "date": { "$date": "2020-01-25T02:00:00.000Z" },
+      "symptoms": [
+        {
+          "symptom": "Fever",
+          "strength": "mild"
+        }
+      ]
+    },
+    {
+      "phys_wlbing_rating": 6,
+      "ment_wlbing_rating": 3,
+      "date": { "$date": "2020-02-26T02:00:00.000Z" },
+      "symptoms": []
+    }
+  ],
+  "reminders": [
+    {
+      "_id": { "$oid": "633e3a32fe4c780004afe972" },
+      "title": "AYOOOOO",
+      "complete": false,
+      "frequency": 2,
+      "date_time": { "$date": "2022-10-06T02:13:48.670Z" },
+      "details": ""
+    }
+  ]
+}
