@@ -244,7 +244,7 @@ export default ReminderModal = (props) => {
           <View style={{ flex: 1, margin: 10 }}>
             <Pressable
               style={[styles.emptyRadioButton, styles.blueBorder]}
-              onPress={() => props.setNewFrequency(Frequencies.Once)}
+              onPress={() => setNewFrequency(Frequencies.Once)}
             >
               {newFrequency == Frequencies.Once && (
                 <View style={styles.radioFill} />

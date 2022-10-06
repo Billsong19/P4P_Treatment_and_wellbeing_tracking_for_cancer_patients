@@ -24,6 +24,15 @@ export const HomeScreen = ({ navigation }) => {
   const reminderContext = getReminderContext();
   const reminders = reminderContext.reminders;
 
+  const [homeReminders, setHomeReminders] = React.useState([]);
+
+  React.useEffect(() => {
+    // keeps track of up to 3 future and incomplete reminders to display on the home page
+    setHomeReminders(reminders.filter((reminder) => reminder.complete === false
+     && (dayjs().isBefore(dayjs(reminder.date_time)) 
+     || reminder.frequency === Frequencies.Daily)).slice(0,3));
+  }, [reminders])
+
   const renderSimpleReminder = ({ item }) => (
     <TouchableOpacity
       style={[
@@ -40,7 +49,7 @@ export const HomeScreen = ({ navigation }) => {
         {item.title}
       </Text>
       <Text style={{ flex: 1, fontSize: 18 }}>
-        {item.frequency === Frequencies.Daily ? "Daily" : dayjs(item.date).format("D MMM")}
+        {item.frequency === Frequencies.Daily ? "Daily" : dayjs(item.date_time).format("D MMM")}
       </Text>
       <Text style={{ flex: 1, fontSize: 18 }}>{dayjs(item.date_time).format("HH:mm")}</Text>
     </TouchableOpacity>
@@ -106,14 +115,14 @@ export const HomeScreen = ({ navigation }) => {
               </Text>
             </TouchableHighlight>
           </View>
-          { reminders?.length > 0 ? 
+          { homeReminders.length > 0 ? 
             <FlatList
-              data={reminders.slice(0,3)}
+              data={homeReminders}
               renderItem={renderSimpleReminder}
               keyExtractor={(item, index) => index}
             />
-            : <Text style={[styles.subHeader2, {alignSelf: "center", margin: 10, color: "#FFF"}]}>
-              No Reminders
+            : <Text style={[styles.subHeader2, {alignSelf: "center", margin: 10}]}>
+              No Upcoming Reminders
             </Text>
           }
         </View>
@@ -121,10 +130,10 @@ export const HomeScreen = ({ navigation }) => {
           <Text style={[styles.mainHeader, { marginVertical: 10 }]}>
             Patient Support
           </Text>
-          <View style={{ display: "flex", flexDirection: "row" }}>
+          <View>
             <TouchableHighlight
               underlayColor={"#8ADFB6"}
-              style={[styles.halfButton, styles.greenBackground]}
+              style={[styles.smallShadow, styles.wideButton, styles.greenBackground, {marginBottom: 10}]}
               onPress={() => navigation.navigate("Contact Healthcare")}
             >
               <Text
@@ -139,7 +148,7 @@ export const HomeScreen = ({ navigation }) => {
             </TouchableHighlight>
             <TouchableHighlight
               underlayColor={"#8ADFB6"}
-              style={[styles.halfButton, styles.greenBackground]}
+              style={[styles.smallShadow, styles.wideButton, styles.greenBackground, {marginBottom: 10}]}
               onPress={() => navigation.navigate("Patient Support")}
             >
               <Text

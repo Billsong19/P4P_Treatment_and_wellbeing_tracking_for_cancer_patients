@@ -28,7 +28,7 @@ export default Reminder = ({ _id, setUpEditModal }) => {
   const [key, setKey] = React.useState(0);
   const [titleHeight, setTitleHeight] = React.useState(35);
   const [isExpanded, setExpanded] = React.useState(false);
-  const [isComplete, setComplete] = React.useState(reminder.isComplete);
+  const [isComplete, setComplete] = React.useState(reminder.complete);
   const [fullHeight, setFullHeight] = React.useState(startingHeight);
   const animatedHeight = React.useRef(
     new Animated.Value(startingHeight)
