@@ -70,35 +70,11 @@ export const ConditionScreen = ({ navigation, route }) => {
             </TouchableHighlight>
             <TouchableHighlight
                 underlayColor={"#EEE"}
-                style={[styles.conditionSubButton, styles.greenSide]}
-                onPress={() =>
-                    navigation.navigate("Details", {
-                        condition: `${route.params.condition}`,
-                        section: 3,
-                    })
-                }
-            >
-                <Text style={styles.subHeader2}>Early Stages</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-                underlayColor={"#EEE"}
-                style={[styles.conditionSubButton, styles.greenSide]}
-                onPress={() =>
-                    navigation.navigate("Details", {
-                        condition: `${route.params.condition}`,
-                        section: 4,
-                    })
-                }
-            >
-                <Text style={styles.subHeader2}>Development and Complications</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-                underlayColor={"#EEE"}
                 style={[styles.conditionButton, styles.yellowSide]}
                 onPress={() =>
                     navigation.navigate("Details", {
                         condition: `${route.params.condition}`,
-                        section: 5,
+                        section: 3,
                     })
                 }
             >
@@ -110,7 +86,7 @@ export const ConditionScreen = ({ navigation, route }) => {
                 onPress={() =>
                     navigation.navigate("Details", {
                         condition: `${route.params.condition}`,
-                        section: 6,
+                        section: 4,
                     })
                 }
             >

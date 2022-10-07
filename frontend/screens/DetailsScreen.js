@@ -25,18 +25,10 @@ export const DetailsScreen = ({ navigation, route }) => {
             pageColor = swGreen;
             break;
         case 3:
-            page = "Early Stages";
-            pageColor = swGreen;
-            break;
-        case 4:
-            page = "Development and Complications";
-            pageColor = swGreen;
-            break;
-        case 5:
             page = "Treatments";
             pageColor = swYellow;
             break;
-        case 6:
+        case 4:
             page = "Risks and long-term implications";
             pageColor = swOrange;
             break;
@@ -68,8 +60,13 @@ export const DetailsScreen = ({ navigation, route }) => {
                             key={index}
                             style={{ margin: 10 }}
                         >
-                            <Text style={styles.subHeader}>{section.header}</Text>
-                            <Text style={{fontSize: 18}}>{section.content}</Text>
+                            {section.header ?
+                            <View>
+                                <Text style={styles.subHeader}>{section.header}</Text>
+                                <Text style={{fontSize: 18}}>{section.content}</Text>
+                            </View>
+                            : <Text style={[styles.subHeader, {marginHorizontal: "8%"}]}>{section?.question}</Text>
+                            }
                             <View
                                 style={{
                                     width: "92%",
