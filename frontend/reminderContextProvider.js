@@ -29,25 +29,55 @@ const storeLocalReminders = async (value) => {
 // Sorts all reminders in the data by date and time, daily reminders use an old date as they only need to be sorted by time
 export function sortDataByDateTime(data) {
   let tempData = [];
+  console.log(data)
   if (data) {
     tempData = [...data];
     tempData.sort((a, b) =>
       dayjs(
         (a.frequency === Frequencies.Daily
-          ? dayjs(a.date_time).set("year", dayjs().get('y')).set("month", dayjs().get("M")).set("date", dayjs().get('D'))
+          ? dayjs(a.date_time)
+            .set("year", dayjs().get('y'))
+            .set("month", dayjs().get("M"))
+            .set("date", dayjs().get('D'))
           : dayjs(a.date_time)) -
           dayjs(
             b.frequency === Frequencies.Daily
               ? dayjs(b.date_time)
-                  .set("year", 2020)
-                  .set("month", 1)
-                  .set("date", 1)
+                .set("year", dayjs().get('y'))
+                .set("month", dayjs().get("M"))
+                .set("date", dayjs().get('D'))
               : dayjs(b.date_time)
           )
       )
     );
   }
   return tempData;
+}
+
+// resets all daily reminders at the turn of the next day, also updates their date_time to know when to reset next
+function resetDailyReminders(data) {
+  let tempData = [];
+  console.log(data)
+  if (data) {
+    tempData = [...data];
+    tempData.map((reminder, index) => {
+      if (reminder.frequency === Frequencies.Daily) {
+        if (dayjs().set("hour", 23).set("minute", 59).set("second", 59).isAfter(dayjs(reminder.date_time).set("hour", 23).set("minute", 59).set("second", 59))) {
+          const updatedRem = {
+            _id: reminder._id,
+            title: reminder.title,
+            complete: false,
+            frequency: reminder.frequency,
+            date_time: dayjs().set('hour', dayjs(reminder?.date_time).get('hour')).set('minute', dayjs(reminder?.date_time).get('minute')),
+            details: reminder.details,
+          };
+          tempData[index] = updatedRem;
+        }
+      }
+    })
+
+    return tempData;
+  }
 }
 
 /*
@@ -73,6 +103,7 @@ export function ReminderContextProvider({ children }) {
     // Use the newest of either locally stored reminders, or server side (if available)
     let tempData = [];
     fetchData();
+    console.log(user)
     if (user && localData) {
       if (dayjs(user.last_updated).isBefore(dayjs(localData.last_updated))){
         tempData = localData.reminders;
@@ -84,7 +115,7 @@ export function ReminderContextProvider({ children }) {
     } else if (!user && localData) {
       tempData = localData.reminders;
     } 
-    setReminders(sortDataByDateTime(tempData));
+    setReminders(sortDataByDateTime(resetDailyReminders(tempData)));
     setLoadingReminders(false);
   }, [user]);
 
