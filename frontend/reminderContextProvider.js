@@ -112,11 +112,11 @@ export function ReminderContextProvider({ children }) {
     if (user && localData) {
       if (dayjs(user.last_updated).isBefore(dayjs(localData.last_updated))){
         tempData = localData.reminders;
-        // try {
-        //   OverrideAllReminders(user._id, tempData)
-        // } catch (error) {
-        //   console.log(error)
-        // }
+        try {
+          OverrideAllReminders(user._id, tempData)
+        } catch (error) {
+          console.log(error)
+        }
       } else {
         tempData = user.reminders;
       }

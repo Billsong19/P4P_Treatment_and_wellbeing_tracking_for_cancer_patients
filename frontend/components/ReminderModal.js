@@ -12,12 +12,12 @@ import {
 } from "react-native";
 import styles, { swGreen, swOrange } from "../styles.js";
 import "react-native-get-random-values";
-import { v4 as uuidv4 } from "uuid";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import { Frequencies } from "../public/Frequencies.js";
 import { DaysOfWeek } from "../public/DaysOfWeek.js";
 import { getReminderContext } from "../reminderContextProvider";
+import { ObjectId } from 'bson';
 
 var weekday = require("dayjs/plugin/weekday");
 dayjs.extend(weekday);
@@ -70,7 +70,7 @@ export default ReminderModal = (props) => {
       reminderContext.editReminder(updatedReminder);
     } else {
       const newReminder = {
-        _id: uuidv4(),
+        _id: new ObjectId(),
         title: newTitle,
         complete: false,
         frequency: newFrequency,
