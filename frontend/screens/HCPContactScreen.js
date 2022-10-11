@@ -8,10 +8,6 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 export const HCPContactScreen = ({ navigation }) => {
   const { user } = getUserContext();
 
-  function userIsNull() {
-    return user == null;
-  }
-
   return (
   <View style={{backgroundColor: "#FFF", height: "100%"}}>
     {user.contacts.map((item, index) => (

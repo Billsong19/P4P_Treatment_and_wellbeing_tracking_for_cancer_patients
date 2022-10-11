@@ -12,10 +12,6 @@ import { getUserContext } from "../userContext.js";
 export const ProfileScreen = ({ navigation }) => {
   const { user } = getUserContext();
 
-  function userIsNull() {
-    return user == null;
-  }
-
   return (
     <ScrollView style={{ backgroundColor: "#FFF" }}>
       <View
@@ -28,9 +24,9 @@ export const ProfileScreen = ({ navigation }) => {
       >
         <View style={{ flex: 1, padding: 10 }}>
           <Text style={{ fontSize: 20 }}>
-            {userIsNull() ? "..." : user.first_name}
+            {user ? user.first_name : "..."}
           </Text>
-          <Text>{userIsNull() ? "..." : user.age}</Text>
+          <Text>{user ? user.age : "..."}</Text>
         </View>
         <Pressable
           style={[
@@ -57,56 +53,34 @@ export const ProfileScreen = ({ navigation }) => {
         <Text style={styles.mainHeader}>Condition Information</Text>
         <View style={{ flexDirection: "row", margin: 6 }}>
           <Text style={styles.subHeader}>
-            {userIsNull() ? "..." : user.condition.cancer_type}{" "}
+            {user ? user.condition.cancer_type :  "..." }{" "}
           </Text>
           <Text style={{ marginLeft: "auto" }}>
-            Diagnosed: {userIsNull() ? "..." : user.condition.cancer_stage}
+            Diagnosed: {user ? user.condition.last_update_date.substring(0, 10) : "..."}
           </Text>
         </View>
 
         <View style={{ flexDirection: "row", margin: 6 }}>
           <Text style={styles.subHeader}>
-            Stage {userIsNull() ? "..." : user.stage}
+            {user ? user.condition.cancer_stage : "..."}
           </Text>
           <Text style={{ marginLeft: "auto" }}>
             as of:
-            {userIsNull()
-              ? "..."
-              : ` ${user.condition.last_update_date.substring(0, 10)}`}
+            {user
+              ? ` ${user.condition.last_update_date.substring(0, 10)}`
+              : "..."}
           </Text>
         </View>
         <View style={{ margin: 6 }}>
           <Text style={styles.subHeader}>
-            {userIsNull() ? "..." : user.treatment_period} treatment period
+            {user ? user.condition.treatment_period : "..."} weeks into treatment period
           </Text>
         </View>
-        {/* <Pressable
-          style={[styles.conditionButton, styles.tealSide, styles.tealBorder]}
-          onPress={() =>
-            navigation.navigate("Details", {
-              condition: userIsNull() ? "..." : `${user.cancer_type}`,
-              section: 1,
-            })
-          }
-        >
-          <Text>Chance of Recovery</Text>
-        </Pressable>
-        <Pressable
-          style={[styles.conditionButton, styles.greenSide, styles.greenBorder]}
-          onPress={() =>
-            navigation.navigate("Details", {
-              condition: userIsNull() ? "..." : `${user.cancer_type}`,
-              section: 2,
-            })
-          }
-        >
-          <Text>Course of Disease</Text>
-        </Pressable> */}
       </View>
 
       <View style={[styles.wideTile, styles.greenDivider, styles.smallShadow]}>
         <Text style={styles.mainHeader}>Treatment Staff</Text>
-        {user.contacts.map((staff_member, index) => {
+        {user?.contacts.map((staff_member, index) => {
           return (
             <TouchableOpacity
               style={[

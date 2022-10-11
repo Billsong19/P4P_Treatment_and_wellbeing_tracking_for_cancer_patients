@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState, useContext } from "react";
+import { Alert } from "react-native";
 import { AddUserReminder, UpdateUserReminder, DeleteUserReminder } from "./songwardAPI";
 import { getUserContext } from "./userContext.js";
 import { Frequencies } from "./public/Frequencies";
@@ -29,7 +30,6 @@ const storeLocalReminders = async (value) => {
 // Sorts all reminders in the data by date and time, daily reminders use an old date as they only need to be sorted by time
 export function sortDataByDateTime(data) {
   let tempData = [];
-  console.log(data)
   if (data) {
     tempData = [...data];
     tempData.sort((a, b) =>
@@ -57,7 +57,6 @@ export function sortDataByDateTime(data) {
 // resets all daily reminders at the turn of the next day, also updates their date_time to know when to reset next
 function resetDailyReminders(data) {
   let tempData = [];
-  console.log(data)
   if (data) {
     tempData = [...data];
     tempData.map((reminder, index) => {
@@ -90,9 +89,16 @@ export function ReminderContextProvider({ children }) {
   const [reminders, setReminders] = useState([]);
   const [localData, setLocalData] = useState();
   const [loadingReminders, setLoadingReminders] = useState(true);
+  const [offline, setOffline] = useState(false);
 
   const userContext = getUserContext();
   const user = userContext.user;
+
+  useEffect(() => {
+    if (offline) {
+      Alert.alert("No connection", "Failed to connect to the server, any changes you make will be saved to the server upon re-opening the app with a connection.")
+    }
+  }, [offline]);
 
   useEffect(() => {
     setLoadingReminders(true);
@@ -103,7 +109,6 @@ export function ReminderContextProvider({ children }) {
     // Use the newest of either locally stored reminders, or server side (if available)
     let tempData = [];
     fetchData();
-    console.log(user)
     if (user && localData) {
       if (dayjs(user.last_updated).isBefore(dayjs(localData.last_updated))){
         tempData = localData.reminders;
@@ -131,7 +136,13 @@ export function ReminderContextProvider({ children }) {
       storeLocalReminders(data);
     };
     saveData(tempReminders);
-    AddUserReminder(user._id, reminder)
+    if (!offline) {
+      try {
+        AddUserReminder(user._id, reminder);
+      } catch {
+        setOffline(true);
+      }
+    }
   }
 
   function editReminder(editReminder) {
@@ -144,7 +155,13 @@ export function ReminderContextProvider({ children }) {
         storeLocalReminders(data);
       };
       saveData(tempReminders);
-      UpdateUserReminder(user._id, editReminder)
+      if (!offline) {
+        try {
+          UpdateUserReminder(user._id, editReminder);
+        } catch {
+          setOffline(true);
+        }
+      }
     } else {
       Alert.alert("An error occurred while saving the reminder");
     }
@@ -160,7 +177,13 @@ export function ReminderContextProvider({ children }) {
         storeLocalReminders(data);
       };
       saveData(tempReminders);
-      DeleteUserReminder(user._id, removeId)
+      if (!offline) {
+        try {
+          DeleteUserReminder(user._id, removeId);
+        } catch {
+          setOffline(true);
+        }
+      }
     }
   };
 

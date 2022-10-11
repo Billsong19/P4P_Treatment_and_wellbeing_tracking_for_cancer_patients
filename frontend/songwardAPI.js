@@ -1,5 +1,7 @@
+const API_URL = "https://songward-api.herokuapp.com"
+
 export async function GetUserData(user_id) {
-  const response = await fetch("https://songward-api.herokuapp.com/userDetails/" + user_id, {
+  const response = await fetch(API_URL + "/userDetails/" + user_id, {
     method: "GET",
   })
   if (response.ok) {
@@ -10,7 +12,7 @@ export async function GetUserData(user_id) {
   }
 
 export async function GetUserReminders(user_id) {
-  const response = await fetch("https://songward-api.herokuapp.com/userReminders/" + user_id, {
+  const response = await fetch( API_URL + "/userReminders/" + user_id, {
     method: "GET",
   })
   if (response.ok) {
@@ -21,7 +23,7 @@ export async function GetUserReminders(user_id) {
 }
 
 export async function DeleteUserReminder(user_id, reminder_id) {
-  const response = await fetch("https://songward-api.herokuapp.com/userReminders/" + user_id + "/" + reminder_id, {
+  const response = await fetch(API_URL + "/userReminders/" + user_id + "/" + reminder_id, {
     method: "DELETE",
   })
   if (response.ok) {
@@ -32,7 +34,7 @@ export async function DeleteUserReminder(user_id, reminder_id) {
 }
 
 export async function AddUserReminder(user_id, reminder) {
-    const response = await fetch("https://songward-api.herokuapp.com/userReminders/" + user_id, {
+    const response = await fetch(API_URL + "/userReminders/" + user_id, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -47,7 +49,7 @@ export async function AddUserReminder(user_id, reminder) {
 }
 
 export async function UpdateUserReminder(user_id, reminder) {
-  const response = await fetch("https://songward-api.herokuapp.com/userReminders/" + user_id + "/" + reminder._id, {
+  const response = await fetch(API_URL + "/userReminders/" + user_id + "/" + reminder._id, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -62,7 +64,7 @@ export async function UpdateUserReminder(user_id, reminder) {
 }
 
 export async function AddJournalEntry(user_id, journal_entry) {
-  const response = await fetch("https://songward-api.herokuapp.com/userJournal/" + user_id, {
+  const response = await fetch(API_URL + "/userJournal/" + user_id, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

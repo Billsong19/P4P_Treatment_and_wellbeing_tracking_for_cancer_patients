@@ -1,10 +1,29 @@
 import * as React from "react";
-import { TouchableOpacity, Text, TextInput, View, ScrollView } from "react-native";
+import { TouchableOpacity, Text, TextInput, View, ScrollView, Alert } from "react-native";
 import LikertButtons from "../components/LikertButtons";
 import SymptomEntry from "../components/SymptomEntry";
 import { AddJournalEntry } from "../songwardAPI";
 import { getUserContext } from "../userContext.js";
 import styles from "../styles";
+
+const getLocalEntries = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("@journal");
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  
+  const storeLocalEntry = async (value) => {
+    try {
+      const data = { last_updated: dayjs(), reminders: value }
+      const jsonValue = JSON.stringify(data);
+      await AsyncStorage.setItem("@journal", jsonValue);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
 export const WellbeingJournalScreen = ({ navigation }) => {
     const [phys, setPhys] = React.useState(-1);
@@ -23,8 +42,18 @@ export const WellbeingJournalScreen = ({ navigation }) => {
             symptoms: symptoms,
             additional: additional,
         };
-        AddJournalEntry(user._id, journalData);
-        navigation.navigate("Songward");
+        try {
+            AddJournalEntry(user._id, journalData);
+            navigation.navigate("Songward");
+        } catch {
+            getLocalEntries().then(async (entries) => {
+                entries = entries ? entries : []
+                entries.push(journalData);
+                await storeLocalEntry(entries);
+            })
+            Alert.alert("No connection", "Failed to connect to the server, your entry has been stored and will be sent to the server upon re-opening the app with a connection.");
+            navigation.navigate("Songward");
+        }
     }
 
     return (

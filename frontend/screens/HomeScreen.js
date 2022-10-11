@@ -17,10 +17,6 @@ export const HomeScreen = ({ navigation }) => {
   const context = getUserContext();
   const user = context.user;
 
-  function userIsNull() {
-    return user === null;
-  }
-
   const reminderContext = getReminderContext();
   const reminders = reminderContext.reminders;
 
@@ -55,6 +51,8 @@ export const HomeScreen = ({ navigation }) => {
     </TouchableOpacity>
   );
 
+  console.log(user)
+
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground
@@ -65,9 +63,9 @@ export const HomeScreen = ({ navigation }) => {
         }}
       >
         <View style={[styles.wideTile, styles.blueDivider]}>
-          <Text>Welcome back {user == null ? "..." : user.first_name}</Text>
+          <Text>Welcome back {user ? user.first_name : "..."}</Text>
           <Text style={{ fontSize: 20.0, marginVertical: 10 }}>
-            {userIsNull() ? "..." : `${user.condition.treatment_period}`} weeks
+            {user ? `${user?.condition.treatment_period}` : "..."} weeks
             since diagnosis
           </Text>
           <TouchableHighlight
