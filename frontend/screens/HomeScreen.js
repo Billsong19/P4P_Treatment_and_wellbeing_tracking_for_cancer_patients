@@ -51,8 +51,6 @@ export const HomeScreen = ({ navigation }) => {
     </TouchableOpacity>
   );
 
-  console.log(user)
-
   return (
     <View style={{ flex: 1 }}>
       <ImageBackground
@@ -70,13 +68,19 @@ export const HomeScreen = ({ navigation }) => {
           </Text>
           <TouchableHighlight
             underlayColor={"#8AB6DF"}
-            style={[
-              styles.smallShadow,
+            style={ context.journalComplete ? 
+              [styles.smallShadow,
+              styles.wideButton,
+              { marginBottom: "1%",
+                backgroundColor: "#999" }]
+              : 
+              [styles.smallShadow,
               styles.wideButton,
               styles.blueBackground,
               { marginBottom: "1%" },
-            ]}
+              ]}
             onPress={() => navigation.navigate("Wellbeing Journal")}
+            disabled={context.journalComplete}
           >
             <View style={{ flexDirection: "row" }}>
               <Text
@@ -85,7 +89,7 @@ export const HomeScreen = ({ navigation }) => {
                   { marginHorizontal: "auto", color: "#fff" },
                 ]}
               >
-                Add to Daily Wellbeing Journal
+                { context.journalComplete ? "Daily Journal Entry Completed" : "Add to Daily Wellbeing Journal" }
               </Text>
             </View>
           </TouchableHighlight>

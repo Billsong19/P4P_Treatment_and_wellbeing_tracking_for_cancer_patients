@@ -63,6 +63,22 @@ export async function UpdateUserReminder(user_id, reminder) {
   }
 }
 
+export async function OverrideAllReminders(user_id, reminders) {
+  console.log({ reminders: reminders })
+  const response = await fetch(API_URL + "/userReminders/" + user_id, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ reminders: reminders }),
+  })
+  if (response.ok) {
+    return response.json();
+  } else {
+    throw new Error(response.status)
+  }
+}
+
 export async function AddJournalEntry(user_id, journal_entry) {
   const response = await fetch(API_URL + "/userJournal/" + user_id, {
     method: "POST",

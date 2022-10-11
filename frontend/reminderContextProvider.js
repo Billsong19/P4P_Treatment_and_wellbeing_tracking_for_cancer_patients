@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState, useContext } from "react";
 import { Alert } from "react-native";
-import { AddUserReminder, UpdateUserReminder, DeleteUserReminder } from "./songwardAPI";
+import { AddUserReminder, UpdateUserReminder, DeleteUserReminder, OverrideAllReminders } from "./songwardAPI";
 import { getUserContext } from "./userContext.js";
 import { Frequencies } from "./public/Frequencies";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -57,7 +57,7 @@ export function sortDataByDateTime(data) {
 // resets all daily reminders at the turn of the next day, also updates their date_time to know when to reset next
 function resetDailyReminders(data) {
   let tempData = [];
-  if (data) {
+  if (data && data.length > 0) {
     tempData = [...data];
     tempData.map((reminder, index) => {
       if (reminder.frequency === Frequencies.Daily) {
@@ -112,6 +112,11 @@ export function ReminderContextProvider({ children }) {
     if (user && localData) {
       if (dayjs(user.last_updated).isBefore(dayjs(localData.last_updated))){
         tempData = localData.reminders;
+        // try {
+        //   OverrideAllReminders(user._id, tempData)
+        // } catch (error) {
+        //   console.log(error)
+        // }
       } else {
         tempData = user.reminders;
       }
@@ -139,7 +144,7 @@ export function ReminderContextProvider({ children }) {
     if (!offline) {
       try {
         AddUserReminder(user._id, reminder);
-      } catch {
+      } catch (error) {
         setOffline(true);
       }
     }
@@ -158,7 +163,7 @@ export function ReminderContextProvider({ children }) {
       if (!offline) {
         try {
           UpdateUserReminder(user._id, editReminder);
-        } catch {
+        } catch (error) {
           setOffline(true);
         }
       }
@@ -180,7 +185,7 @@ export function ReminderContextProvider({ children }) {
       if (!offline) {
         try {
           DeleteUserReminder(user._id, removeId);
-        } catch {
+        } catch (error) {
           setOffline(true);
         }
       }

@@ -1,6 +1,6 @@
 //context  for user data
 import { createContext, useEffect, useState, useContext } from "react";
-import { GetUserData } from "./songwardAPI";
+import { GetUserData, AddJournalEntry } from "./songwardAPI";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import dayjs from "dayjs";
 
@@ -46,28 +46,10 @@ const storeLocalEntries = async (value) => {
 export function UserContextProvider({ children }) {
   const [user, setUser] = useState(null);
   const [localJournal, setLocalJournal] = useState(null);
+  const [journalComplete, setJournalComplete] = useState(false);
   const [loadingUser, setLoadingUser] = useState(true);
 
   useEffect(() => {
-    // attempts to send all journal entries stored created offline to the server
-    const fetchJournal = async () => {
-      setLocalJournal(getLocalEntries());
-    }
-    fetchJournal();
-    if (localJournal) {
-      try {
-        localJournal.map((journalEntry) => {
-          AddJournalEntry(user._id, journalData);
-        })
-        const emptyLocalJournalStorage = async () => {
-          storeLocalEntries([]);
-        };
-        emptyLocalJournalStorage();
-      } catch (error) {
-        console.log(error)
-      }
-    }
-
     const fetchLocalData = async () => {
       setUser((await getLocalUser()).user);
     };
@@ -87,8 +69,44 @@ export function UserContextProvider({ children }) {
     });
   }, []);
 
+  useEffect(() => {
+    const fetchJournal = async () => {
+      setLocalJournal(await getLocalEntries());
+    }
+    fetchJournal();  
+  }, [])
+
+  useEffect(() => {
+    if (localJournal) {
+      // user should only be able to enter one journal per day
+      if (dayjs(localJournal.last_updated).set("hour", 23).set("minute", 59).set("second", 59).isAfter(dayjs())){
+        setJournalComplete(true);
+      } else {
+        setJournalComplete(false);
+      }
+      if (localJournal?.entries.length > 0) {
+        // attempts to send all offline-created journal entries to the server
+        try {
+          localJournal.entries.map((journalData) => {
+            AddJournalEntry(USER_ID, journalData);
+          })
+          const emptyLocalJournalStorage = async () => {
+            storeLocalEntries({last_updated: localJournal.last_updated, entries: []});
+          };
+          emptyLocalJournalStorage();
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    }
+  }, [localJournal]);
+
+  function completeJournal() {
+    setJournalComplete(true);
+  }
+
   return (
-    <UserContext.Provider value={{ user: user }}>
+    <UserContext.Provider value={{ user: user, journalComplete: journalComplete, completeJournal }}>
       {children}
     </UserContext.Provider>
   );
