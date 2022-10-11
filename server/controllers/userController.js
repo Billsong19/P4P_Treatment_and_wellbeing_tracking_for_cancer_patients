@@ -117,6 +117,54 @@ const updateReminder = async (req, res) => {
   }
 };
 
+//_id field in body is a string, not an ObjectId
+// sample body:
+// {
+//   "reminders":
+//   [
+//       {
+//       "_id":"633eb0e8ec83a8000497bba6",
+//       "title": "Take medicine",
+//       "complete": false,
+//       "frequency": 2,
+//       "date_time": "2022-10-05T21:00:52.307Z",
+//       "details": "two 50mg tablets"
+//       },
+//       {
+//       "_id":"754eb0e8ec83a8000497bba6",
+//       "title": "JELLO",
+//       "complete": false,
+//       "frequency": 2,
+//       "date_time": "2022-10-05T21:00:52.307Z",
+//       "details": "two 50mg tablets"
+//       }
+//   ]
+// }
+
+const updateAllReminders = async (req, res) => {
+  try {
+    const dbConnect = dbo.getDb();
+    const { params, body } = req;
+
+    newReminders = body.reminders;
+
+    newReminders.forEach((element) => {
+      element._id = ObjectId(element._id);
+    });
+
+    const updatedUser = await dbConnect
+      .collection("User")
+      .updateOne(
+        { _id: ObjectId(params.id) },
+        { $set: { reminders: newReminders, last_updated: new Date() } }
+      );
+
+    res.status(200).json(updatedUser);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 const getUserJournal = async (req, res) => {
   try {
     const dbConnect = dbo.getDb();
@@ -175,4 +223,5 @@ module.exports = {
   postNewReminder,
   postNewJournalEntry,
   updateReminder,
+  updateAllReminders,
 };

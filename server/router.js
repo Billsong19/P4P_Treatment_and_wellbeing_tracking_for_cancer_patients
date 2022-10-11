@@ -23,6 +23,8 @@ router.put(
   userController.updateReminder
 );
 
+router.put("/userReminders/:id", userController.updateAllReminders);
+
 router.post("/userJournal/:id", userController.postNewJournalEntry);
 
 router.get("/", async (req, res) => {
