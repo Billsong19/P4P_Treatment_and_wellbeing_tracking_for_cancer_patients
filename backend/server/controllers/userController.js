@@ -69,7 +69,9 @@ const postNewReminder = async (req, res) => {
     await dbConnect.collection("User").save(user);
 
     const newReminder = req.body;
-    newReminder._id = new ObjectId();
+    if (!mongodb.ObjectID.isValid(newReminder._id)) {
+      newReminder._id = new ObjectId();
+    }
     console.log(user.reminders);
     const updatedUser = await dbConnect
       .collection("User")
