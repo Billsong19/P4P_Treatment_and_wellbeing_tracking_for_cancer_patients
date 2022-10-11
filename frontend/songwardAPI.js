@@ -64,7 +64,6 @@ export async function UpdateUserReminder(user_id, reminder) {
 }
 
 export async function OverrideAllReminders(user_id, reminders) {
-  console.log({ reminders: reminders })
   const response = await fetch(API_URL + "/userReminders/" + user_id, {
     method: "PUT",
     headers: {
