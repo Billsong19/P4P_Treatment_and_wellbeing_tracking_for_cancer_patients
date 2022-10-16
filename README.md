@@ -2,6 +2,8 @@
 
 Getting Started:
 
+Run frontend app:
+
 Navigate to the `/frontend` directory
 
 `cd frontend`
@@ -17,6 +19,20 @@ Run the app
 `expo start`, then press `a` for android
 
 `npm run ios` for ios
+
+Run backend server:
+
+Navigate to the `/backend` directory
+
+`cd backend`
+
+Install dependencies
+
+`npm install`
+
+Run the server locally:
+
+`npm start`
 
 Build For Android
 
