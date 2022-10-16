@@ -1,6 +1,7 @@
 const User = require("../../models/user.model.js");
 const dbo = require("../../db/conn");
 const ObjectId = require("mongodb").ObjectID;
+const mongodb = require("mongodb");
 
 //TODO connect to db, get routes to point to this file
 
@@ -69,9 +70,14 @@ const postNewReminder = async (req, res) => {
     await dbConnect.collection("User").save(user);
 
     const newReminder = req.body;
-    if (!mongodb.ObjectID.isValid(newReminder._id)) {
+    console.log(newReminder);
+
+    if (mongodb.ObjectID.isValid(newReminder._id)) {
+      newReminder._id = ObjectId(newReminder._id);
+    } else {
       newReminder._id = new ObjectId();
     }
+
     console.log(user.reminders);
     const updatedUser = await dbConnect
       .collection("User")
