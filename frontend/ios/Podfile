@@ -33,8 +33,6 @@ target 'frontend' do
   #   use_flipper!()
   # end
 
-  pod 'RNCCheckbox', :path => '../node_modules/@react-native-community/checkbox'
-
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
   post_install do |installer|
