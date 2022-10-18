@@ -1,6 +1,10 @@
-# P4P_Treatment_and_wellbeing_tracking_for_cancer_patients
+# SongWard: Treatment and wellbeing tracking for cancer patients
 
-## Getting Started:
+## Introduction
+SongWard is the cross-platform mobile app built for Bill and Milahn's Part 4 Project at the University of Auckland.
+It aims to assist in the self-management of cancer condition by improving access to important information, and providing wellbeing tracking and reminders features as Behaviour Change Technique applications.
+
+## Getting Started
 
 ### Run frontend app:
 
