@@ -1,8 +1,8 @@
 # P4P_Treatment_and_wellbeing_tracking_for_cancer_patients
 
-Getting Started:
+## Getting Started:
 
-Run frontend app:
+### Run frontend app:
 
 Navigate to the `/frontend` directory
 
@@ -20,13 +20,13 @@ Run the app
 
 `npm run ios` for ios
 
-Run backend server:
+### Run backend server:
 
-Navigate to the `/backend` directory
+Navigate to the `/backend` directory:
 
 `cd backend`
 
-Install dependencies
+Install dependencies:
 
 `npm install`
 
@@ -34,11 +34,13 @@ Run the server locally:
 
 `npm start`
 
-Build For Android
+## Build For Android
 
 `npm install -g eas-cli` to install the build tool
 
 `eas login` to login to your expo account(go to `https://expo.dev/` to make an account if you don't have one)
+
+At the `https://expo.dev/` website, make a new project with the slug `cancer-app`
 
 `eas whoami` to view your username
 
@@ -46,9 +48,10 @@ in `/app.json`, change the "owner" property to your username.
 
 `eas build -p android --profile preview` to build for android
 
-There will be a link under 🤖Android app: Go to this link on the android device you intend to use, download and extract the file app-release.apk. Open this file with your phone to install the app.
+There will be a link under `🤖Android app`: Go to this link on the android device you intend to use, download and extract the file app-release.apk. Open this file with your Android phone to install the app.
 
-Look for the new app "B&M Health" in the app drawer, and tap to open.
+Look for the new app "SongWard" in the app drawer, and tap to open.
 
-Deploying backend server to heroku
+## Deploying backend server to heroku
+
 `git subtree push --prefix backend origin heroku-songward-api`
