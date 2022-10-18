@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "B&M Health",
-    "slug": "cancer-app",
+    "name": "SongWard",
+    "slug": "songward-app",
     "owner": "mrdugong",
     "version": "1.0.0",
     "assetBundlePatterns": ["**/*"],
