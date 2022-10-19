@@ -4,6 +4,10 @@
 SongWard is the cross-platform mobile app built for Bill and Milahn's Part 4 Project at the University of Auckland.
 It aims to assist in the self-management of cancer condition by improving access to important information, and providing wellbeing tracking and reminders features as Behaviour Change Technique applications.
 
+## NOTE
+
+The app is currently configured to fetch data from our server deployed at `https://songward-api.herokuapp.com`. During development, replace line 1 of `/frontend/songwardAPI.js` to `const API_URL = "https://localhost:5000" to let the frontend fetch from your local instance of the backend server.
+
 ## Getting Started
 
 ### Run frontend app:
@@ -38,7 +42,7 @@ Run the server locally:
 
 `npm start`
 
-## Build For Android
+## Build and Run For Android
 
 `npm install -g eas-cli` to install the build tool
 
