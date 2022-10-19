@@ -55,7 +55,3 @@ in `/app.json`, change the "owner" property to your username.
 There will be a link under `🤖Android app`: Go to this link on the android device you intend to use, download and extract the file app-release.apk. Open this file with your Android phone to install the app.
 
 Look for the new app "SongWard" in the app drawer, and tap to open.
-
-## Deploying backend server to heroku
-
-`git subtree push --prefix backend origin heroku-songward-api`
